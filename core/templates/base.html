@@ -1,4 +1,6 @@
 {% load render_vite_bundle %}
+{% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
   
@@ -10,8 +12,21 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="theme-color" content="#ff73ea" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Fashion App</title>
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+  -->
+  <link rel="manifest" href="{% static 'manifest.json' %}" />
+  <link rel="icon" href="{% static 'favicon.ico' %}" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+  <script src="https://cdn.tailwindcss.com/"></script>
 
   {% if debug %}
   <script type="module" src="http://localhost:3000/@vite/client"></script>
@@ -39,6 +54,31 @@
   {% else %}
   {% render_vite_bundle %}
   {% endif %}
+
+  <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log(registration);
+            }).catch(err => {
+                console.log(err);
+            });
+    }
+
+    window.addEventListener('beforeinstallprompt', function (e) {
+        console.log('beforeinstallprompt fired');
+
+        e.userChoice.then(function (choiceResult) {
+            console.log(choiceResult.outcome);
+
+            if (choiceResult.outcome == 'dismissed') {
+                console.log('User cancelled installation');
+            } else {
+                console.log('User added to homescreen');
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

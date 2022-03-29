@@ -12,3 +12,19 @@ or
 python3 manage.py runserver
 celery -A scraper worker -l info
 ```
+
+## Crawler maybe-baby.co.kr
+```bash
+python3 core/crawler.py headless
+```
+
+## Populate products in db
+```bash
+python3 manage.py crawler output.csv
+```
+
+## Tests
+```bash
+python3 -m pytest test/test_crawler.py
+python3 -m pytest test/test_crawler_mock.py
+```

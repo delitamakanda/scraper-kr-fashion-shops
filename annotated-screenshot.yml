@@ -1,0 +1,5 @@
+- url: https://en.maybe-baby.co.kr/
+  selector: 'div.xans-product-2'
+  wait: 3000
+  quality: 50
+  output: annoted-screenshot.jpg
