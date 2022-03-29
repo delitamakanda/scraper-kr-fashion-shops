@@ -22,8 +22,8 @@ jobs:
         run: python core/crawler.py
       - name: Commit and push if content changed
         run: |-
-          git config user.name "Bot"
-          git config user.email "no-reply@bot.github-actions.com"
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
           git add -A
           timestamp=$(date -u)
           git commit -m "Latest data: ${timestamp}" || exit 0
