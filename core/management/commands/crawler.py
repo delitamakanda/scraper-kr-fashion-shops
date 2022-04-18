@@ -1,12 +1,14 @@
 import csv
 from decimal import Decimal
 import os
-import re
 
 from django.apps import apps
 from django.core.management.base import BaseCommand, CommandError
 
 from core.models import Product
+
+from firebase_admin.messaging import Message, Notification
+from fcm_django.models import FCMDevice
 
 
 class Command(BaseCommand):
@@ -29,6 +31,16 @@ class Command(BaseCommand):
                     external_link=data["url"],
                 )
 
+                devices = FCMDevice.objects.all()
+                devices.send_message(
+                    Message(
+                        notification=Notification(
+                            title=f"{data['title']}",
+                            body=f"{data['url']}",
+                            image=f"{data['img']}",
+                        )
+                    )
+                )
 
             else:
                 print("products already exits !")
@@ -52,7 +64,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for filename in options["filenames"]:
-            self.stdout.write(self.style.SUCCESS("Reading:{}".format(filename)))
+            self.stdout.write(self.style.SUCCESS(
+                "Reading:{}".format(filename)))
             file_path = self.get_csv_file(filename)
             try:
                 with open(file_path) as csv_file:
@@ -73,7 +86,8 @@ class Command(BaseCommand):
                             data["price"] = price.replace("$", "")
                             data["url"] = url
                             self.import_from_mb_as_csv(data)
-                            self.stdout.write(self.style.SUCCESS("{}".format(title)))
+                            self.stdout.write(
+                                self.style.SUCCESS("{}".format(title)))
 
             except FileNotFoundError:
                 raise CommandError("File {} does not exist".format(file_path))

@@ -164,3 +164,14 @@ REST_FRAMEWORK = {
     'SEARCH_PARAM': 'q',
     'ORDERING_PARAM': 'ordering',
 }
+
+FCM_DJANGO_SETTINGS = {
+    "ONE_DEVICE_PER_USER": False,
+    "DELETE_INACTIVE_DEVICES": True,
+    "UPDATE_ON_DUPLICATE_REG_ID": True,
+    "FCM_SERVER_KEY": "AAAA3HEiBog:APA91bEpjZzVl6bxy5NzEytRLiYZSXfYa8ojo8HprOZWVcyE14Sp4NQFmM5qui1_9RbFSLDSMFVqS0MwFSeuMgx0RNjo2X5-otFX8Rvn1zN0pBefwS_FDYRc64eIUu_29taTiCfIjVcy",
+}
+
+from firebase_admin import credentials
+
+cred = credentials.Certificate(os.path.join(os.path.join(BASE_DIR, "scraper", "credentials.json")))

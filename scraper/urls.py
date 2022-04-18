@@ -23,6 +23,7 @@ from django.views.generic.base import TemplateView
 from core.views import (
     APIRoot,
     ProductListApiView,
+    ProductDetailAPIView,
 )
 
 from fcm_django.api.rest_framework import FCMDeviceViewSet
@@ -37,6 +38,7 @@ urlpatterns = [
     
     path('api/', APIRoot.as_view(), name='api_root'),
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
+    path('api/products/<int:pk>/', ProductDetailAPIView.as_view(), name='products_detail_api'),
 
     path('devices/', FCMDeviceViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
 ]

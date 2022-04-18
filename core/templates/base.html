@@ -46,6 +46,8 @@
 
 <body>
 
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
   <div id="root"></div>
 
   {% if debug %}
@@ -79,6 +81,123 @@
         });
     });
 </script>
+
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+
+    <script type="text/javascript">
+        var config = {
+          apiKey: "AIzaSyC9dkKnvmzdOPb42OnPPGWpzuUCcpWwQt0",
+          authDomain: "koreanfashion-42b7d.firebaseapp.com",
+          projectId: "koreanfashion-42b7d",
+          storageBucket: "koreanfashion-42b7d.appspot.com",
+          messagingSenderId: "946790860424",
+          appId: "1:946790860424:web:8331c407ff64c9d75cc13d",
+          measurementId: "G-6STQV92115"
+        };
+        firebase.initializeApp(config);
+
+        var messaging = firebase.messaging();
+
+        messaging.onTokenRefresh(function () {
+            messaging.getToken()
+                .then(function (refreshedToken) {
+                    console.log('Token refreshed.');
+                    setTokenSentToServer(false);
+                    sendTokenToServer(refreshedToken);
+                    resetUI();
+                })
+                .catch(function (err) {
+                    console.log('Unable to retrieve refreshed token ', err);
+                });
+        });
+
+        messaging.onMessage(function (payload) {
+            console.log("Message received. ", payload);
+        });
+
+        function resetUI() {
+            console.log("getting token");
+            messaging.getToken().then((resp) => {
+                console.log(resp);
+            })
+            messaging.getToken()
+                .then(function (currentToken) {
+                    console.log("Got current token");
+                    if (currentToken) {
+                        sendTokenToServer(currentToken);
+                    } else {
+                        console.log('No Instance ID token available. Request permission to generate one.');
+                        setTokenSentToServer(false);
+                    }
+                })
+                .catch(function (err) {
+                    console.log('An error occurred while retrieving token. ', err);
+                    setTokenSentToServer(false);
+                });
+            console.log("End get token");
+
+        }
+
+        // Send the Instance ID token your application server, so that it can:
+        // - send messages back to this app
+        // - subscribe/unsubscribe the token from topics
+        function sendTokenToServer(currentToken) {
+            if (!isTokenSentToServer()) {
+                console.log('Sending token to server...');
+                // TODO(developer): Send the current token to your server.
+                fetch('/devices/', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'registration_id': currentToken,
+                        'type': 'web',
+                    }),
+                    credentials: "include",
+                }).then(function (response) {
+                    console.log(response);
+                })
+                setTokenSentToServer(true);
+            } else {
+                console.log('Token already sent to server so won\'t send it again ' +
+                    'unless it changes');
+            }
+
+        }
+
+        function isTokenSentToServer() {
+            if (window.localStorage.getItem('sentToServer') == 1) {
+                return true;
+            }
+            return false;
+        }
+
+        function setTokenSentToServer(sent) {
+            if (sent) {
+                window.localStorage.setItem('sentToServer', 1);
+            } else {
+                window.localStorage.setItem('sentToServer', 0);
+            }
+        }
+
+        function requestPermission() {
+            console.log('Requesting permission...');
+
+            messaging.requestPermission()
+                .then(function () {
+                    console.log('Notification permission granted.');
+                    resetUI();
+                })
+                .catch(function (err) {
+                    console.log('Unable to get permission to notify.', err);
+                });
+        }
+
+      resetUI();
+
+      requestPermission();
+  </script>
 </body>
 
 </html>
