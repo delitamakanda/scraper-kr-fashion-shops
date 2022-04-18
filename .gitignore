@@ -153,3 +153,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+celerybeat-schedule.db

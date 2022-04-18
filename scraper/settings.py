@@ -175,3 +175,20 @@ FCM_DJANGO_SETTINGS = {
 from firebase_admin import credentials
 
 cred = credentials.Certificate(os.path.join(os.path.join(BASE_DIR, "scraper", "credentials.json")))
+
+# celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    "sample_task": {
+        "task": "core.tasks.sample_task",
+        "schedule": crontab(minute="*/1"),
+    },
+    "populate_maybe_baby_products": {
+        "task": "core.tasks.populate_maybe_baby_products",
+        "schedule": crontab(minute="*/1"),
+    },
+}

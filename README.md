@@ -28,3 +28,13 @@ python3 manage.py crawler output.csv
 python3 -m pytest test/test_crawler.py
 python3 -m pytest test/test_crawler_mock.py
 ```
+
+## Celery
+```bash
+celery -A scraper worker -l info
+```
+
+## Celery with beat
+```bash
+celery -A scraper worker -l info --beat
+```
