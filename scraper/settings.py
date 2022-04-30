@@ -20,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-360mrn8*oazt-gqdfw7c40u*4a=2++xehekz544%!1ozt2$sbs'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-360mrn8*oazt-gqdfw7c40u*4a=2++xehekz544%!1ozt2$sbs')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -177,8 +177,8 @@ from firebase_admin import credentials
 cred = credentials.Certificate(os.path.join(os.path.join(BASE_DIR, "scraper", "credentials.json")))
 
 # celery
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
 from celery.schedules import crontab
 
