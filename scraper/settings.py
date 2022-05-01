@@ -172,9 +172,11 @@ FCM_DJANGO_SETTINGS = {
     "FCM_SERVER_KEY": "AAAA3HEiBog:APA91bEpjZzVl6bxy5NzEytRLiYZSXfYa8ojo8HprOZWVcyE14Sp4NQFmM5qui1_9RbFSLDSMFVqS0MwFSeuMgx0RNjo2X5-otFX8Rvn1zN0pBefwS_FDYRc64eIUu_29taTiCfIjVcy",
 }
 
-from firebase_admin import credentials
+from firebase_admin import initialize_app, credentials
 
 cred = credentials.Certificate(os.path.join(os.path.join(BASE_DIR, "scraper", "credentials.json")))
+
+FIREBASE_APP = initialize_app(cred)
 
 # celery
 CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
