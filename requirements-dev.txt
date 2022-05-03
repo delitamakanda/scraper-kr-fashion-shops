@@ -13,4 +13,4 @@ pytest==7.1.1
 chromedriver-autoinstaller==0.3.1
 webdriver-manager==3.5.4
 celery==5.2.6
-redis==4.2.0
+redis==4.2.2
