@@ -18,9 +18,15 @@ celery -A scraper worker -l info
 python3 core/crawler.py headless
 ```
 
+## Crawler en.stylenanda.com
+```bash
+python3 core/crawler_stylenanda.py headless
+```
+
 ## Populate products in db
 ```bash
-python3 manage.py crawler output.csv
+python3 manage.py crawler output.csv --baseurl=https://en.maybe-baby.co.kr
+python3 manage.py crawler output2.csv --baseurl=https://en.stylenanda.com
 ```
 
 ## Tests

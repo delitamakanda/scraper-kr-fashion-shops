@@ -193,4 +193,8 @@ CELERY_BEAT_SCHEDULE = {
         "task": "core.tasks.populate_maybe_baby_products",
         "schedule": crontab(minute="*/1"),
     },
+    "populate_stylenanda_products": {
+        "task": "core.tasks.populate_stylenanda_products",
+        "schedule": crontab(minute="*/1"),
+    },
 }

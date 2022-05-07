@@ -1,6 +1,7 @@
 import csv
 import sys
 import os
+import re
 import chromedriver_autoinstaller
 from pathlib import Path
 
@@ -35,7 +36,7 @@ def get_driver(headless):
 
 
 def connect_to_base(browser):
-    base_url = 'https://en.maybe-baby.co.kr'
+    base_url = 'https://en.stylenanda.com/category/new-in/3305/'
     connection_attempts = 0
     while connection_attempts < 3:
         try:
@@ -43,7 +44,7 @@ def connect_to_base(browser):
             # wait for item element with id 'contents' to load
             # before returning True
             WebDriverWait(browser, 5).until(
-                EC.presence_of_element_located((By.ID, 'contents'))
+                EC.presence_of_element_located((By.ID, 'content'))
             )
             return True
         except Exception as e:
@@ -58,13 +59,16 @@ def parse_html(html):
     # create soup object
     soup = BeautifulSoup(html, 'html.parser')
     output_list = []
-    for row in soup.find_all('div', {"class": "box"}):
-        if row.find('p', attrs= {'class': 'name'}) is not None:
+    for row in soup.find_all('li', {"class": "xans-record-"}):
+        if row.find('div', attrs= {'class': 'box'}) is not None:
             article = {}
-            article['img'] = row.img['src']
-            article['title'] = row.find('p', class_='name').find_all('span')[2].text
-            article['url'] = row.find('p', class_='name').a['href']
-            article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text
+            article['img'] = row.find('a', attrs= {'class': 'thumb_slide _evt_tracker0'}).img['src'].replace(',', '')
+            external_span = row.find('div', class_='name')
+            unwanted = external_span.find('span')
+            unwanted.extract()
+            article['title'] = external_span.text.replace(':', '').strip()
+            article['url'] = row.find('div', class_='name').a['href']
+            article['price'] = row.find('span', class_='price').text.replace('USD', '').strip()
             output_list.append(article)
             print(article)
     return output_list

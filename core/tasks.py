@@ -12,4 +12,8 @@ def sample_task():
 
 @shared_task
 def populate_maybe_baby_products():
-    call_command("crawler", "output.csv")
+    call_command("crawler", "output.csv", "--baseurl=https://en.maybe-baby.co.kr")
+
+@shared_task
+def populate_stylenanda_products():
+    call_command("crawler", "output2.csv", "--baseurl=https://en.stylenanda.com")

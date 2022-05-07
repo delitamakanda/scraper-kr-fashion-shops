@@ -14,7 +14,7 @@ from fcm_django.models import FCMDevice
 class Command(BaseCommand):
     help = (
         "Import products from a local csv",
-        "from external site : http://en.maybe-baby.co.kr/",
+        "from external site : https://en.maybe-baby.co.kr/ or https://en.stylenanda.com/",
     )
 
     def __init__(self, *args, **kwargs):
@@ -62,6 +62,10 @@ class Command(BaseCommand):
             "filenames", nargs="*", type=str, help="Inserts Products from CSV file"
         )
 
+        parser.add_argument(
+            "--baseurl", nargs="*", type=str, help="choose a website to scrape"
+        )
+
     def handle(self, *args, **options):
         for filename in options["filenames"]:
             self.stdout.write(self.style.SUCCESS(
@@ -75,7 +79,7 @@ class Command(BaseCommand):
                             # print(row)
                             words = [word.strip() for word in row]
                             title = words[1]
-                            url = f"http://en.maybe-baby.co.kr{words[3]}"
+                            url = f"{options['baseurl'][0]}{words[3]}"
                             price = words[2]
                             if price == "일시품절":
                                 price = "0.00"
