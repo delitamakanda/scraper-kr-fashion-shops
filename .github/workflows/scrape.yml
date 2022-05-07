@@ -1,4 +1,4 @@
-name: scrape
+name: scrape maybe-baby
 on:
   schedule:
     - cron: '0 0 */3 * *'

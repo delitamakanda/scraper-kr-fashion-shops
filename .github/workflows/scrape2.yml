@@ -1,4 +1,4 @@
-name: scrape
+name: scrape stylenanda
 on:
   schedule:
     - cron: '0 2 */3 * *'
