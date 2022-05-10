@@ -49,6 +49,7 @@ urlpatterns = [
 
     path('firebase-messaging-sw.js', (TemplateView.as_view(template_name="firebase-messaging-sw.js", content_type='application/javascript', )), name='firebase-messaging-sw.js'),
     path('offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
+    path('manifest.json', (TemplateView.as_view(template_name="manifest.json", content_type='application/json', )), name='manifest.json'),
     re_path(r'^static/(?P<path>.*)$', serve, { 'document_root': settings.STATIC_ROOT }),
     path(r'', TemplateView.as_view(template_name='base.html')),
     
@@ -59,8 +60,8 @@ urlpatterns = [
     path('devices/', FCMDeviceViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
     
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    # re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    # re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
 if settings.DEBUG:
