@@ -31,17 +31,6 @@ class Command(BaseCommand):
                     external_link=data["url"],
                 )
 
-                devices = FCMDevice.objects.all()
-                devices.send_message(
-                    Message(
-                        notification=Notification(
-                            title=f"{data['title']}",
-                            body=f"{data['url']}",
-                            image=f"{data['img']}",
-                        )
-                    )
-                )
-
             else:
                 print("products already exits !")
         except Exception as e:
@@ -89,6 +78,16 @@ class Command(BaseCommand):
                             data["img"] = img
                             data["price"] = price.replace("$", "")
                             data["url"] = url
+                            devices = FCMDevice.objects.all()
+                            devices.send_message(
+                                Message(
+                                    notification=Notification(
+                                        title=f"{data['title']}",
+                                        body=f"{data['url']}",
+                                        image=f"{data['img']}",
+                                    )
+                                )
+                            )
                             self.import_from_mb_as_csv(data)
                             self.stdout.write(
                                 self.style.SUCCESS("{}".format(title)))
