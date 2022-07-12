@@ -14,16 +14,20 @@ const MyModal = () => {
     
     useEffect(() => {
         const body = document.querySelector('body')
-        if (isOpen) {
+        if (isOpen && !modalAlreadyDisplay) {
             body.style.overflow = 'hidden'
         } else {
             body.style.overflow = ''
         }
         // afficher la modal 1 fois / session
         const data = sessionStorage.getItem('subscription')
-        setModalAlreadyDisplay(data)
-        console.log('modalAlreadyDisplay', modalAlreadyDisplay)
-    }, [isOpen])
+        if (data) {
+            setModalAlreadyDisplay(true)
+        } else {
+            setModalAlreadyDisplay(false)
+        }
+        // console.log('modalAlreadyDisplay', modalAlreadyDisplay)
+    }, [isOpen, modalAlreadyDisplay])
     
   function closeModal() {
     sessionStorage.setItem('subscription', 'true')
