@@ -72,7 +72,7 @@ class ProductDetail extends Component {
 
                         <div className="mt-4 lg:mt-0 lg:row-span-3">
                             <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl text-gray-900">{data?.price}€</p>
+                            <p className="text-3xl text-gray-900">${data?.price}</p>
 
                             <a type="button" target="_blank" rel="noreferrer" className="mt-10 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500" href={data?.external_link}>See the product</a>
                         </div>

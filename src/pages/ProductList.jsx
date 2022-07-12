@@ -4,6 +4,8 @@ import axios from 'axios'
 import { productListURL } from '../constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import MyModal from '../components/Modal'
+
 
 class ProductList extends Component {
     _isMounted = false
@@ -87,7 +89,6 @@ class ProductList extends Component {
 
     render() {
         const { data, error, more_exist } = this.state
-
         return(
             <div className="bg-white">
                 <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -126,7 +127,7 @@ class ProductList extends Component {
                                                     </Link>
                                                 </h3>
                                             </div>
-                                            <p className="text-sm font-medium text-gray-900">{item.price}€</p>
+                                            <p className="text-sm font-medium text-gray-900">${item.price}</p>
                                         </div>
                                     </div>
 
@@ -135,6 +136,7 @@ class ProductList extends Component {
                         </div>
                     </InfiniteScroll>
                 </div>
+                <MyModal />
             </div>
         )
     }

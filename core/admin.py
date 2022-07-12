@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Product
+from core.models import Product, UserMailing
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -7,5 +7,11 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     list_filter = ['created', 'available']
 
+class UserMailingAdmin(admin.ModelAdmin):
+    list_display = ['email', 'date_added']
+    search_fields = ['email']
+    list_filter = ['is_subscribed']
+
 
 admin.site.register(Product, ProductAdmin)
+admin.site.register(UserMailing, UserMailingAdmin)

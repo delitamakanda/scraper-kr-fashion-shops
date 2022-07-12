@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Product
+from core.models import Product, UserMailing
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -19,4 +19,15 @@ class ProductSerializer(serializers.ModelSerializer):
             'available',
             'image_url',
             'external_link',
+        )
+
+class UserMailingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserMailing
+        fields = (
+            'id',
+            'email',
+            'is_subscribed',
+            'date_added',
         )

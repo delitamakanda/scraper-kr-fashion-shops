@@ -10,6 +10,11 @@ from core.models import Product
 from firebase_admin.messaging import Message, Notification
 from fcm_django.models import FCMDevice
 
+"""
+get all registered devices
+"""
+devices = FCMDevice.objects.all()
+
 
 class Command(BaseCommand):
     help = (
@@ -29,6 +34,16 @@ class Command(BaseCommand):
                     image_url=data["img"],
                     price=Decimal(data["price"]),
                     external_link=data["url"],
+                )
+
+                devices.send_message(
+                    Message(
+                        notification=Notification(
+                            title=f"{data['title']}",
+                            body=f"{data['url']}",
+                            image=f"{data['img']}",
+                        ),
+                    )
                 )
 
             else:
@@ -78,16 +93,6 @@ class Command(BaseCommand):
                             data["img"] = img
                             data["price"] = price.replace("$", "")
                             data["url"] = url
-                            devices = FCMDevice.objects.all()
-                            devices.send_message(
-                                Message(
-                                    notification=Notification(
-                                        title=f"{data['title']}",
-                                        body=f"{data['url']}",
-                                        image=f"{data['img']}",
-                                    )
-                                )
-                            )
                             self.import_from_mb_as_csv(data)
                             self.stdout.write(
                                 self.style.SUCCESS("{}".format(title)))
