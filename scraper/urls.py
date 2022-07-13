@@ -25,6 +25,8 @@ from core.views import (
     ProductListApiView,
     ProductDetailAPIView,
     UserMailingCreateAPIView,
+
+    unsubscribe,
 )
 
 from fcm_django.api.rest_framework import FCMDeviceViewSet
@@ -41,6 +43,8 @@ urlpatterns = [
     path('api/signup/', UserMailingCreateAPIView.as_view(), name='create_signup_mail'),
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
     path('api/products/<int:pk>/', ProductDetailAPIView.as_view(), name='products_detail_api'),
+
+    path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
 
     path('devices/', FCMDeviceViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
 ]

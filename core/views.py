@@ -4,6 +4,8 @@ from rest_framework import generics, permissions, reverse, views, filters, respo
 from core.serializers import ProductSerializer, UserMailingSerializer
 from core.models import Product, UserMailing
 
+from django.shortcuts import render, get_object_or_404, redirect
+
 
 class APIRoot(views.APIView):
 
@@ -41,3 +43,15 @@ class UserMailingCreateAPIView(generics.CreateAPIView):
     queryset = UserMailing.objects.all()
     serializer_class = UserMailingSerializer
     permission_classes = (permissions.AllowAny,)
+
+
+def unsubscribe(request, email=None):
+    subscriber = get_object_or_404(UserMailing, email=email)
+    try:
+        if request.method == 'POST':
+            subscriber.is_subscribed = False
+            subscriber.save()
+            return redirect('/')
+    except Exception as e:
+        print("Error unsubscribing from %s: %s" % (email, e))
+    return render(request, 'unsubscribe.html', { 'email': email })
