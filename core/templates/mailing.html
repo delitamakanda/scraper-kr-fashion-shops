@@ -74,10 +74,10 @@ background-color: #f6f6f6;
                                         <tr>
                                         {% for product in products %}
                                           <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" width="120" class="mobile" align="center" valign="top">
-                                            <a href={{product.external_link}} target="_blank" style="color: #000;">
+                                            <a href="{{product.external_link}}" target="_blank" style="color: #000;">
                                                 <table width="100%" border="0" cellspacing="5" cellpadding="0">
                                                     <tr>
-                                                        <td><img src={{product.image_url}} width="120" height="120" title={{product.name}} alt={{product.name}} style="display: block;" /></td>
+                                                        <td><img src="{{product.image_url}}" width="120px" height="120px" title="{{product.name}}" alt="{{product.name}}" style="display: block;" /></td>
                                                     </tr>
                                                     <tr>
                                                         <td>{{product.name}}</td>
