@@ -28,17 +28,17 @@ class Command(BaseCommand):
 
     def import_from_mb_as_csv(self, data):
         print(data)
-        devices.send_message(
-            Message(
-                notification=Notification(
-                    title=f"{data['title']}",
-                    body=f"{data['url']}",
-                    image=f"{data['img']}",
-                ),
-            )
-        )
         try:
             if not self.model_name.objects.filter(image_url=data["img"]).exists():
+                devices.send_message(
+                    Message(
+                        notification=Notification(
+                            title=f"{data['title']}",
+                            body=f"{data['url']}",
+                            image=f"{data['img']}",
+                        ),
+                    )
+                )
                 self.model_name.objects.create(
                     name=data["title"],
                     image_url=data["img"],
