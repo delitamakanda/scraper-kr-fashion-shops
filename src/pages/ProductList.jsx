@@ -5,7 +5,9 @@ import { productListURL } from '../constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'
-
+import Carousel from 'react-img-carousel'
+import 'react-img-carousel/lib/carousel.css'
+import { shuffle } from 'lodash'
 
 class ProductList extends Component {
     _isMounted = false
@@ -88,11 +90,35 @@ class ProductList extends Component {
     }
 
     render() {
-        const { data, error, more_exist } = this.state
-        return(
+        const { data, error, more_exist, count } = this.state
+        const randomImages = shuffle(data).slice(0, 10)
+        return (
             <div className="bg-white">
                 <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-                    <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Products List</h2>
+                    {randomImages && randomImages.length ? <Carousel
+                        slideHeight="320px"
+                        width="100%"
+                        viewportWidth="100%"
+                        clickToNavigate={false}
+                        cellPadding={5}
+                        arrows={true}
+                        draggable={false}
+                        autoplay={true}
+                        autoplaySpeed={4000}
+                        style={{
+                            slide: {
+                                opacity: 0.2
+                            },
+                            selectedSlide: {
+                                opacity: 1
+                            }
+                        }}>
+                        {randomImages.map(image => {
+                            return <Link key={image.id} to={`/products/${image.id}`}><img src={image.image_url} /></Link>
+                        }
+                        )}
+                    </Carousel> : <Loader />}
+                    {count && <h2 className="text-2xl py-2 text-right font-extrabold tracking-tight text-gray-900">Products ({count})</h2>}
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                             <span className="block sm:inline">{JSON.stringify(error)}</span>
