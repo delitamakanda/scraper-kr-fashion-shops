@@ -10,6 +10,8 @@ ALLOWED_HOSTS = ['*', ]
 
 # email admin
 
+DEBUG = False
+
 SERVER_EMAIL = os.getenv('ADMIN_EMAIL')
 
 ADMINS = [
