@@ -36,11 +36,10 @@ def get_driver(headless):
 
 
 def connect_to_base(browser, baseurl):
-    base_url = baseurl
     connection_attempts = 0
     while connection_attempts < 3:
         try:
-            browser.get(base_url)
+            browser.get(baseurl)
             # wait for item element with id 'contents' to load
             # before returning True
             WebDriverWait(browser, 5).until(
@@ -50,7 +49,7 @@ def connect_to_base(browser, baseurl):
         except Exception as e:
             print(e)
             connection_attempts += 1
-            print(f'Error connecting to {base_url}')
+            print(f'Error connecting to {baseurl}')
             print(f'Attempt #{connection_attempts}')
     return False
 
