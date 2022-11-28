@@ -1,6 +1,7 @@
 import React from 'react'
 import { Popover } from '@headlessui/react'
 import { Link } from 'react-router-dom'
+import ScrollToTop from 'react-scroll-to-top';
 
 const CustomLayout = (props) => {
     return (
@@ -22,6 +23,7 @@ const CustomLayout = (props) => {
                 </div>
             </Popover>
             {props.children}
+            <ScrollToTop smooth />
         </div>
     )
 }

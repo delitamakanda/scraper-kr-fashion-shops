@@ -44,6 +44,7 @@ class Command(BaseCommand):
                     image_url=data["img"],
                     price=Decimal(data["price"]),
                     external_link=data["url"],
+                    source=data["source"],
                 )
 
 
@@ -88,8 +89,17 @@ class Command(BaseCommand):
                             price = words[2]
                             if price == "일시품절":
                                 price = "0.00"
+                            source = ""
+                            if options['baseurl'][0] == "https://en.maybe-baby.co.kr":
+                                source = "Maybe Baby"
+                            elif options['baseurl'][0] == "https://en.stylenanda.com":
+                                source = "Stylenanda"
+                            elif options['baseurl'][0] == "https://en.frombeginning.com":
+                                source = "Frombeginning"
                             img = words[0]
                             data = {}
+                            data["source"] = source
+                            data["url"] = url
                             data["title"] = title
                             data["img"] = img
                             data["price"] = price.replace("$", "")

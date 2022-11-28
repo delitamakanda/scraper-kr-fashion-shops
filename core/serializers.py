@@ -19,6 +19,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'available',
             'image_url',
             'external_link',
+            'source',
+            'countProductsByBrand',
         )
 
 class UserMailingSerializer(serializers.ModelSerializer):

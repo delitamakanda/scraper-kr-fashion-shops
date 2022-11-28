@@ -8,8 +8,8 @@ from scrapers.scrapers_stylenanda import get_driver, connect_to_base, parse_html
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-def run_process(filename, browser):
-    if connect_to_base(browser):
+def run_process(filename, browser, baseurl):
+    if connect_to_base(browser, baseurl):
         sleep(2)
         html = browser.page_source
         output_list = parse_html(html)
@@ -26,6 +26,12 @@ if __name__ == "__main__":
         print("Running in headless mode")
         headless = True
 
+    # scrape beauty products from stylenanda #3ce
+    baseurl = 'https://en.stylenanda.com/category/new-in/3305/'
+    if len(sys.argv) > 2 and sys.argv[2] == "baseurl" or len(sys.argv) > 1 and sys.argv[1] == "baseurl":
+        print("Running from 3ce")
+        baseurl = 'https://stylenandaen.com/category/new-in/3304/'
+
     # set variables
     start_time = time()
     current_attempt = 1
@@ -40,7 +46,7 @@ if __name__ == "__main__":
     # scrape and crawl
     while current_attempt <= 3:
         print(f"Scraping Stylenanda #{current_attempt} time(s)...")
-        run_process(output_filename, browser)
+        run_process(output_filename, browser, baseurl)
         current_attempt = current_attempt + 1
 
     # exit

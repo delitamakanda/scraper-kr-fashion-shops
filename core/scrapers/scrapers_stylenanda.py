@@ -35,8 +35,8 @@ def get_driver(headless):
     return driver
 
 
-def connect_to_base(browser):
-    base_url = 'https://en.stylenanda.com/category/new-in/3305/'
+def connect_to_base(browser, baseurl):
+    base_url = baseurl
     connection_attempts = 0
     while connection_attempts < 3:
         try:

@@ -23,6 +23,11 @@ python3 core/crawler.py headless
 python3 core/crawler_stylenanda.py headless
 ```
 
+### 3ce beauty products
+```bash
+python3 core/crawler_stylenanda.py headless baseurl
+```
+
 ## Crawler en.frombeginning.com
 ```bash
 python3 core/crawler_frombeginning.py headless

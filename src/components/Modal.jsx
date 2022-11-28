@@ -20,7 +20,7 @@ const MyModal = () => {
             body.style.overflow = ''
         }
         // afficher la modal 1 fois / session
-        const data = sessionStorage.getItem('subscription')
+        const data = localStorage.getItem('subscription')
         if (data) {
             setModalAlreadyDisplay(true)
         } else {
@@ -30,7 +30,7 @@ const MyModal = () => {
     }, [isOpen, modalAlreadyDisplay])
     
   function closeModal() {
-    sessionStorage.setItem('subscription', 'true')
+    localStorage.setItem('subscription', 'true')
     setIsOpen(false)
   }
 

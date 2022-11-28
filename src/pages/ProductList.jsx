@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { productListURL } from '../constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'
+import Select from '../components/Select'
 import Carousel from 'react-img-carousel'
 import 'react-img-carousel/lib/carousel.css'
 import { shuffle } from 'lodash'
@@ -17,6 +18,7 @@ class ProductList extends Component {
 
         this.state = {
             loading: false,
+            selectedItems: null,
             error: null,
             data: [],
             next_url: productListURL,
@@ -24,6 +26,7 @@ class ProductList extends Component {
             more_exist: false,
         }
     }
+    
 
     componentDidMount() {
         this._isMounted = true
@@ -88,10 +91,16 @@ class ProductList extends Component {
     handleClick = () => {
         sessionStorage.setItem('scrollPosition', window.pageYOffset)
     }
+    
+    handleChildToParent = (words) => {
+        this.setState({ selectedItems: words })
+    }
 
     render() {
-        const { data, error, more_exist, count } = this.state
+        const { data, error, more_exist, count, selectedItems } = this.state
         const randomImages = shuffle(data).slice(0, 10)
+        const filteredItems = selectedItems && selectedItems.name !== 'All' ? data.filter((product) => product.source === selectedItems.name) : data
+
         return (
             <div className="bg-white">
                 <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -118,7 +127,7 @@ class ProductList extends Component {
                         }
                         )}
                     </Carousel> : <Loader />}
-                    {count && <h2 className="text-2xl py-2 text-right font-extrabold tracking-tight text-gray-900">Products ({count})</h2>}
+                    <Select onSelectProducts={data} countProducts={count} dataChildToParent={this.handleChildToParent} />
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                             <span className="block sm:inline">{JSON.stringify(error)}</span>
@@ -134,7 +143,7 @@ class ProductList extends Component {
                         releaseToRefreshContent={<div>&#8593; Release to refresh</div>}
                     >
                         <div className="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
-                            {data.map(item => {
+                            {filteredItems.map(item => {
                                 return (
                                     <div key={item.id} className="group relative">
                                         {item.image_url ? (<div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none"><img src={item.image_url} alt={item.name} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />
