@@ -27,10 +27,8 @@ def get_driver(headless):
 
     # init driver
     # only for debug
-    driver = None
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "headless":
-            driver = webdriver.Chrome(ChromeDriverManager().install())
+    if len(sys.argv) > 1 and sys.argv[1] == "headless":
+        driver = webdriver.Chrome(ChromeDriverManager().install())
     else:
         driver = webdriver.Chrome(chrome_options=options)
     return driver
