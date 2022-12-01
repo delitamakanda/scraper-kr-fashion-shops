@@ -166,6 +166,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'core.pagination.CorePagination',
     'SEARCH_PARAM': 'q',
     'ORDERING_PARAM': 'ordering',
+    'EXCEPTION_HANDLER': 'rest_framework.exceptions.exception_handler',
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+    ),
+    'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json',
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
 }
 
 FCM_DJANGO_SETTINGS = {
