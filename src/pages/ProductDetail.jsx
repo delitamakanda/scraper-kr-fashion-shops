@@ -3,6 +3,8 @@ import axios from 'axios';
 import { productDetailURL } from '../constants'
 import Loader from '../components/Loader'
 import { Link, useParams } from 'react-router-dom'
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/solid'
+import { classNames } from '../utils/styling'
 
 class ProductDetail extends Component {
     
@@ -16,19 +18,35 @@ class ProductDetail extends Component {
         this.handleFetchItem()
     }
 
-    handleFetchItem = () => {
-        const 
-            { productID }  = this.props.params;
+    loadDetail = (id) => {
+        this.setState({
+            loading: true
+        })
         this.setState({ loading: true });
         
         axios
-            .get(productDetailURL(productID))
+            .get(productDetailURL(id))
             .then(res => {
                 this.setState({ data: res.data, loading: false });
             })
             .catch(err => {
                 this.setState({ error: err, loading: false });
             });
+    }
+
+    handleFetchItem = () => {
+        const 
+            { productID }  = this.props.params;
+        
+        this.loadDetail(productID)
+    }
+
+    changeProduct = (event, productID) => {
+        event.preventDefault()
+        this.loadDetail(productID)
+        window.history.pushState({}, '', `/products/${productID}`)
+        
+        
     }
 
     render() {
@@ -41,12 +59,30 @@ class ProductDetail extends Component {
                             <li>
                                 <div className="flex items-center">
                                     <Link to="/" className="mr-2 text-sm font-medium text-gray-900">
-                                        &laquo; Back to products
+                                        &laquo; Go back
                                     </Link>
                                 </div>
                             </li>
                         </ol>
                     </nav>
+
+                    {data?.next_item ?
+                        <button onClick={(event) => this.changeProduct(event, data.next_item.id)} title={data.next_item.name} className="fixed z-90 lg:bottom-40 left-8 bg-pink-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-pink-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                            <ArrowLeftIcon
+                            className={classNames(
+                                'h-8 w-8 group-hover:text-white'
+                            )}
+                            aria-hidden="true" />
+                        </button> : <div />}
+                    
+                    {data?.previous_item ? 
+                        <button onClick={(event) => this.changeProduct(event, data.previous_item.id)} title={data.previous_item.name} className="fixed z-90 lg:bottom-40 right-8 bg-pink-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-pink-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                            <ArrowRightIcon
+                            className={classNames(
+                                'h-8 w-8 group-hover:text-white'
+                            )}
+                            aria-hidden="true" />
+                        </button> : <div />}
 
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -57,9 +93,9 @@ class ProductDetail extends Component {
                         <Loader />
                     )}
 
-                    <div className="mt-6 max-w-2xl mx-auto px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
+                    <div className="mt-6 max-w-2xl mx-auto px-6">
                         <div className="aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
-                            <img src={data?.image_url} alt={data.name} className="w-full h-full object-center object-cover" />
+                            <img src={data?.image_url} alt={data.name} className="mx-auto w-full h-full object-center object-cover" />
                         </div>
                     </div>
 

@@ -166,7 +166,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'core.pagination.CorePagination',
     'SEARCH_PARAM': 'q',
     'ORDERING_PARAM': 'ordering',
-    'EXCEPTION_HANDLER': 'rest_framework.exceptions.exception_handler',
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.OrderingFilter',
         'rest_framework.filters.SearchFilter',

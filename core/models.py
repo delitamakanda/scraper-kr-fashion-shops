@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.http import JsonResponse
 
 class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -32,6 +33,18 @@ class Product(models.Model):
         if (self.source != ''):
             return Product.objects.filter(source=self.source).count()
         return 0
+
+    @property
+    def next_item(self):
+        next_obj = Product.objects.filter(id__gt=self.id).order_by('id').first()
+        if next_obj:
+            return next_obj
+
+    @property
+    def previous_item(self):
+        previous_obj = Product.objects.filter(id__lt=self.id).order_by('-id').first()
+        if previous_obj:
+            return previous_obj
 
 
 class UserMailing(models.Model):

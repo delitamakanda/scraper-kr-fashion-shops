@@ -18,6 +18,7 @@ import {
   XIcon,
 } from '@heroicons/react/outline'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import { classNames } from '../utils/styling'
 
 const solutions = [
     {
@@ -76,11 +77,6 @@ const solutions = [
     { id: 2, name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
     { id: 3, name: 'Improve your customer experience', href: '#' },
   ]
-  
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-  }
-  
 
 const CustomLayout = (props) => {
     return (
