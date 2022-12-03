@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { productListURL } from '../constants'
@@ -19,6 +19,7 @@ class ProductList extends Component {
         this.state = {
             loading: false,
             selectedItems: null,
+            randomImages: [],
             error: null,
             data: [],
             next_url: productListURL,
@@ -30,12 +31,12 @@ class ProductList extends Component {
 
     componentDidMount() {
         this._isMounted = true
-
+        
         axios
-            .get(this.state.next_url)
-            .then(res => {
-                let has_more = false
-                if (res.data.next) {
+        .get(this.state.next_url)
+        .then(res => {
+            let has_more = false
+            if (res.data.next) {
                     has_more = true
                 }
                 this.setState({
@@ -46,11 +47,18 @@ class ProductList extends Component {
                     more_exist: has_more
                 }, () => {
                     this.handleScrollPosition()
+                    this.getRandomItems()
                 });
             })
             .catch(err => {
                 this.setState({ error: err, loading: false })
             })
+    }
+
+    getRandomItems = () => {
+        this.setState({
+            randomImages: shuffle(this.state.data).slice(0, 10)
+        })
     }
 
     componentWillUnmount() {
@@ -97,8 +105,7 @@ class ProductList extends Component {
     }
 
     render() {
-        const { data, error, more_exist, count, selectedItems } = this.state
-        const randomImages = shuffle(data).slice(0, 10)
+        const { data, error, more_exist, count, selectedItems, randomImages } = this.state
         const filteredItems = selectedItems && selectedItems.name !== 'All' ? data.filter((product) => product.source === selectedItems.name) : data
 
         return (
@@ -109,6 +116,7 @@ class ProductList extends Component {
                         width="100%"
                         viewportWidth="100%"
                         clickToNavigate={false}
+                        lazyLoad={true}
                         cellPadding={5}
                         arrows={true}
                         draggable={false}
