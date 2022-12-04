@@ -33,11 +33,17 @@ python3 core/crawler_stylenanda.py headless baseurl
 python3 core/crawler_frombeginning.py headless
 ```
 
+## Crawler en.wonlog.co.kr
+```bash
+python3 core/crawler_wonlog.py headless
+```
+
 ## Populate products in db
 ```bash
 python3 manage.py crawler output.csv --baseurl=https://en.maybe-baby.co.kr
 python3 manage.py crawler output2.csv --baseurl=https://en.stylenanda.com
 python3 manage.py crawler output3.csv --baseurl=https://en.frombeginning.com
+python3 manage.py crawler output4.csv --baseurl=https://en.wonlog.co.kr
 ```
 
 ## Tests

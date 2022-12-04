@@ -23,6 +23,11 @@ const brands = [
     name: 'Frombeginning',
     count: 0,
   },
+  {
+    id: 5,
+    name: 'Wonlog',
+    count: 0,
+  },
 ]
 
 function classNames(...classes) {

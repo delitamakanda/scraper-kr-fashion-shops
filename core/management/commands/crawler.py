@@ -19,7 +19,7 @@ devices = FCMDevice.objects.all()
 class Command(BaseCommand):
     help = (
         "Import products from a local csv",
-        "from external site : https://en.maybe-baby.co.kr/ or https://en.stylenanda.com/ or https://en.frombeginning.com/",
+        "from external site : https://en.maybe-baby.co.kr/ or https://en.stylenanda.com/ or https://en.frombeginning.com/ or https://en.wonlog.co.kr/",
     )
 
     def __init__(self, *args, **kwargs):
@@ -96,6 +96,8 @@ class Command(BaseCommand):
                                 source = "Stylenanda"
                             elif options['baseurl'][0] == "https://en.frombeginning.com":
                                 source = "Frombeginning"
+                            elif options['baseurl'][0] == "https://en.wonlog.co.kr":
+                                source = "Wonlog"
                             img = words[0]
                             data = {}
                             data["source"] = source

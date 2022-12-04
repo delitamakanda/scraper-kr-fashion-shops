@@ -36,7 +36,7 @@ def get_driver(headless):
 
 
 def connect_to_base(browser):
-    base_url = 'https://en.frombeginning.kr/'
+    base_url = 'https://en.wonlog.co.kr/category/new-7/58/'
     connection_attempts = 0
     while connection_attempts < 3:
         try:
