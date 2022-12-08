@@ -1,5 +1,0 @@
-- url: https://en.maybe-baby.co.kr/
-  selector: 'div#contents'
-  wait: 3000
-  quality: 50
-  output: annoted-screenshot.jpg
