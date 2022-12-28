@@ -6,5 +6,10 @@ export default defineConfig({
   build: { manifest: true },
   base: process.env.NODE_ENV === 'production' ? '/static/' : '/',
   root: './src',
-  plugins: [react()]
+  plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './__tests__/setup.js',
+  }
 })
