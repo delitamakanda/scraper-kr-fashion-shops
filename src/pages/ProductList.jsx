@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { productListURL } from '../constants'
@@ -6,9 +6,10 @@ import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'
 import Select from '../components/Select'
-import Carousel from 'react-img-carousel'
-import 'react-img-carousel/lib/carousel.css'
 import { shuffle } from 'lodash'
+import { Tab } from '@headlessui/react'
+import Carousel from 'react-grid-carousel'
+import { CameraIcon, PhotographIcon } from '@heroicons/react/outline'
 
 class ProductList extends Component {
     _isMounted = false
@@ -57,7 +58,7 @@ class ProductList extends Component {
 
     getRandomItems = () => {
         this.setState({
-            randomImages: shuffle(this.state.data).slice(0, 10)
+            randomImages: shuffle(this.state.data).slice(0, 50)
         })
     }
 
@@ -111,31 +112,32 @@ class ProductList extends Component {
         return (
             <div className="bg-white">
                 <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-                    {randomImages && randomImages.length ? <Carousel
-                        slideHeight="320px"
-                        width="100%"
-                        viewportWidth="100%"
-                        clickToNavigate={false}
-                        lazyLoad={true}
-                        cellPadding={5}
-                        arrows={true}
-                        draggable={false}
-                        autoplay={true}
-                        autoplaySpeed={4000}
-                        style={{
-                            slide: {
-                                opacity: 0.2
-                            },
-                            selectedSlide: {
-                                opacity: 1
-                            }
-                        }}>
-                        {randomImages.map(image => {
-                            return <Link key={image.id} to={`/products/${image.id}`}><img src={image.image_url} /></Link>
-                        }
-                        )}
-                    </Carousel> : <Loader />}
-                    <Select onSelectProducts={data} countProducts={count} dataChildToParent={this.handleChildToParent} />
+                <Tab.Group>
+                    <Tab.List>
+                        <Tab as={Fragment}>
+                            {({ selected }) => (
+                                <button className={
+                                    selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
+                                }
+                                >
+                                    <PhotographIcon className="h-5 w-5 currentColor" />
+                                </button>
+                            )}
+                        </Tab>
+                        <Tab as={Fragment}>
+                        {({ selected }) => (
+                                <button className={
+                                    selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
+                                }
+                                >
+                                    <CameraIcon className="h-5 w-5 currentColor" />
+                                </button>
+                            )}
+                        </Tab>
+                    </Tab.List>
+                    <Tab.Panels>
+                        <Tab.Panel>
+                        <Select onSelectProducts={data} countProducts={count} dataChildToParent={this.handleChildToParent} />
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                             <span className="block sm:inline">{JSON.stringify(error)}</span>
@@ -178,6 +180,25 @@ class ProductList extends Component {
                             })}
                         </div>
                     </InfiniteScroll>
+                        </Tab.Panel>
+                        <Tab.Panel>
+                        {randomImages && randomImages.length ? <Carousel
+                        cols={6}
+                        rows={4}
+                        gap={1}
+                        containerStyle={{ background: 'transparent', height: '100%', width: '100%', padding: '3em 0 0 0' }}
+                        >
+                        {[...randomImages].map((_, i) => (
+                            <Carousel.Item key={i}>
+                                <Link to={`/products/${_.id}`} onClick={this.handleClick}>
+                                    <img width="100%" key={_.id} src={_.image_url} />
+                                </Link>
+                            </Carousel.Item>
+                        ))}
+                        </Carousel>: <Loader />}
+                        </Tab.Panel>
+                    </Tab.Panels>
+                </Tab.Group>
                 </div>
                 <MyModal />
             </div>
