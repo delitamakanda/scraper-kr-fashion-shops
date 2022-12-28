@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
 		# this ensures we don't bother running through already marked true
 		# objects as deleted.
-		to_delete = Product.objects.filter(available=True, created__lte=past_date)
+		to_delete = Product.objects.filter(available=True, created__lte=past_date, is_featured=False)
 
 		for item in to_delete:
 			item.delete()

@@ -45,6 +45,7 @@ class Command(BaseCommand):
                     price=Decimal(data["price"]),
                     external_link=data["url"],
                     source=data["source"],
+                    is_featured=True,
                 )
 
 

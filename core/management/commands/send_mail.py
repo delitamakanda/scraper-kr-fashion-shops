@@ -4,12 +4,12 @@ from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from core.models import UserMailing, Product
 
-def fashion_trends_newsletter():
+def fashion_trends_newsletter(products):
     subcribers = UserMailing.objects.filter(is_subscribed=True)
     emails= []
     for subcriber in subcribers:
         # last 10 products
-        products = Product.objects.order_by('-created')[:10]
+        products = products
         data = {
             'products': products,
             'subcriber': subcriber,
@@ -24,8 +24,19 @@ def fashion_trends_newsletter():
         )
         message.attach_alternative(html_body, 'text/html')
         message.send(fail_silently=False)
+        queryset = products
+        bulk = []
+        for product in products:
+            product.is_featured = False
+            bulk.append(product)
+        Product.objects.bulk_update(bulk,['is_featured'])
         # print(subcriber)
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        fashion_trends_newsletter()
+        products = Product.objects.filter(is_featured=True).order_by('-created')[:10]
+        if products.count() > 0:
+            fashion_trends_newsletter(products)
+            print('Fashion trends newsletter sent')
+        else:
+            print("No products found")
