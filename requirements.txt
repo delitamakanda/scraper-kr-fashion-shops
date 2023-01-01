@@ -17,7 +17,7 @@ celery==5.2.7
 redis==4.3.5
 drf-yasg==1.21.4
 
-dj-database-url==1.0.0
+dj-database-url==1.2.0
 gunicorn==20.1.0
 psycopg2-binary==2.9.5
 boto3==1.26.20
