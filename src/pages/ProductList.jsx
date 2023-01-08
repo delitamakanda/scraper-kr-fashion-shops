@@ -65,9 +65,6 @@ class ProductList extends Component {
     }
 
     getFavoriteItems = () => {
-        if (!localStorage.getItem('favs')) {
-            return;
-        }
         const favs = JSON.parse(localStorage.getItem('favs')) || {}
         const favsArray = Object.keys(favs)
         this.setState({
