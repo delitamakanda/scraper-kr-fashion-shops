@@ -65,6 +65,9 @@ class ProductList extends Component {
     }
 
     getFavoriteItems = () => {
+        if (!localStorage.getItem('favs')) {
+            return false;
+        }
         const favs = JSON.parse(localStorage.getItem('favs')) || {}
         const favsArray = Object.keys(favs)
         this.setState({
@@ -243,7 +246,11 @@ class ProductList extends Component {
                                 </Link>
                             </Carousel.Item>
                         ))}
-                        </Carousel>: <Loader />}
+                        </Carousel>: (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                <span className="block sm:inline">No favorites yet</span>
+                            </div>
+                        )}
                         </Tab.Panel>
                     </Tab.Panels>
                 </Tab.Group>
