@@ -65,6 +65,9 @@ class ProductList extends Component {
     }
 
     getFavoriteItems = () => {
+        if (!localStorage.getItem('favs')) {
+            return;
+        }
         const favs = JSON.parse(localStorage.getItem('favs')) || {}
         const favsArray = Object.keys(favs)
         this.setState({
@@ -74,10 +77,10 @@ class ProductList extends Component {
         axios
            .get(favProductsURL(favsArray.join(',')))
            .then(res => {
-            this.setState({
-                getFavs: res.data.results,
-                loading: false
-            })
+                this.setState({
+                    getFavs: res.data.results,
+                    loading: false
+                })
            })
             .catch(err => {
                 this.setState({ error: err, loading: false })
