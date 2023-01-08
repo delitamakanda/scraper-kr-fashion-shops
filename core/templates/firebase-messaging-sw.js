@@ -30,7 +30,6 @@ var cacheFiles = [
     'https://cdn.tailwindcss.com/',
     'https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js',
     'https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js',
-    '/static/manifest.json',
     '/offline.html',
     new RegExp('^https://cafe24img.poxo.com/mbaby/web/product/tiny/')
 ];
