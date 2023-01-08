@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { productListURL } from '../constants'
+import { productListURL, favProductsURL } from '../constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'
@@ -9,7 +9,7 @@ import Select from '../components/Select'
 import { shuffle } from 'lodash'
 import { Tab } from '@headlessui/react'
 import Carousel from 'react-grid-carousel'
-import { CameraIcon, PhotographIcon } from '@heroicons/react/outline'
+import { CameraIcon, PhotographIcon, HeartIcon } from '@heroicons/react/outline'
 
 class ProductList extends Component {
     _isMounted = false
@@ -26,6 +26,7 @@ class ProductList extends Component {
             next_url: productListURL,
             count: null,
             more_exist: false,
+            getFavs: []
         }
     }
     
@@ -49,6 +50,7 @@ class ProductList extends Component {
                 }, () => {
                     this.handleScrollPosition()
                     this.getRandomItems()
+                    this.getFavoriteItems()
                 });
             })
             .catch(err => {
@@ -60,6 +62,26 @@ class ProductList extends Component {
         this.setState({
             randomImages: shuffle(this.state.data).slice(0, 50)
         })
+    }
+
+    getFavoriteItems = () => {
+        const favs = JSON.parse(localStorage.getItem('favs')) || {}
+        const favsArray = Object.keys(favs)
+        this.setState({
+            loading: true
+        })
+
+        axios
+           .get(favProductsURL(favsArray.join(',')))
+           .then(res => {
+            this.setState({
+                getFavs: res.data.results,
+                loading: false
+            })
+           })
+            .catch(err => {
+                this.setState({ error: err, loading: false })
+            })
     }
 
     componentWillUnmount() {
@@ -106,7 +128,7 @@ class ProductList extends Component {
     }
 
     render() {
-        const { data, error, more_exist, count, selectedItems, randomImages } = this.state
+        const { data, error, more_exist, count, selectedItems, randomImages, getFavs } = this.state
         const filteredItems = selectedItems && selectedItems.name !== 'All' ? data.filter((product) => product.source === selectedItems.name) : data
 
         return (
@@ -131,6 +153,16 @@ class ProductList extends Component {
                                 }
                                 >
                                     <CameraIcon className="h-5 w-5 currentColor" />
+                                </button>
+                            )}
+                        </Tab>
+                        <Tab as={Fragment}>
+                        {({ selected }) => (
+                                <button className={
+                                    selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
+                                }
+                                >
+                                    <HeartIcon className="h-5 w-5 currentColor" />
                                 </button>
                             )}
                         </Tab>
@@ -189,6 +221,22 @@ class ProductList extends Component {
                         containerStyle={{ background: 'transparent', height: '100%', width: '100%', padding: '3em 0 0 0' }}
                         >
                         {[...randomImages].map((_, i) => (
+                            <Carousel.Item key={i}>
+                                <Link to={`/products/${_.id}`} onClick={this.handleClick}>
+                                    <img width="100%" key={_.id} src={_.image_url} />
+                                </Link>
+                            </Carousel.Item>
+                        ))}
+                        </Carousel>: <Loader />}
+                        </Tab.Panel>
+                        <Tab.Panel>
+                        {getFavs && getFavs.length ? <Carousel
+                        cols={6}
+                        rows={4}
+                        gap={1}
+                        containerStyle={{ background: 'transparent', height: '100%', width: '100%', padding: '3em 0 0 0' }}
+                        >
+                        {[...getFavs].map((_, i) => (
                             <Carousel.Item key={i}>
                                 <Link to={`/products/${_.id}`} onClick={this.handleClick}>
                                     <img width="100%" key={_.id} src={_.image_url} />

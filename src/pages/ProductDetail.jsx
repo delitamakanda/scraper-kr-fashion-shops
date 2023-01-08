@@ -3,15 +3,17 @@ import axios from 'axios';
 import { productDetailURL } from '../constants'
 import Loader from '../components/Loader'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/solid'
+import { ArrowLeftIcon, ArrowRightIcon, HeartIcon } from '@heroicons/react/solid'
 import { classNames } from '../utils/styling'
+import getCookie from '../utils/cookie'
 
 class ProductDetail extends Component {
     
     state = {
         loading: false,
         error: null,
-        data: []
+        data: [],
+        is_liked: false
     }
 
     componentDidMount() {
@@ -28,6 +30,7 @@ class ProductDetail extends Component {
             .get(productDetailURL(id))
             .then(res => {
                 this.setState({ data: res.data, loading: false });
+                this.displayFavorite(res.data);
             })
             .catch(err => {
                 this.setState({ error: err, loading: false });
@@ -43,14 +46,56 @@ class ProductDetail extends Component {
 
     changeProduct = (event, productID) => {
         event.preventDefault()
-        this.loadDetail(productID)
         window.history.pushState({}, '', `/products/${productID}`)
+        this.loadDetail(productID)
+    }
+
+    displayFavorite = ({id}) => {
+        if (localStorage.getItem('favs') === null) {
+            return false;
+        }
+        if (JSON.parse(localStorage.getItem('favs'))[id]) {
+            this.setState({ is_liked: true })
+        } else {
+            this.setState({ is_liked: false })
+        }
+    }
+
+    addToLocalStorage = ({ id }) => {
+        // add fav to local storage
+        let jsonFavs = JSON.parse(localStorage.getItem('favs')) || {};
+        if (jsonFavs[id] === undefined || jsonFavs[id] === null) {
+            jsonFavs[id] = Date.now();
+            localStorage.setItem('favs', JSON.stringify(jsonFavs));
+            this.setState({ is_liked: true })
+        }
+    }
+
+    likeProduct = (event, { id }) => {
+        event.preventDefault()
+        this.setState({
+            loading: true
+        })
+        this.setState({ loading: true });
         
-        
+        axios
+            .patch(productDetailURL(id), { is_liked : true}, { withCredentials:true, headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }})
+            .then(res => {
+                this.setState({ data: res.data, loading: false });
+                this.addToLocalStorage(res.data);
+            })
+            .catch(err => {
+                this.setState({ error: err, loading: false });
+            });
     }
 
     render() {
-        const { data, loading, error } = this.state
+        const { data, loading, error, is_liked } = this.state
         return(
             <div className="bg-white">
                 <div className="pt-6">
@@ -103,6 +148,16 @@ class ProductDetail extends Component {
                         <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                             <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
                                 {data?.name}
+
+                                {!is_liked ? 
+                        <button onClick={(event) => this.likeProduct(event, data)} title={data?.name} className="fixed z-90 bottom-80 right-8 bg-pink-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-pink-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                            <HeartIcon
+                            className={classNames(
+                                'h-8 w-8 group-hover:text-white'
+                            )}
+                            aria-hidden="true" />
+                        </button> : <div />}
+
                             </h1>
                         </div>
 
