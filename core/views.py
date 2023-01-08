@@ -5,6 +5,7 @@ from core.serializers import ProductSerializer, UserMailingSerializer
 from core.models import Product, UserMailing
 
 from django.shortcuts import render, get_object_or_404, redirect
+from .filters import ProductFilter
 
 
 class APIRoot(views.APIView):
@@ -27,13 +28,14 @@ class ProductListApiView(generics.ListAPIView):
     queryset = Product.objects.all().order_by('-created')
     serializer_class = ProductSerializer
     search_fields = ['description', 'name']
-    ordering_fields = ['id', 'name']
+    ordering_fields = ['id', 'name', 'price', 'created']
+    filter_class = ProductFilter
     filter_backends = [filters.SearchFilter,
                        filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
     permission_classes = (permissions.AllowAny,)
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = (permissions.AllowAny,)

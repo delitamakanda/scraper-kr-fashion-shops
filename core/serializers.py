@@ -26,6 +26,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'countProductsByBrand',
             'next_item',
             'previous_item',
+            'is_liked',
         )
         read_only_fields = (
             'id',

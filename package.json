@@ -19,7 +19,8 @@
     "react-grid-carousel": "^1.0.1",
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.3.0",
-    "react-scroll-to-top": "^3.0.0"
+    "react-scroll-to-top": "^3.0.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",

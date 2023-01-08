@@ -16,6 +16,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=1)
     source = models.CharField(max_length=200, default='')
     is_featured = models.BooleanField(default=False)
+    is_liked = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('name',)
