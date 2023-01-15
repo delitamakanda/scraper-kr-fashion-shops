@@ -169,6 +169,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.OrderingFilter',
         'rest_framework.filters.SearchFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
     'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json',
