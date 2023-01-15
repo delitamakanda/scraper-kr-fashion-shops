@@ -1,7 +1,7 @@
 from .models import Product
 from django_filters import FilterSet, NumberFilter, BaseInFilter
 
-class NumberInFilter(BaseInFilter):
+class NumberInFilter(NumberFilter):
     pass
 
 
