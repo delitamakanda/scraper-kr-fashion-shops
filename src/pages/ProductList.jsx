@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { productListURL, favProductsURL, searchProductsURL } from '../constants'
+import { productListURL, searchProductsURL } from '../constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'
@@ -22,10 +22,9 @@ class ProductList extends Component {
             randomImages: [],
             error: null,
             data: [],
-            next_url: '',
+            next_url: productListURL,
             count: null,
             more_exist: false,
-            getFavs: []
         }
     }
     
@@ -41,24 +40,19 @@ class ProductList extends Component {
         })
     }
 
-    getFavoriteItems = () => {
-        if (!localStorage.getItem('favs')) {
-            return false;
-        }
-        const favs = JSON.parse(localStorage.getItem('favs')) || {}
-        const favsArray = Object.keys(favs)
-        console.log(favsArray.join(','))
-    }
-
     componentWillUnmount() {
         this._isMounted = false
     }
 
     fetchProducts = (init = false, nextUrl) => {
-        this._isMounted = true
+        this._isMounted = init
         if (nextUrl === undefined) {
             nextUrl = this.state.next_url
         }
+
+        this.setState({
+            loading: true,
+        })
 
         axios
             .get(nextUrl)
@@ -75,7 +69,6 @@ class ProductList extends Component {
                 }, () => {
                     this.handleScrollPosition()
                     this.getRandomItems()
-                    this.getFavoriteItems()
                 });
             })
             .catch(err => {
@@ -109,7 +102,7 @@ class ProductList extends Component {
     }
 
     render() {
-        const { data, error, more_exist, count, randomImages, getFavs } = this.state
+        const { data, error, more_exist, count, randomImages } = this.state
 
         return (
             <div className="bg-white">
@@ -136,16 +129,18 @@ class ProductList extends Component {
                                 </button>
                             )}
                         </Tab>
-                        <Tab as={Fragment}>
-                        {({ selected }) => (
-                                <button className={
-                                    selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
-                                }
-                                >
-                                    <HeartIcon className="h-5 w-5 currentColor" />
-                                </button>
-                            )}
-                        </Tab>
+                        <Link to="/favorites-products">
+                            <Tab as={Fragment}>
+                            {({ selected }) => (
+                                    <button className={
+                                        selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
+                                    }
+                                    >
+                                        <HeartIcon className="h-5 w-5 currentColor" />
+                                    </button>
+                                )}
+                            </Tab>
+                        </Link>
                     </Tab.List>
                     <Tab.Panels>
                         <Tab.Panel>
@@ -210,24 +205,7 @@ class ProductList extends Component {
                         </Carousel>: <Loader />}
                         </Tab.Panel>
                         <Tab.Panel>
-                        {getFavs && getFavs.length ? <Carousel
-                        cols={6}
-                        rows={4}
-                        gap={1}
-                        containerStyle={{ background: 'transparent', height: '100%', width: '100%', padding: '3em 0 0 0' }}
-                        >
-                        {[...getFavs].map((_, i) => (
-                            <Carousel.Item key={i}>
-                                <Link to={`/products/${_.id}`} onClick={this.handleClick}>
-                                    <img width="100%" key={_.id} src={_.image_url} />
-                                </Link>
-                            </Carousel.Item>
-                        ))}
-                        </Carousel>: (
-                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                <span className="block sm:inline">No favorites yet</span>
-                            </div>
-                        )}
+                            <div></div>
                         </Tab.Panel>
                     </Tab.Panels>
                 </Tab.Group>

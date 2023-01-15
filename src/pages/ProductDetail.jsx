@@ -4,6 +4,7 @@ import { productDetailURL } from '../constants'
 import Loader from '../components/Loader'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeftIcon, ArrowRightIcon, HeartIcon } from '@heroicons/react/solid'
+import { HeartIcon as HeartIconOutline } from '@heroicons/react/outline'
 import { classNames } from '../utils/styling'
 import getCookie from '../utils/cookie'
 
@@ -44,6 +45,11 @@ class ProductDetail extends Component {
         this.loadDetail(productID)
     }
 
+    goBack() {
+        const history = useHistory();
+        history.goBack();
+    }
+
     changeProduct = (event, productID) => {
         event.preventDefault()
         window.history.pushState({}, '', `/products/${productID}`)
@@ -61,6 +67,17 @@ class ProductDetail extends Component {
         }
     }
 
+    deleteFromLocalStorage = ({ id }) => {
+
+        // delete fav from local storage
+        let jsonFavs = JSON.parse(localStorage.getItem('favs')) || {};
+        if (jsonFavs[id]) {
+            delete jsonFavs[id];
+            localStorage.setItem('favs', JSON.stringify(jsonFavs));
+            this.setState({ is_liked: false })
+        }
+    }
+
     addToLocalStorage = ({ id }) => {
         // add fav to local storage
         let jsonFavs = JSON.parse(localStorage.getItem('favs')) || {};
@@ -71,7 +88,7 @@ class ProductDetail extends Component {
         }
     }
 
-    likeProduct = (event, { id }) => {
+    likeProduct = (event, { id }, isLiked) => {
         event.preventDefault()
         this.setState({
             loading: true
@@ -79,7 +96,7 @@ class ProductDetail extends Component {
         this.setState({ loading: true });
         
         axios
-            .patch(productDetailURL(id), { is_liked : true}, { withCredentials:true, headers: {
+            .patch(productDetailURL(id), { is_liked : isLiked}, { withCredentials:true, headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken'),
                 'Accept': 'application/json',
@@ -87,7 +104,11 @@ class ProductDetail extends Component {
             }})
             .then(res => {
                 this.setState({ data: res.data, loading: false });
-                this.addToLocalStorage(res.data);
+                if( isLiked ) {
+                    this.addToLocalStorage(res.data);
+                    return;
+                }
+                this.deleteFromLocalStorage(res.data);
             })
             .catch(err => {
                 this.setState({ error: err, loading: false });
@@ -103,9 +124,11 @@ class ProductDetail extends Component {
                         <ol className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
                             <li>
                                 <div className="flex items-center">
-                                    <Link to="/" className="mr-2 text-sm font-medium text-gray-900">
+                                    {!is_liked ? <Link to="/" className="mr-2 text-sm font-medium text-gray-900">
                                         &laquo; Go back
-                                    </Link>
+                                    </Link>:  <Link to="/favorites-products" className="mr-2 text-sm font-medium text-gray-900">
+                                        &laquo; Go to favorites
+                                    </Link>}
                                 </div>
                             </li>
                         </ol>
@@ -150,13 +173,19 @@ class ProductDetail extends Component {
                                 {data?.name}
 
                                 {!is_liked ? 
-                        <button onClick={(event) => this.likeProduct(event, data)} title={data?.name} className="fixed z-90 bottom-80 right-8 bg-pink-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-pink-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                        <button onClick={(event) => this.likeProduct(event, data, true)} title={data?.name} className="fixed z-90 bottom-80 right-8 bg-pink-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-pink-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                            <HeartIconOutline
+                            className={classNames(
+                                'h-8 w-8 group-hover:text-white'
+                            )}
+                            aria-hidden="true" />
+                        </button> : <button onClick={(event) => this.likeProduct(event, data, false)} title={data?.name} className="fixed z-90 bottom-80 right-8 bg-pink-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-pink-700 hover:drop-shadow-2xl hover:animate-bounce duration-300">
                             <HeartIcon
                             className={classNames(
                                 'h-8 w-8 group-hover:text-white'
                             )}
                             aria-hidden="true" />
-                        </button> : <div />}
+                        </button>}
 
                             </h1>
                         </div>
