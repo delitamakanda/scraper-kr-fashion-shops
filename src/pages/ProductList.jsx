@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { productListURL, favProductsURL } from '../constants'
+import { productListURL, favProductsURL, searchProductsURL } from '../constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'
@@ -19,11 +19,10 @@ class ProductList extends Component {
 
         this.state = {
             loading: false,
-            selectedItems: null,
             randomImages: [],
             error: null,
             data: [],
-            next_url: productListURL,
+            next_url: '',
             count: null,
             more_exist: false,
             getFavs: []
@@ -32,30 +31,8 @@ class ProductList extends Component {
     
 
     componentDidMount() {
-        this._isMounted = true
-        
-        axios
-        .get(this.state.next_url)
-        .then(res => {
-            let has_more = false
-            if (res.data.next) {
-                    has_more = true
-                }
-                this.setState({
-                    next_url: res.data.next,
-                    data: res.data.results,
-                    loading: false,
-                    count: res.data.count,
-                    more_exist: has_more
-                }, () => {
-                    this.handleScrollPosition()
-                    this.getRandomItems()
-                    this.getFavoriteItems()
-                });
-            })
-            .catch(err => {
-                this.setState({ error: err, loading: false })
-            })
+        const init = true
+        this.fetchProducts(init, productListURL)
     }
 
     getRandomItems = () => {
@@ -70,30 +47,21 @@ class ProductList extends Component {
         }
         const favs = JSON.parse(localStorage.getItem('favs')) || {}
         const favsArray = Object.keys(favs)
-        this.setState({
-            loading: true
-        })
-
-        axios
-           .get(favProductsURL(favsArray.join(',')))
-           .then(res => {
-                this.setState({
-                    getFavs: res.data.results,
-                    loading: false
-                })
-           })
-            .catch(err => {
-                this.setState({ error: err, loading: false })
-            })
+        console.log(favsArray.join(','))
     }
 
     componentWillUnmount() {
         this._isMounted = false
     }
 
-    fetchProducts = () => {
+    fetchProducts = (init = false, nextUrl) => {
+        this._isMounted = true
+        if (nextUrl === undefined) {
+            nextUrl = this.state.next_url
+        }
+
         axios
-            .get(this.state.next_url)
+            .get(nextUrl)
             .then(res => {
                 let has_more = false
                 if (res.data.next) {
@@ -101,11 +69,13 @@ class ProductList extends Component {
                 }
                 this.setState({
                     next_url: res.data.next,
-                    data: this.state.data.concat(res.data.results),
+                    data: init ? res.data.results : this.state.data.concat(res.data.results),
                     loading: false,
                     more_exist: has_more
                 }, () => {
                     this.handleScrollPosition()
+                    this.getRandomItems()
+                    this.getFavoriteItems()
                 });
             })
             .catch(err => {
@@ -126,13 +96,20 @@ class ProductList extends Component {
         sessionStorage.setItem('scrollPosition', window.pageYOffset)
     }
     
-    handleChildToParent = (words) => {
-        this.setState({ selectedItems: words })
+    handleChildToParent = (word) => {
+        switch (word.name) {
+            case 'All':
+                this.fetchProducts(true, productListURL)
+                break;
+        
+            default:
+                this.fetchProducts(true, searchProductsURL(word.name))
+                break;
+        }
     }
 
     render() {
-        const { data, error, more_exist, count, selectedItems, randomImages, getFavs } = this.state
-        const filteredItems = selectedItems && selectedItems.name !== 'All' ? data.filter((product) => product.source === selectedItems.name) : data
+        const { data, error, more_exist, count, randomImages, getFavs } = this.state
 
         return (
             <div className="bg-white">
@@ -188,7 +165,7 @@ class ProductList extends Component {
                         releaseToRefreshContent={<div>&#8593; Release to refresh</div>}
                     >
                         <div className="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
-                            {filteredItems.map(item => {
+                            {data.map(item => {
                                 return (
                                     <div key={item.id} className="group relative">
                                         {item.image_url ? (<div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none"><img src={item.image_url} alt={item.name} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />

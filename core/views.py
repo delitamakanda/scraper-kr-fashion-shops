@@ -27,15 +27,8 @@ class APIRoot(views.APIView):
 class ProductListApiView(generics.ListAPIView):
     queryset = Product.objects.all().order_by('-created')
     serializer_class = ProductSerializer
-    search_fields = ['description', 'name']
+    search_fields = ['description', 'name', 'source']
     ordering_fields = ['id', 'name', 'price', 'created']
-    filter_backends = [filters.SearchFilter,
-                       filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
-    permission_classes = (permissions.AllowAny,)
-
-class ProductFilterListApiView(generics.ListAPIView):
-    queryset = Product.objects.all().order_by('-created')
-    serializer_class = ProductSerializer
     filter_class = ProductFilter
     filter_backends = [filters.SearchFilter,
                        filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
