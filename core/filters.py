@@ -1,7 +1,7 @@
 from .models import Product
-from django_filters import FilterSet, NumberFilter, BaseInFilter
+from django_filters import FilterSet, NumberFilter, BaseInFilter, CharFilter
 
-class NumberInFilter(NumberFilter):
+class NumberInFilter(BaseInFilter, CharFilter):
     pass
 
 
@@ -10,4 +10,4 @@ class ProductFilter(FilterSet):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'description']
+        # fields = ['id', 'name', 'price', 'description']
