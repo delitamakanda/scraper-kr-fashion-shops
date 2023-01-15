@@ -11,22 +11,20 @@ const FavProductList = () => {
 
     const fetchFavProducts = () => {
         console.log('fetchFavProducts')
-        if (!localStorage.getItem('favs')) {
-            return false;
-        }
         const favs = JSON.parse(localStorage.getItem('favs')) || {}
-        const favsArray = Object.keys(favs)
+        let favsArray = Object.keys(favs)
+        if (!localStorage.getItem('favs')) {
+            favsArray = [0]
+        }
         axios.get(favProductsURL(favsArray.join(',')))
             .then((res) => {
                 let has_more = false
                 if (res.data.next) {
                     has_more = true
                 }
-                if (res.data.results) {
-                    setProducts(res.data.results)
-                    setLoading(false)
-                    setError(false)
-                }
+                setProducts(res.data.results)
+                setLoading(false)
+                setError(false)
 
             })
             .catch((err) => {
@@ -53,7 +51,7 @@ const FavProductList = () => {
                     </div>
                 )}
                 <div className="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
-                    {!loading && products.map(item => {
+                    {products && products.length > 0 ? products.map(item => {
                         return (
                             <div key={item.id} className="group relative">
                                 {item.image_url ? (<div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none"><img src={item.image_url} alt={item.name} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />
@@ -77,7 +75,8 @@ const FavProductList = () => {
                             </div>
 
                         )
-                    })}
+                    }): <div>No favorites yet
+                    </div>}
                 </div>
             </div>
         </div>
