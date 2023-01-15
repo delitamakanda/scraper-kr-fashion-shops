@@ -1,4 +1,4 @@
-import django_filters.rest_framework
+from django_filters import rest_framework as filters_drf
 
 from rest_framework import generics, permissions, reverse, views, filters, response
 from core.serializers import ProductSerializer, UserMailingSerializer
@@ -29,9 +29,9 @@ class ProductListApiView(generics.ListAPIView):
     serializer_class = ProductSerializer
     search_fields = ['description', 'name', 'source']
     ordering_fields = ['id', 'name', 'price', 'created']
-    filter_class = ProductFilter
+    filterset_class = ProductFilter
     filter_backends = [filters.SearchFilter,
-                       filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend]
+                       filters.OrderingFilter, filters_drf.DjangoFilterBackend,]
     permission_classes = (permissions.AllowAny,)
 
 
