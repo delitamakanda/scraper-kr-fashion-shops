@@ -180,10 +180,10 @@ REST_FRAMEWORK = {
 }
 
 FCM_DJANGO_SETTINGS = {
-    "ONE_DEVICE_PER_USER": False,
-    "DELETE_INACTIVE_DEVICES": True,
+    "ONE_DEVICE_PER_USER": True,
+    "DELETE_INACTIVE_DEVICES": False,
     "UPDATE_ON_DUPLICATE_REG_ID": True,
-    "FCM_SERVER_KEY": "AAAA3HEiBog:APA91bEpjZzVl6bxy5NzEytRLiYZSXfYa8ojo8HprOZWVcyE14Sp4NQFmM5qui1_9RbFSLDSMFVqS0MwFSeuMgx0RNjo2X5-otFX8Rvn1zN0pBefwS_FDYRc64eIUu_29taTiCfIjVcy",
+    "FCM_SERVER_KEY": os.getenv("FCM_SERVER_KEY", default="dummy"),
 }
 
 from firebase_admin import initialize_app, credentials
