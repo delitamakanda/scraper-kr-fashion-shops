@@ -5,7 +5,7 @@ Pillow==9.4.0
 fcm-django==1.0.12
 selenium==4.8.0
 beautifulsoup4==4.11.2
-django-cors-headers==3.13.0
+django-cors-headers==3.14.0
 django-filter==22.1
 djangorestframework==3.14.0
 whitenoise==6.2.0
