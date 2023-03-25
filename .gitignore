@@ -11,6 +11,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+!src/dist/
 downloads/
 eggs/
 .eggs/
@@ -139,7 +140,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules/
-dist
+src/dist/assets/
 dist-ssr
 *.local
 
@@ -155,3 +156,4 @@ dist-ssr
 *.sw?
 
 celerybeat-schedule.db
+
