@@ -140,7 +140,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules/
-src/dist/assets/
+!src/dist/assets/
 dist-ssr
 *.local
 
