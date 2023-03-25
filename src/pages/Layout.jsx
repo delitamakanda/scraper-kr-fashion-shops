@@ -1,5 +1,5 @@
 import React from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import { Popover } from '@headlessui/react'
 import { Link } from 'react-router-dom'
 import ScrollToTop from 'react-scroll-to-top'
 

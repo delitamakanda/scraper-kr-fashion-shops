@@ -1,15 +1,12 @@
-import React, { Component, Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
 import axios from 'axios'
 import { productListURL, searchProductsURL } from '../constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'
 import Select from '../components/Select'
-import { shuffle } from 'lodash'
-import { Tab } from '@headlessui/react'
-import Carousel from 'react-grid-carousel'
-import { CameraIcon, PhotographIcon, HeartIcon } from '@heroicons/react/outline'
+import Nav from '../components/Nav'
+import ListItem from '../components/ListItem'
 
 class ProductList extends Component {
     _isMounted = false
@@ -19,7 +16,6 @@ class ProductList extends Component {
 
         this.state = {
             loading: false,
-            randomImages: [],
             error: null,
             data: [],
             next_url: productListURL,
@@ -27,17 +23,10 @@ class ProductList extends Component {
             more_exist: false,
         }
     }
-    
 
     componentDidMount() {
         const init = true
         this.fetchProducts(init, productListURL)
-    }
-
-    getRandomItems = () => {
-        this.setState({
-            randomImages: shuffle(this.state.data).slice(0, 50)
-        })
     }
 
     componentWillUnmount() {
@@ -68,7 +57,6 @@ class ProductList extends Component {
                     more_exist: has_more
                 }, () => {
                     this.handleScrollPosition()
-                    this.getRandomItems()
                 });
             })
             .catch(err => {
@@ -84,10 +72,6 @@ class ProductList extends Component {
         }
 
     }
-
-    handleClick = () => {
-        sessionStorage.setItem('scrollPosition', window.pageYOffset)
-    }
     
     handleChildToParent = (word) => {
         switch (word.name) {
@@ -102,48 +86,13 @@ class ProductList extends Component {
     }
 
     render() {
-        const { data, error, more_exist, count, randomImages } = this.state
+        const { data, error, more_exist, count } = this.state
 
         return (
             <div className="bg-white">
-                <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-                <Tab.Group>
-                    <Tab.List>
-                        <Tab as={Fragment}>
-                            {({ selected }) => (
-                                <button className={
-                                    selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
-                                }
-                                >
-                                    <PhotographIcon className="h-5 w-5 currentColor" />
-                                </button>
-                            )}
-                        </Tab>
-                        <Tab as={Fragment}>
-                        {({ selected }) => (
-                                <button className={
-                                    selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
-                                }
-                                >
-                                    <CameraIcon className="h-5 w-5 currentColor" />
-                                </button>
-                            )}
-                        </Tab>
-                        <Link to="/favorites-products">
-                            <Tab as={Fragment}>
-                            {({ selected }) => (
-                                    <button className={
-                                        selected? 'bg-pink-500 text-white p-2 rounded' : 'bg-white text-black p-2 rounded'
-                                    }
-                                    >
-                                        <HeartIcon className="h-5 w-5 currentColor" />
-                                    </button>
-                                )}
-                            </Tab>
-                        </Link>
-                    </Tab.List>
-                    <Tab.Panels>
-                        <Tab.Panel>
+                <div className="max-w-2xl mx-auto py-6 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                    <Nav selected={'home'} />
+                   
                         <Select onSelectProducts={data} countProducts={count} dataChildToParent={this.handleChildToParent} />
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -159,56 +108,8 @@ class ProductList extends Component {
                         pullDownToRefreshContent={<div>&#8595; Pull down to refresh</div>}
                         releaseToRefreshContent={<div>&#8593; Release to refresh</div>}
                     >
-                        <div className="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
-                            {data.map(item => {
-                                return (
-                                    <div key={item.id} className="group relative">
-                                        {item.image_url ? (<div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none"><img src={item.image_url} alt={item.name} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />
-                                        </div>) : (
-                                            <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                                                <img src={item.image} alt={item.name} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />
-                                            </div>
-                                        )}
-                                        <div className="mt-4 flex justify-between">
-                                            <div>
-                                                <h3 className="text-sm text-gray-700">
-                                                    <Link to={`/products/${item.id}`} onClick={this.handleClick}>
-                                                        <span aria-hidden="true" className="absolute inset-0"></span>
-                                                        {item.name} {item.available ? '' : <span className="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">Out of stock</span>
-                                                        }
-                                                    </Link>
-                                                </h3>
-                                            </div>
-                                            <p className="text-sm font-medium text-gray-900">${item.price}</p>
-                                        </div>
-                                    </div>
-
-                                )
-                            })}
-                        </div>
+                        <ListItem data={data} />
                     </InfiniteScroll>
-                        </Tab.Panel>
-                        <Tab.Panel>
-                        {randomImages && randomImages.length ? <Carousel
-                        cols={6}
-                        rows={4}
-                        gap={1}
-                        containerStyle={{ background: 'transparent', height: '100%', width: '100%', padding: '3em 0 0 0' }}
-                        >
-                        {[...randomImages].map((_, i) => (
-                            <Carousel.Item key={i}>
-                                <Link to={`/products/${_.id}`} onClick={this.handleClick}>
-                                    <img width="100%" key={_.id} src={_.image_url} />
-                                </Link>
-                            </Carousel.Item>
-                        ))}
-                        </Carousel>: <Loader />}
-                        </Tab.Panel>
-                        <Tab.Panel>
-                            <div></div>
-                        </Tab.Panel>
-                    </Tab.Panels>
-                </Tab.Group>
                 </div>
                 <MyModal />
             </div>

@@ -4,7 +4,7 @@ from core.models import Product, UserMailing
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'created']
-    search_fields = ['name', 'description']
+    search_fields = ['name', 'description', 'id']
     list_filter = ['created', 'available', 'is_featured', 'is_liked']
 
 class UserMailingAdmin(admin.ModelAdmin):
