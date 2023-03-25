@@ -33,7 +33,7 @@ SECURE_HSTS_SECONDS = 60 * 60 * 24 * 365
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Media storages
 
