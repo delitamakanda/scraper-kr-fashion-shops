@@ -12,7 +12,7 @@ function handleClick() {
 }
 
 const Item = (props) => {
-    let { item } = props
+    let { item, onItemChange } = props
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
 
@@ -53,6 +53,7 @@ const Item = (props) => {
             .then(() => {
                 isLiked ? addToLocalStorage(item) : deleteFromLocalStorage(item)
                 setLoading(false)
+                onItemChange(item)
             })
             .catch(err => {
                 setError(err)

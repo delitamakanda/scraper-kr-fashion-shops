@@ -85,6 +85,13 @@ class ProductList extends Component {
         }
     }
 
+    onChangeItem = (item) => {
+        const currentIndexItem = this.state.data.findIndex(i => i.id === item.id)
+        const updateData = { ...this.state.data[currentIndexItem], is_liked: item.is_liked }
+        const newData = [...this.state.data.slice(0, currentIndexItem), updateData,...this.state.data.slice(currentIndex + 1)]
+        this.setState({ data: newData })
+    }
+
     render() {
         const { data, error, more_exist, count } = this.state
 
@@ -108,7 +115,7 @@ class ProductList extends Component {
                         pullDownToRefreshContent={<div>&#8595; Pull down to refresh</div>}
                         releaseToRefreshContent={<div>&#8593; Release to refresh</div>}
                     >
-                        <ListItem data={data} />
+                        <ListItem data={data} onItemChange={this.onChangeItem} />
                     </InfiniteScroll>
                 </div>
                 <MyModal />

@@ -6,12 +6,12 @@ import Nav from '../components/Nav'
 import ListItem from '../components/ListItem'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-const favs = JSON.parse(localStorage.getItem('favs')) || {}
-let favsArray = Object.keys(favs)
-if (!localStorage.getItem('favs')) {
-    favsArray = [0]
-}
 const FavProductList = () => {
+    const favs = JSON.parse(localStorage.getItem('favs')) || {}
+    let favsArray = Object.keys(favs)
+    if (!localStorage.getItem('favs')) {
+        favsArray = [0]
+    }
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -51,6 +51,13 @@ const FavProductList = () => {
         fetchFavProducts(true)
     }, []);
 
+    function onChangeItem(item) {
+        const currentIndexItem = products.findIndex(i => i.id === item.id)
+        const updateData = { ...products[currentIndexItem], is_liked: item.is_liked }
+        const newData = [...products.slice(0, currentIndexItem), updateData,...products.slice(currentIndex + 1)]
+        setProducts([...newData])
+    }
+
 
     return (
         <div className="bg-white">
@@ -72,7 +79,7 @@ const FavProductList = () => {
                     pullDownToRefreshContent={<div>&#8595; Pull down to refresh</div>}
                     releaseToRefreshContent={<div>&#8593; Release to refresh</div>}
                 >
-                    <ListItem data={products}/>
+                    <ListItem data={products} onItemChange={onChangeItem}/>
                 </InfiniteScroll>
                 )}
                 

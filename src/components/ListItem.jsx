@@ -13,6 +13,7 @@ const ListItem = (props) => {
                     <Item
                         key={item.id}
                         item={item}
+                        onItemChange={props.onItemChange}
                     />
                 )
             })}
