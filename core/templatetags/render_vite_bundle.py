@@ -34,11 +34,12 @@ def render_vite_bundle():
     """
 
     manifest = load_json_from_dist()
+    print(manifest)
 
     imports_files = "".join(
         [
-            f'<script type="module" src="/static/{manifest[file]["file"]}"></script>'
-            for file in manifest["index.html"]
+            f'<script type="module" src="/static/{manifest["index.html"]["file"]}"></script>'
+            # for file in manifest["index.html"]["imports"]
         ]
     )
 
