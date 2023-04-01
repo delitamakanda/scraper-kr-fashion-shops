@@ -13,5 +13,5 @@ pytest==7.2.2
 chromedriver-autoinstaller==0.4.0
 webdriver-manager==3.8.5
 celery==5.2.7
-redis==4.4.2
+redis==4.5.4
 drf-yasg==1.21.5
