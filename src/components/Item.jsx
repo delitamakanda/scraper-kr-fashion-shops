@@ -6,6 +6,9 @@ import getCookie from '../utils/cookie'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { HeartIcon } from '@heroicons/react/outline'
 import { classNames } from '../utils/styling'
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import PlaceholderImage from '../assets/dummy_275x360_ffffff_cccccc.png';
 
 function handleClick() {
     sessionStorage.setItem('scrollPosition', window.pageYOffset)
@@ -65,11 +68,11 @@ const Item = (props) => {
         <div key={item.id} data-id={item.id} className="group relative">
             {item.image_url ? (<div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                 
-                    <img src={item.image_url} alt={item.name} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />
+                    <LazyLoadImage src={item.image_url} alt={item.name} height={'100%'} width={'100%'} placeholdersrc={PlaceholderImage} className="w-full h-full object-center object-cover lg:w-full lg:h-full" effect="blur" />
                 
             </div>) : (
                 <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />
+                    <LazyLoadImage src={item.image} alt={item.name} placeholdersrc={PlaceholderImage} className="w-full h-full object-center object-cover lg:w-full lg:h-full" effect="blur" />
                 </div>
             )}
             <div className="mt-4 flex justify-between">
