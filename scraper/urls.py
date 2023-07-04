@@ -35,7 +35,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('firebase-messaging-sw.js', (TemplateView.as_view(template_name="firebase-messaging-sw.js", content_type='application/javascript', )), name='firebase-messaging-sw.js'),
+    path('cookie.js', (TemplateView.as_view(template_name='cookie.js', content_type='application/javascript'))),
     path('offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
+    path('cookies-policy', (TemplateView.as_view(template_name="cookies-policy.html")), name='cookies-policy'),
     re_path(r'^static/(?P<path>.*)$', serve, { 'document_root': settings.STATIC_ROOT }),
     path(r'', TemplateView.as_view(template_name='base.html')),
     
