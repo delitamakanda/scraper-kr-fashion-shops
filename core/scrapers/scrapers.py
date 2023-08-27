@@ -35,7 +35,7 @@ def get_driver(headless):
 
 
 def connect_to_base(browser):
-    base_url = 'https://en.maybe-baby.co.kr'
+    base_url = 'https://en.maybe-baby.co.kr/category/new-in/173/'
     connection_attempts = 0
     while connection_attempts < 3:
         try:
@@ -43,7 +43,7 @@ def connect_to_base(browser):
             # wait for item element with id 'contents' to load
             # before returning True
             WebDriverWait(browser, 5).until(
-                EC.presence_of_element_located((By.ID, 'contents'))
+                EC.presence_of_element_located((By.ID, 'contents_product'))
             )
             return True
         except Exception as e:
@@ -58,12 +58,12 @@ def parse_html(html):
     # create soup object
     soup = BeautifulSoup(html, 'html.parser')
     output_list = []
-    for row in soup.find_all('div', {"class": "box"}):
-        if row.find('p', attrs= {'class': 'name'}) is not None:
+    for row in soup.find_all('li', {"class": "xans-record-"}):
+        if row.find('div', attrs= {'class': 'thumbnail'}) is not None:
             article = {}
-            article['img'] = row.img['src']
-            article['title'] = row.find('p', class_='name').find_all('span')[2].text
-            article['url'] = row.find('p', class_='name').a['href']
+            article['img'] = row.find('div', attrs= {'class': 'prdImg'}).img['src']
+            article['title'] = row.find('div', class_='name').find_all('span')[1].text
+            article['url'] = row.find('div', class_='name').a['href']
             article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text
             output_list.append(article)
             print(article)
