@@ -27,7 +27,7 @@ if __name__ == "__main__":
         headless = True
 
     # scrape beauty products from stylenanda #3ce
-    baseurl = 'https://en.stylenanda.com/category/new-in/3305/'
+    baseurl = 'https://stylenandaen.com/category/fashion/1902/'
     if len(sys.argv) > 2 and sys.argv[2] == "baseurl" or len(sys.argv) > 1 and sys.argv[1] == "baseurl":
         print("Running from 3ce")
         baseurl = 'https://stylenandaen.com/category/new-in/3304/'
