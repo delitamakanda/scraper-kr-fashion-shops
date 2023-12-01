@@ -19,4 +19,4 @@ drf-yasg==1.21.7
 dj-database-url==2.1.0
 gunicorn==21.2.0
 psycopg2-binary==2.9.9
-boto3==1.28.57
+boto3==1.33.5
