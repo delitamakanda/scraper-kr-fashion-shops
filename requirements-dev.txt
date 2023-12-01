@@ -12,6 +12,6 @@ whitenoise==6.5.0
 pytest==7.4.2
 chromedriver-autoinstaller==0.6.2
 webdriver-manager==4.0.1
-celery==5.3.4
+celery==5.3.6
 redis==5.0.1
 drf-yasg==1.21.7
