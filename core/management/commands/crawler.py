@@ -19,7 +19,7 @@ devices = FCMDevice.objects.all()
 class Command(BaseCommand):
     help = (
         "Import products from a local csv",
-        "from external site : https://en.maybe-baby.co.kr/ or https://en.stylenanda.com/ or https://en.frombeginning.kr/ or https://en.wonlog.co.kr/",
+        "from external site : https://en.maybe-baby.co.kr/ or https://en.stylenanda.com/ or https://en.frombeginning.kr/ or https://wonlog.co.kr/",
     )
 
     def __init__(self, *args, **kwargs):

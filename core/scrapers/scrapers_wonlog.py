@@ -63,9 +63,9 @@ def parse_html(html):
         if row.find('div', attrs= {'class': 'thumbnail'}) is not None:
             article = {}
             article['img'] = row.find('div', attrs= {'class': 'thumbnail'}).img['src']
-            article['title'] = row.find('div', class_='name').text
+            article['title'] = row.find('div', class_='name').text.replace('\n', '')
             article['url'] = row.find('div', class_='thumbnail').a['href']
-            article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text
+            article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text.replace(',', '.')
             output_list.append(article)
             print(article)
     return output_list
