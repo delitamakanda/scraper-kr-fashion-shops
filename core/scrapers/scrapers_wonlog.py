@@ -62,7 +62,7 @@ def parse_html(html):
     for row in soup.find_all('li', {"class": "xans-record-"}):
         if row.find('div', attrs= {'class': 'thumbnail'}) is not None:
             article = {}
-            article['img'] = row.find('div', attrs= {'class': 'thumbnail'}).img['src']
+            article['img'] = row.find('div', attrs= {'class': 'prdImg'}).img['src']
             article['title'] = row.find('div', class_='name').text.replace('\n', '')
             article['url'] = row.find('div', class_='thumbnail').a['href']
             article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text.replace(',', '.')
