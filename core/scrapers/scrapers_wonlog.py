@@ -36,7 +36,7 @@ def get_driver(headless):
 
 
 def connect_to_base(browser):
-    base_url = 'https://en.wonlog.co.kr/category/new-7/58/'
+    base_url = 'https://wonlog.co.kr/product/list.html?cate_no=58'
     connection_attempts = 0
     while connection_attempts < 3:
         try:
@@ -63,7 +63,7 @@ def parse_html(html):
         if row.find('div', attrs= {'class': 'thumbnail'}) is not None:
             article = {}
             article['img'] = row.find('div', attrs= {'class': 'thumbnail'}).img['src']
-            article['title'] = row.find('strong', class_='name').text.replace('Product Name : ', '').strip()
+            article['title'] = row.find('div', class_='name').text
             article['url'] = row.find('div', class_='thumbnail').a['href']
             article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text
             output_list.append(article)
