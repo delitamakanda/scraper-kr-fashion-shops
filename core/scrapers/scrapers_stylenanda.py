@@ -66,7 +66,7 @@ def parse_html(html):
             unwanted.extract()
             article['title'] = external_span.text.replace(':', '').strip()
             article['url'] = row.find('div', class_='name').a['href']
-            article['price'] = row.find('span', class_='price').text.replace('USD', '').strip()
+            article['price'] = row.find('span', class_='price').text.replace('원', '').strip().replace(',', '.')
             output_list.append(article)
             print(article)
     return output_list
