@@ -10,7 +10,7 @@ django-filter==23.2
 djangorestframework==3.14.0
 whitenoise==6.6.0
 pytest==7.4.3
-chromedriver-autoinstaller==0.6.2
+chromedriver-autoinstaller==0.6.3
 webdriver-manager==4.0.1
 celery==5.3.6
 redis==5.0.1
