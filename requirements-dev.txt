@@ -9,7 +9,7 @@ django-cors-headers==4.3.1
 django-filter==23.5
 djangorestframework==3.14.0
 whitenoise==6.6.0
-pytest==7.4.4
+pytest==8.0.0
 chromedriver-autoinstaller==0.6.3
 webdriver-manager==4.0.1
 celery==5.3.6
