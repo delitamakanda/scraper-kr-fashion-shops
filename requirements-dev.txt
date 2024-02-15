@@ -3,7 +3,7 @@ Django==4.2.6
 sqlparse==0.4.4
 Pillow==10.2.0
 fcm-django==2.0.1
-selenium==4.15.2
+selenium==4.17.2
 beautifulsoup4==4.12.2
 django-cors-headers==4.3.1
 django-filter==23.5
