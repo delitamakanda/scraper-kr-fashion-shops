@@ -61,3 +61,11 @@ celery -A scraper worker -l info
 ```bash
 celery -A scraper worker -l info --beat
 ```
+
+
+## cron jobs
+100	0 0 * * *	python3 manage.py crawler output4.csv --baseurl=https://wonlog.co.kr	
+99	0 0 * * *	python3 manage.py crawler output3.csv --baseurl=https://en.frombeginning.kr	
+98	0 0 * * *	python3 manage.py send_mail	
+97	0 0 * * *	python3 manage.py deleteproduct 3month	
+96	0 0 * * *	python3 manage.py crawler output.csv --baseurl=https://en.maybe-baby.co.kr
