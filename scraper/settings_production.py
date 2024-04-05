@@ -1,9 +1,13 @@
-from scraper.settings import *
 import dj_database_url
+from scraper.settings import *
 
 DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['CONN_MAX_AGE'] = 60
 DATABASES['default']['ATOMIC_REQUESTS'] = True
+
+DEBUG = os.getenv('DEBUG') == 'True'
+
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7
@@ -12,13 +16,10 @@ SECURE_HSTS_PRELOAD = True
 SECURE_REFERRER_POLICY = 'strict-origin'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
-SECRET_KEY = os.getenv('SECRET_KEY')
 
 CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_TRUSTED_ORIGINS')]
 
 # email admin
-
-DEBUG = os.getenv('DEBUG') == 'True'
 
 SERVER_EMAIL = os.getenv('ADMIN_EMAIL')
 
@@ -34,12 +35,7 @@ EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_TIMEOUT = 500
-
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_SECONDS = 60 * 60 * 24 * 365
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
+EMAIL_SUBJECT_PREFIX = '[KF App] '
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
