@@ -20,3 +20,4 @@ dj-database-url==2.1.0
 gunicorn==21.2.0
 psycopg2-binary==2.9.9
 boto3==1.34.53
+django-environ==0.11.2

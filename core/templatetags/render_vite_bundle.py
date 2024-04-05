@@ -39,7 +39,7 @@ def render_vite_bundle():
     imports_files = "".join(
         [
             f'<script type="module" src="/static/{manifest["index.html"]["file"]}"></script>'
-            for file in manifest["index.html"]["imports"]
+            # for file in manifest["index.html"]["imports"]
         ]
     )
 
