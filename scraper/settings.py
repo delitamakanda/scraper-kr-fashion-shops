@@ -218,3 +218,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # cors
 CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'https://kf.applikuapp.com',
+]
