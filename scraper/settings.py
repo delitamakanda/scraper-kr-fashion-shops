@@ -217,9 +217,4 @@ CELERY_BEAT_SCHEDULE = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # cors
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = (
-    'GET',
-    'OPTIONS',
-)
+CORS_ORIGIN_ALLOW_ALL = False
