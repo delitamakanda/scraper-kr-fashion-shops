@@ -97,7 +97,7 @@ class Command(BaseCommand):
                                 source = "Stylenanda"
                             elif options['baseurl'][0] == "https://en.frombeginning.kr":
                                 source = "Frombeginning"
-                            elif options['baseurl'][0] == "https://en.wonlog.co.kr":
+                            elif options['baseurl'][0] == "https://wonlog.co.kr":
                                 source = "Wonlog"
                             img = words[0]
                             data = {}
