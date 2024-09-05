@@ -6,7 +6,7 @@ fcm-django==2.0.1
 selenium==4.23.1
 beautifulsoup4==4.12.3
 django-cors-headers==4.3.1
-django-filter==24.2
+django-filter==24.3
 djangorestframework==3.15.2
 whitenoise==6.7.0
 pytest==8.2.2
