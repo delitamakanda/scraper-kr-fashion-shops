@@ -5,7 +5,7 @@ sqlparse==0.5.1
 fcm-django==2.0.1
 selenium==4.23.1
 beautifulsoup4==4.12.3
-django-cors-headers==4.3.1
+django-cors-headers==4.4.0
 django-filter==24.3
 djangorestframework==3.15.2
 whitenoise==6.7.0
