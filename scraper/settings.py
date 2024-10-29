@@ -230,6 +230,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://kf.applikuapp.com',
     'http://kf.applikuapp.com',
+    'https://fcm.googleapis.com',
 ]
 
 LOGGING = {
