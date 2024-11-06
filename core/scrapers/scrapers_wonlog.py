@@ -43,7 +43,7 @@ def connect_to_base(browser):
             browser.get(base_url)
             # wait for item element with id 'contents' to load
             # before returning True
-            WebDriverWait(browser, 5).until(
+            WebDriverWait(browser, 10).until(
                 EC.presence_of_element_located((By.ID, 'contents'))
             )
             return True
