@@ -1,14 +1,20 @@
 import sys
 import os
 import datetime
+import logging
 from time import sleep, time
 from pathlib import Path
 
-from scrapers.scrapers_wonlog import get_driver, connect_to_base, parse_html, write_to_file
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+from scrapers.scrapers_wonlog import get_driver, connect_to_base, parse_html, write_to_file, is_site_accessible
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 def run_process(filename, browser):
+    if not is_site_accessible('https://wonlog.co.kr/product/list.html?cate_no=58'):
+        logger.error(f'the site is currently unavailable. Please try again later.')
     if connect_to_base(browser):
         sleep(2)
         html = browser.page_source
@@ -28,7 +34,6 @@ if __name__ == "__main__":
 
     # set variables
     start_time = time()
-    current_attempt = 1
     output_timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     if os.path.isfile(Path(BASE_DIR).joinpath('core/output4.csv')):
         os.remove(Path(BASE_DIR).joinpath('core/output4.csv'))
@@ -38,10 +43,7 @@ if __name__ == "__main__":
     browser = get_driver(headless=headless)
 
     # scrape and crawl
-    while current_attempt <= 3:
-        print(f"Scraping wonlog #{current_attempt} time(s)...")
-        run_process(output_filename, browser)
-        current_attempt = current_attempt + 1
+    run_process(output_filename, browser)
 
     # exit
     browser.quit()
