@@ -92,7 +92,7 @@ def connect_to_base(browser, max_attempts=5):
             # wait for item element with id 'contents' to load
             # before returning True
             WebDriverWait(browser, 20).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '.prdList'))
+                EC.presence_of_element_located((By.ID, 'contents'))
             )
             logger.info(f'Successfully connected to {base_url}')
             return True
