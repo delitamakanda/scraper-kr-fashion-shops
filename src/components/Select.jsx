@@ -12,10 +12,6 @@ const brands = [
     name: 'Maybe Baby',
   },
   {
-    id: 3,
-    name: 'Stylenanda',
-  },
-  {
     id: 4,
     name: 'Frombeginning',
   },
