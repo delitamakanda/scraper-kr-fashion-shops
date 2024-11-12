@@ -66,7 +66,7 @@ const Item = (props) => {
 
     return (
         <div key={item.id} data-id={item.id} className="group relative">
-            {item.image_url ? (<div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+            {item.image_url ? (<div className="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                 
                     <LazyLoadImage src={item.image_url} alt={item.name} height={'100%'} width={'100%'} placeholdersrc={PlaceholderImage} className="w-full h-full object-center object-cover lg:w-full lg:h-full" effect="blur" />
                 
