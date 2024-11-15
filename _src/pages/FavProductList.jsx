@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { favProductsURL } from '../constants'
+import { favProductsURL } from '../../frontend/src/constants'
 import Loader from '../components/Loader'
 import Nav from '../components/Nav'
 import ListItem from '../components/ListItem'

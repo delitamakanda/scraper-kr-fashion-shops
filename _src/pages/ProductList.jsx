@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { productListURL, searchProductsURL } from '../constants'
+import { productListURL, searchProductsURL } from '../../frontend/src/constants'
 import Loader from '../components/Loader'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import MyModal from '../components/Modal'

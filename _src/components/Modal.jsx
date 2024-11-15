@@ -1,7 +1,7 @@
 import { Transition } from '@headlessui/react'
 import { Fragment, useState, useEffect } from 'react'
 import axios from 'axios'
-import { userMailingURL } from '../constants'
+import { userMailingURL } from '../../frontend/src/constants'
 import Loader from '../components/Loader'
 
 

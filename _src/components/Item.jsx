@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
 import axios from 'axios'
-import { productDetailURL } from '../constants'
+import { productDetailURL } from '../../frontend/src/constants'
 import getCookie from '../utils/cookie'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { HeartIcon } from '@heroicons/react/outline'
 import { classNames } from '../utils/styling'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import PlaceholderImage from '../assets/dummy_275x360_ffffff_cccccc.png';
+import PlaceholderImage from '../../frontend/public/dummy_275x360_ffffff_cccccc.png';
 
 function handleClick() {
     sessionStorage.setItem('scrollPosition', window.pageYOffset)

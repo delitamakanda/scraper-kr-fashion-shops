@@ -131,3 +131,4 @@ dist-ssr
 *.sln
 *.sw?
 celerybeat-schedule.db
+_src/

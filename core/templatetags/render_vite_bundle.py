@@ -9,7 +9,8 @@ register = template.Library()
 
 
 def load_json_from_dist(json_filename='manifest.json'):
-    manifest_file_path = Path(str(settings.VITE_APP_DIR), 'dist', json_filename)
+    manifest_file_path = Path(str(settings.VITE_APP_DIR), 'dist', '.vite', json_filename)
+    print(manifest_file_path)
     if not manifest_file_path.exists():
         raise OSError(
             f'Vite manifest file not found on path: {str(manifest_file_path)}'
@@ -34,7 +35,8 @@ def render_vite_bundle():
     """
 
     manifest = load_json_from_dist()
-    print(manifest)
+    print(manifest["index.html"]["file"])
+    print(manifest["index.html"]["css"][0])
 
     imports_files = "".join(
         [

@@ -138,10 +138,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-VITE_APP_DIR = os.path.join(BASE_DIR, 'src')
+VITE_APP_DIR = os.path.join(BASE_DIR, 'frontend')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
+    os.path.join(VITE_APP_DIR, 'dist', '.vite'),
     os.path.join(VITE_APP_DIR, 'dist'),
 ]
 
@@ -228,8 +229,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'http://localhost:5173',
     'https://kf.applikuapp.com',
-    'http://kf.applikuapp.com',
     'https://fcm.googleapis.com',
 ]
 
