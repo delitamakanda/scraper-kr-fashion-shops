@@ -138,7 +138,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-VITE_APP_DIR = os.path.join(BASE_DIR, 'frontend')
+VITE_APP_DIR = os.path.join(BASE_DIR, 'src')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),

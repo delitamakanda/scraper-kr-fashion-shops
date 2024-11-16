@@ -12,12 +12,6 @@ export default defineConfig({
   build: {
     manifest: true,
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: process.env.NODE_ENV === 'production'? '' : 'http://localhost:8000',
-      },
-    },
-  },
+  root: './src',
   base: process.env.NODE_ENV === 'production'? '/static/' : '/',
 })
