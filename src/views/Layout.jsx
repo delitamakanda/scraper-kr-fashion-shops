@@ -32,10 +32,12 @@ export function Layout() {
                                                    width={'100%'} placeholdersrc={PlaceholderImage}
                                                    className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                                                    effect="blur"/>
+
                                 </div>
+
                                 <div className="mt-4 flex justify-between">
                                     <div>
-                                        <h3 className="text-sm text-gray-700" >
+                                        <h3 className="text-sm text-gray-700">
                                             <a rel='noreferrer' href={product.external_link} target="_blank"
                                                tabIndex={product.id}>
                                                 <span aria-hidden="true" className="absolute inset-0"></span>
@@ -45,9 +47,8 @@ export function Layout() {
 
 
                                     </div>
-                                    <p className="text-sm font-medium text-gray-900">${item.price}</p>
+                                    <p className="text-sm font-medium text-gray-900">${product.price}</p>
                                 </div>
-
                             </div>
 
                         ))
