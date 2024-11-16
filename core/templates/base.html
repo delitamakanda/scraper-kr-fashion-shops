@@ -1,4 +1,5 @@
 {% load render_vite_bundle %}
+{% load custom_tags %}
 {% load static %}
 {% load i18n %}
 <!DOCTYPE html>
@@ -11,7 +12,6 @@
 -->
 
 <head>
-  <meta charset="UTF-8" />
   <meta charset="utf-8" />
   <meta name="theme-color" content="#ff73ea" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,14 +22,12 @@
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
   -->
-  <link rel="manifest" href="{% static 'manifest.json' %}" />
   <link rel="icon" href="{% static 'favicon.ico' %}" />
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
-<script src="https://cdn.tailwindcss.com"></script>
-
-  {% if debug %}
+    <script src="https://cdn.tailwindcss.com"></script>
+  {% if settings.DEBUG %}
   <script type="module" src="http://localhost:5173/@vite/client"></script>
   
   <!-- If you're using vite with React, this next script will be needed for HMR -->
@@ -50,8 +48,8 @@
   <noscript>You need to enable JavaScript to run this app.</noscript>
 
   <div id="root"></div>
-
-  {% if debug %}
+  
+  {% if settings.DEBUG %}
   <!-- This url will be different for each type of app. Point it to your main js file. -->
   <script type="module" src="http://localhost:5173/main.jsx"></script>
   {% else %}
@@ -82,7 +80,7 @@
         });
     });
 </script>
-
+{% if not settings.DEBUG %}
 <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
     <script type="text/javascript">
@@ -199,6 +197,7 @@
 
       requestPermission();
   </script>
+  {% endif %}
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VC9P87M80V"></script>
