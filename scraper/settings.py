@@ -195,14 +195,16 @@ FCM_DJANGO_SETTINGS = {
 }
 
 import firebase_admin
+import base64
 from firebase_admin import initialize_app, credentials
 
 try:
+    base64_encoded = base64.b64encode(os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n').encode()).decode()
     service_account_key = {
         "type": "service_account",
         "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
         "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
-        "private_key": os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n'),
+        "private_key": base64.b64decode(base64_encoded).decode('utf-8'),
         "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
         "client_id": os.environ.get('CLIENT_ID'),
         "auth_uri": os.environ.get('AUTH_URI'),
