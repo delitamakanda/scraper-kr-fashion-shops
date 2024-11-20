@@ -194,23 +194,26 @@ FCM_DJANGO_SETTINGS = {
     "FCM_SERVER_KEY": os.getenv("FCM_SERVER_KEY", default="dummy"),
 }
 
-if not DEBUG:
-    from firebase_admin import initialize_app, credentials
+import firebase_admin
+from firebase_admin import initialize_app, credentials
 
-    FIREBASE_APP = initialize_app({
-      credential=credentials.Certificate({
-          "type": "service_account",
-          "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
-          "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
-          "private_key": os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n'),
-          "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
-          "client_id": os.environ.get('CLIENT_ID'),
-          "auth_uri": os.environ.get('AUTH_URI'),
-          "token_uri": os.environ.get('TOKEN_URI'),
-          "auth_provider_x509_cert_url": os.environ.get('AUTH_PROVIDER_X509_CERT_URL'),
-          "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
-      }),
+try:
+    cred = credentials.Certificate({
+        "type": "service_account",
+        "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
+        "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
+        "private_key": os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n'),
+        "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
+        "client_id": os.environ.get('CLIENT_ID'),
+        "auth_uri": os.environ.get('AUTH_URI'),
+        "token_uri": os.environ.get('TOKEN_URI'),
+        "auth_provider_x509_cert_url": os.environ.get('AUTH_PROVIDER_X509_CERT_URL'),
+        "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
     })
+
+    firebase_admin.initialize_app(cred)
+except Exception as e:
+    print(f"Failed to initialize Firebase: {e}")
 
 # celery
 CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
