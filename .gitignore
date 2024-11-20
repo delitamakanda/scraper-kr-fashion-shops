@@ -132,3 +132,4 @@ dist-ssr
 *.sw?
 celerybeat-schedule.db
 _src/
+scraper/credentials.json
