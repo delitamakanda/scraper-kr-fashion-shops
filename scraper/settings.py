@@ -198,7 +198,7 @@ import firebase_admin
 from firebase_admin import initialize_app, credentials
 
 try:
-    cred = credentials.Certificate({
+    service_account_key = {
         "type": "service_account",
         "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
         "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
@@ -209,9 +209,11 @@ try:
         "token_uri": os.environ.get('TOKEN_URI'),
         "auth_provider_x509_cert_url": os.environ.get('AUTH_PROVIDER_X509_CERT_URL'),
         "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
-    })
+    }
 
-    firebase_admin.initialize_app(cred)
+    cred = credentials.Certificate(service_account_key)
+
+    FIREBASE_APP = firebase_admin.initialize_app(credential=cred)
 except Exception as e:
     print(f"Failed to initialize Firebase: {e}")
 
