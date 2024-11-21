@@ -196,7 +196,6 @@ FCM_DJANGO_SETTINGS = {
 
 import firebase_admin
 import json
-import decrypt
 from firebase_admin import initialize_app, credentials
 
 try:
