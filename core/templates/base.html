@@ -1,0 +1,215 @@
+{% load render_vite_bundle %}
+{% load custom_tags %}
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+  
+<!-- 
+  For this base.html to work in dev and in production,
+  you'll need to set a couple of keys inside your settings.py.
+  Another file in this gist shows which ones you'll really need.
+-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="theme-color" content="#ff73ea" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Fashion App</title>
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+  -->
+  <link rel="icon" href="{% static 'favicon.ico' %}" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+  {% if settings.DEBUG %}
+  <script type="module" src="http://localhost:5173/@vite/client"></script>
+  
+  <!-- If you're using vite with React, this next script will be needed for HMR -->
+  <script type="module">
+    import RefreshRuntime from 'http://localhost:5173/@react-refresh'
+    if (RefreshRuntime) {
+      RefreshRuntime.injectIntoGlobalHook(window)
+      window.$RefreshReg$ = () => { }
+      window.$RefreshSig$ = () => (type) => type
+      window.__vite_plugin_react_preamble_installed__ = true
+    }
+  </script>
+  {% endif %}
+</head>
+
+<body>
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+  <div id="root"></div>
+  
+  {% if settings.DEBUG %}
+  <!-- This url will be different for each type of app. Point it to your main js file. -->
+  <script type="module" src="http://localhost:5173/main.jsx"></script>
+  {% else %}
+  {% render_vite_bundle %}
+  {% endif %}
+
+  <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log(registration);
+            }).catch(err => {
+                console.log(err);
+            });
+    }
+
+    window.addEventListener('beforeinstallprompt', function (e) {
+        console.log('beforeinstallprompt fired');
+
+        e.userChoice.then(function (choiceResult) {
+            console.log(choiceResult.outcome);
+
+            if (choiceResult.outcome == 'dismissed') {
+                console.log('User cancelled installation');
+            } else {
+                console.log('User added to homescreen');
+            }
+        });
+    });
+</script>
+{% if not settings.DEBUG %}
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+
+    <script type="text/javascript">
+        var config = {
+          apiKey: "AIzaSyC9dkKnvmzdOPb42OnPPGWpzuUCcpWwQt0",
+          authDomain: "koreanfashion-42b7d.firebaseapp.com",
+          projectId: "koreanfashion-42b7d",
+          storageBucket: "koreanfashion-42b7d.appspot.com",
+          messagingSenderId: "946790860424",
+          appId: "1:946790860424:web:8331c407ff64c9d75cc13d",
+          measurementId: "G-6STQV92115"
+        };
+        firebase.initializeApp(config);
+
+        var messaging = firebase.messaging();
+
+        messaging.onTokenRefresh(function () {
+            messaging.getToken()
+                .then(function (refreshedToken) {
+                    console.log('Token refreshed.');
+                    setTokenSentToServer(false);
+                    sendTokenToServer(refreshedToken);
+                    resetUI();
+                })
+                .catch(function (err) {
+                    console.log('Unable to retrieve refreshed token ', err);
+                });
+        });
+
+        messaging.onMessage(function (payload) {
+            console.log("Message received. ", payload);
+        });
+
+        function resetUI() {
+            console.log("getting token");
+            messaging.getToken().then((resp) => {
+                console.log(resp);
+            })
+            messaging.getToken()
+                .then(function (currentToken) {
+                    console.log("Got current token");
+                    if (currentToken) {
+                        sendTokenToServer(currentToken);
+                    } else {
+                        console.log('No Instance ID token available. Request permission to generate one.');
+                        setTokenSentToServer(false);
+                    }
+                })
+                .catch(function (err) {
+                    console.log('An error occurred while retrieving token. ', err);
+                    setTokenSentToServer(false);
+                });
+            console.log("End get token");
+
+        }
+
+        // Send the Instance ID token your application server, so that it can:
+        // - send messages back to this app
+        // - subscribe/unsubscribe the token from topics
+        function sendTokenToServer(currentToken) {
+            if (!isTokenSentToServer()) {
+                console.log('Sending token to server...');
+                // TODO(developer): Send the current token to your server.
+                fetch('/devices/', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'registration_id': currentToken,
+                        'type': 'web',
+                    }),
+                    credentials: "include",
+                }).then(function (response) {
+                    console.log(response);
+                })
+                setTokenSentToServer(true);
+            } else {
+                console.log('Token already sent to server so won\'t send it again ' +
+                    'unless it changes');
+            }
+
+        }
+
+        function isTokenSentToServer() {
+            if (window.localStorage.getItem('sentToServer') == 1) {
+                return true;
+            }
+            return false;
+        }
+
+        function setTokenSentToServer(sent) {
+            if (sent) {
+                window.localStorage.setItem('sentToServer', 1);
+            } else {
+                window.localStorage.setItem('sentToServer', 0);
+            }
+        }
+
+        function requestPermission() {
+            console.log('Requesting permission...');
+
+            messaging.requestPermission()
+                .then(function () {
+                    console.log('Notification permission granted.');
+                    resetUI();
+                })
+                .catch(function (err) {
+                    console.log('Unable to get permission to notify.', err);
+                });
+        }
+
+      resetUI();
+
+      requestPermission();
+  </script>
+  {% endif %}
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VC9P87M80V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VC9P87M80V');
+</script>
+
+{% include "partials/_cookie-banner.html" %}
+</body>
+
+</html>
