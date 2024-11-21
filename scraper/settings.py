@@ -214,7 +214,7 @@ try:
         "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
     }
 
-    decode_base64 = base64.b64decode(os.environ.get('GOOGLE_CREDENTIALS_BASE64').replace('\\n', '\n')
+    decode_base64 = base64.b64decode(os.environ.get('GOOGLE_CREDENTIALS_BASE64')).replace('\\n', '\n')
 	encoded_data = json.dumps(decoded_base64, indent=2).output('utf-8')
 	
     service_account_key = encoded_data
