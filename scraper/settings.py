@@ -196,23 +196,25 @@ FCM_DJANGO_SETTINGS = {
 
 import firebase_admin
 import json
+import base64
 from firebase_admin import initialize_app, credentials
 
 try:
-    service_account_key = json.loads({
+    service_account_key = {
         "type": "service_account",
         "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
         "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
-        "private_key": os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n'),
+        # "private_key": os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n'),
+        "private_key": base64.encode(os.environ.get('FIREBASE_PRIVATE_KEY').replace('\\n', '\n').encode()).decode('utf-8'),
         "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
         "client_id": os.environ.get('CLIENT_ID'),
         "auth_uri": os.environ.get('AUTH_URI'),
         "token_uri": os.environ.get('TOKEN_URI'),
         "auth_provider_x509_cert_url": os.environ.get('AUTH_PROVIDER_X509_CERT_URL'),
         "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
-    })
+    }
 
-    cred = credentials.Certificate(str(service_account_key))
+    cred = credentials.Certificate(service_account_key)
 
     FIREBASE_APP = firebase_admin.initialize_app(credential=cred)
 except Exception as e:
