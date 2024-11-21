@@ -200,7 +200,7 @@ import base64
 from firebase_admin import initialize_app, credentials
 
 try:
-    service_account_key = {
+    service_account_key2 = {
         "type": "service_account",
         "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
         "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
@@ -213,6 +213,8 @@ try:
         "auth_provider_x509_cert_url": os.environ.get('AUTH_PROVIDER_X509_CERT_URL'),
         "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
     }
+
+    service_account_key = base64.b64decode(os.environ.get('GOOGLE_CREDENTIALS_BASE64')).replace('\\n', '\n')
 
     cred = credentials.Certificate(service_account_key)
 
