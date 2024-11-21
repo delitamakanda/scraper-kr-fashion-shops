@@ -212,7 +212,7 @@ try:
         "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
     })
 
-    cred = credentials.Certificate(service_account_key)
+    cred = credentials.Certificate(str(service_account_key))
 
     FIREBASE_APP = firebase_admin.initialize_app(credential=cred)
 except Exception as e:
