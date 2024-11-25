@@ -252,7 +252,6 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
     'https://kf.applikuapp.com',
     'https://fcm.googleapis.com',
-    'https://fcm.googleapis.com/fcm/connect/subscribe',
 ]
 
 LOGGING = {
