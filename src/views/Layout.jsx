@@ -1,29 +1,47 @@
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
-import {productListURL} from "../constants.js";
+import {productListURL } from "../constants.js";
 import React, {useState} from "react";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 const PlaceholderImage = '../assets/dummy_275x360_ffffff_cccccc.png';
-import Loader from "../components/Loader.jsx";
+import Loader from "../components/core/ui/Loader/Loader";
+import Select from '../components/core/ui/Selector/Select'
+import ModalNewsletter from '../components/modalNewsletter/ModalNewsletter'
+import { brands } from '../components/core/ui/Selector/helper'
 
 export function Layout() {
     const [ page, setPage ] = useState(1);
     const [tab, setTab ] = useState(0);
+    const [searchValue, setSearchValue ] = useState('');
 
-    const fetchProducts = (page = 1) => fetch(productListURL + '?page=' + page).then(res => res.json());
+    const fetchProducts = (page, searchValue) => fetch(productListURL + '?page=' + page + '&q=' + searchValue).then(res => res.json() || [])
+
     const { isPending, isError, error, data, isFetching, isPlaceholderData } = useQuery({
         queryKey: ['productData', page],
         placeholderData: keepPreviousData,
-        queryFn: () => fetchProducts(page),
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: true,
+        queryFn: () => fetchProducts(page, searchValue),
     });
 
     const handleTabChange = (index) => {
         setTab(index);
     }
 
+    const handleSelectedBrand = (brand) => {
+        if (brands.includes(brand)) {
+            setSearchValue(brand);
+            setPage(1);
+        } else {
+           setSearchValue('')
+        }
+    }
+
 
     return (
         <div className="wrapper">
+            <Select selectedBrand={handleSelectedBrand} />
             {isPending ? (<Loader/>) : isError ? (<>Error: {error.message}</>) : (
                 <div className="header-content">
                     {tab === 0 && (
@@ -108,6 +126,7 @@ export function Layout() {
                 </button>
 
             </div>
+            <ModalNewsletter />
         </div>
     )
 }
