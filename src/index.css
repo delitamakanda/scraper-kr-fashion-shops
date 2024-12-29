@@ -24,27 +24,51 @@ body {
 }
 
 body {
-  overflow: hidden;
   height: 100%;
   width: 100%;
   background-color: var(--color-bg);
   color: var(--color-text);
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  max-width: 100%;
+  max-height: 100%;
+  transform: translateZ(0);
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-user-drag: none;
+  -ms-content-zooming: none;
+  word-wrap: break-word;
+  overscroll-behavior-y: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 .wrapper {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   display: flex;
-  height: 100vh;
+  position: absolute;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  overflow: hidden;
-  position: relative;
+  justify-content: space-between;
+  contain: layout size style;
+  z-index: 0;
 }
 
 .header-content {
-  overflow-x: hidden;
   overflow-y: scroll;
   width: 100%;
   height: 100%;
 }
+
+.footer {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+

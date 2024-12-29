@@ -16,25 +16,22 @@ export function Layout() {
 
     const fetchProducts = (page, searchValue) => fetch(productListURL + '?page=' + page + '&q=' + searchValue).then(res => res.json() || [])
 
-    const { isPending, isError, error, data, isFetching, isPlaceholderData } = useQuery({
-        queryKey: ['productData', page],
+    const { isPending, isError, error, data, isFetching, isPlaceholderData  } = useQuery({
+        queryKey: ['productData', page, searchValue],
         placeholderData: keepPreviousData,
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMount: true,
         queryFn: () => fetchProducts(page, searchValue),
     });
 
     const handleTabChange = (index) => {
         setTab(index);
+        // scroll to top
+        window.scrollTo(0, 0);
     }
 
-    const handleSelectedBrand = (brand) => {
+    const handleSelectedBrand = async (brand) => {
         if (brands.includes(brand)) {
             setSearchValue(brand);
-            setPage(1);
-        } else {
-           setSearchValue('')
+           setPage(1);
         }
     }
 
@@ -43,7 +40,7 @@ export function Layout() {
         <div className="wrapper">
             <Select selectedBrand={handleSelectedBrand} />
             {isPending ? (<Loader/>) : isError ? (<>Error: {error.message}</>) : (
-                <div className="header-content">
+                <div className="header-content pb-32">
                     {tab === 0 && (
                         <div>
                             <div
@@ -106,7 +103,7 @@ export function Layout() {
                 </div>
             )}
 
-            <div className="btm-nav">
+            <div className="btm-nav btm-nav-lg footer fixed flex align-middle justify-center bottom-0 left-0 right-0 ">
                 <button className="text-primary" onClick={() => handleTabChange(0)}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="size-6 h-8 w-8">

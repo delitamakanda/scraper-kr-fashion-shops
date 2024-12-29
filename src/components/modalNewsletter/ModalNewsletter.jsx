@@ -3,20 +3,15 @@ import Loader from '../core/ui/Loader/Loader';
 import { useState, useEffect } from 'react'
 
 const ModalNewsletter = () => {
-    const [isOpen, setIsOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState([])
     const [email, setEmail] = useState('')
 
     useEffect(() => {
         if (!localStorage.getItem('subscription')) {
-            //localStorage.setItem('subscription', JSON.stringify({ timestamp: Date.now() }));
-            setIsOpen(true);
             openModal();
-        } else {
-            setIsOpen(false);
         }
-    }, [isOpen]);
+    }, []);
 
     const openModal = () => {
         document.getElementById('my_modal_1').showModal();
