@@ -64,11 +64,11 @@ class ProductListApiView(View):
         
         # serializer data
         serialized_data = [ProductSerializer.serialize(product) for product in products_page]
-        request_uri = request.build_absolute_uri().replace('?page=' + str(page), '')
+        request_uri = request.build_absolute_uri().replace('?page=' + str(page), '').replace('&q=', '')
         return JsonResponse({
             'count': products_page.paginator.count,
-            'next': request_uri + '&page=' + str(products_page.next_page_number()) if products_page.has_next() else None,
-            'previous': request_uri + '&page=' + str(products_page.previous_page_number()) if products_page.has_previous() else None,
+            'next': request_uri + '?page=' + str(products_page.next_page_number()) + '&q=' + search_query if products_page.has_next() else None,
+            'previous': request_uri + '?page=' + str(products_page.previous_page_number()) + '&q=' + search_query if products_page.has_previous() else None,
             # the current page number
             'page_number': products_page.number,
             # the number of products on the current page
