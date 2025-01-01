@@ -7,13 +7,13 @@ from django.utils.crypto import get_random_string
 class Command(BaseCommand):
     help = 'Creates a new user'
     def handle(self, *args, **options):
-        email = 'admin@example.com'
+        email = 'admin1@example.com'
         password = get_random_string(length=10)
         try:
             u = None
             if not User.objects.filter(email=email).exists():
                 self.stdout.write(self.style.SUCCESS('Creating user %s' % email))
-                u = User.objects.create_superuser(username='admin', email=email, password=password)
+                u = User.objects.create_superuser(username='admin1', email=email, password=password)
                 self.stdout.write('=============')
                 self.stdout.write('A user has been created:')
                 self.stdout.write('Username: %s' % u.username)
