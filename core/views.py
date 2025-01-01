@@ -1,6 +1,7 @@
 import json
 import re
 
+import requests
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
 
@@ -28,10 +29,31 @@ class APIRoot(View):
             'newsletter': {
                 'count': UserMailing.objects.all().count(),
                 'url': reverse('create_signup_mail')
+            },
+            'weather': {
+                'url': reverse('weather_api')
             }
         }
         return JsonResponse(data, safe=False)
 
+
+class WeatherAPIView(View):
+    @staticmethod
+    def get(request):
+        url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + settings.OPENWEATHERMAP_API_KEY
+        
+        cities = ['Paris', 'London', 'Berlin', 'Seoul', 'Tokyo', 'New York']
+        weather_data = []
+        for city in cities:
+            response = requests.get(url.format(city)).json()
+            weather_data.append({
+                'city': city,
+                'temperature': response['main']['temp'],
+                'humidity': response['main']['humidity'],
+                'description': response['weather'][0]['description'],
+                'icon': response['weather'][0]['icon']
+            })
+        return JsonResponse(weather_data, safe=False)
 
 class ProductListApiView(View):
     @staticmethod

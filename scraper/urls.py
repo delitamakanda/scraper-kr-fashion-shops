@@ -23,6 +23,7 @@ from django.views.generic.base import TemplateView
 from core.views import (
     APIRoot,
     ProductListApiView,
+WeatherAPIView,
     subscribe,
     unsubscribe,
 )
@@ -45,6 +46,7 @@ urlpatterns = [
     path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
 
     path('devices/', FCMDeviceViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
+    path('api/weather/', WeatherAPIView.as_view(), name='weather_api'),
 ]
 
 if settings.DEBUG:

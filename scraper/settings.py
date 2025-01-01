@@ -236,3 +236,6 @@ LOGGING = {
     "handlers": {"console": {"class": "logging.StreamHandler"}},
     "loggers": {"": {"handlers": ["console"], "level": "DEBUG"}},
 }
+
+# openweathermap api
+OPENWEATHERMAP_API_KEY = os.getenv('OPENWEATHERMAP_APIKEY')
