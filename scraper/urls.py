@@ -23,9 +23,7 @@ from django.views.generic.base import TemplateView
 from core.views import (
     APIRoot,
     ProductListApiView,
-    ProductDetailAPIView,
-    UserMailingCreateAPIView,
-
+    subscribe,
     unsubscribe,
 )
 
@@ -42,10 +40,8 @@ urlpatterns = [
     path(r'', TemplateView.as_view(template_name='base.html')),
     
     path('api/', APIRoot.as_view(), name='api_root'),
-    path('api/signup/', UserMailingCreateAPIView.as_view(), name='create_signup_mail'),
+    path('api/signup/', subscribe, name='create_signup_mail'),
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
-    path('api/products/<int:pk>/', ProductDetailAPIView.as_view(), name='products_detail_api'),
-
     path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
 
     path('devices/', FCMDeviceViewSet.as_view({'post': 'create'}), name='create_fcm_device'),

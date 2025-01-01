@@ -1,11 +1,12 @@
 from .models import Product
-from django_filters import rest_framework as filters
+from django_filters import FilterSet, BaseInFilter
 
-class NumberInFilter(filters.BaseInFilter):
+
+class NumberInFilter(BaseInFilter):
     pass
 
 
-class ProductFilter(filters.FilterSet):
+class ProductFilter(FilterSet):
     id__in = NumberInFilter(field_name='id', lookup_expr='in')
 
     class Meta:

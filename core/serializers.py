@@ -1,19 +1,11 @@
-from rest_framework import serializers
-from rest_framework.response import Response
+from django.forms.models import model_to_dict
 
-from core.models import Product, UserMailing
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    next_item = serializers.SerializerMethodField()
-    previous_item = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Product
-        fields = (
+class ProductSerializer:
+    @staticmethod
+    def serialize(instance):
+        data = model_to_dict(instance, fields=[
             'id',
             'name',
-            'image',
             'description',
             'price',
             'created',
@@ -23,37 +15,26 @@ class ProductSerializer(serializers.ModelSerializer):
             'image_url',
             'external_link',
             'source',
-            'countProductsByBrand',
-            'next_item',
-            'previous_item',
+            'count_products_by_brand',
             'is_liked',
-        )
-        read_only_fields = (
-            'id',
-            'name',
-        )
-        extra_kwargs = {
-            'id': {'required': False},
-        }
-        extra_kwargs_update = {
-            'id': {'required': False},
-        }
+        ])
+        if instance.image:
+            data['image'] = instance.image.url
+        else:
+            data['image'] = ''
+        if instance.next_item:
+            data['next_item'] = {'id': instance.next_item.id, 'name': instance.next_item.name }
+        else:
+            data['next_item'] = None
+            
+        if instance.previous_item:
+            data['previous_item'] = {'id': instance.previous_item.id, 'name': instance.previous_item.name }
+        else:
+            data['previous_item'] = None
+            
+        return data
 
-    def get_next_item(self, obj):
-        if obj.next_item:
-            return Response({'id': obj.next_item.id, 'name': obj.next_item.name}).data
-
-    def get_previous_item(self, obj):
-        if obj.previous_item:
-            return Response({'id': obj.previous_item.id, 'name': obj.previous_item.name}).data
-
-class UserMailingSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = UserMailing
-        fields = (
-            'id',
-            'email',
-            'is_subscribed',
-            'date_added',
-        )
+class UserMailingSerializer:
+    @staticmethod
+    def serialize(instance):
+        return model_to_dict(instance, fields=['id', 'email', 'is_subscribed', 'date_added']  )

@@ -1,6 +1,5 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.http import JsonResponse
 
 class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -31,8 +30,8 @@ class Product(models.Model):
         return self.name
 
     @property
-    def countProductsByBrand(self):
-        if (self.source != ''):
+    def count_products_by_brand(self):
+        if self.source != '':
             return Product.objects.filter(source=self.source).count()
         return 0
 
