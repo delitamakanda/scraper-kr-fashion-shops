@@ -19,6 +19,8 @@ CSRF_COOKIE_SECURE = True
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+CSRF_TRUSTED_ORIGINS=os.getenv('CSRF_TRUSTED_ORIGINS').split(',')
+
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 # email admin
