@@ -1,16 +1,30 @@
 import './App.css'
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {QueryClient } from "@tanstack/react-query";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Layout  } from "./views/Layout.jsx";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 
-const queryClient = new QueryClient()
+const persister = createSyncStoragePersister({
+    storage: window.localStorage,
+})
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            cacheTime: 1000 * 60 * 5, // 5 minutes
+        }
+    }
+})
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }} onSuccess={async () => {
+        await queryClient.resumePausedMutations();
+    }}>
         <ReactQueryDevtools />
         <Layout />
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   )
 }
 
