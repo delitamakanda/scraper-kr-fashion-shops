@@ -53,7 +53,7 @@ const ModalNewsletter = () => {
                 <div className="modal-box  w-full items-center justify-center max-w-md transform overflow-hidden p-6 text-left align-middle shadow-xl transition-all">
                     <h3 className="text-lg font-medium leading-6 text-gray-900">Stay in touch !</h3>
                     <p className="py-4 text-sm text-gray-500">Receive new fashion trends in your mailbox. You can unsubscribe at any moment. Press ESC key or click the button below to close</p>
-                    <div className="modal-action">
+                    <div className="modal-footer">
                         <form method="dialog" onSubmit={(e) => handleSubmit(e)}>
                             <input
                                 className="shadow appearance-none border rounded w-full my-4 py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

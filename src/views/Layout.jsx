@@ -6,6 +6,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 const PlaceholderImage = '../assets/dummy_275x360_ffffff_cccccc.png';
 import Loader from "../components/core/ui/Loader/Loader";
 import Select from '../components/core/ui/Selector/Select'
+import CookieBanner from "../components/cookieBanner/CookieBanner";
 import ModalNewsletter from '../components/modalNewsletter/ModalNewsletter'
 import { brands } from '../components/core/ui/Selector/helper'
 import { fetchProducts, fetchWeather, fetchFavProducts } from '../services/api'
@@ -80,16 +81,16 @@ export function Layout() {
         <div className="wrapper">
             <Select selectedBrand={handleSelectedBrand} />
             {isPending ? (<Loader/>) : isError ? (<>Error: {error.message}</>) : (
-                <div className="header-content pb-14">
+                <div className="header-content">
                     {tab === 0 && (
-                        <div>
+                        <div style={{ paddingBottom: '90px'}}>
                             <div
                                 className="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
                                 {data && data.results && (
                                     data.results.map(product => (
                                         <div key={product.id} className="group relative">
                                             <div
-                                                className="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none cursor-pointer">
+                                                className="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                                                 <LazyLoadImage src={product.image_url} alt={product.name}
                                                                height={'100%'}
                                                                width={'100%'} placeholdersrc={PlaceholderImage}
@@ -104,12 +105,12 @@ export function Layout() {
                                                         <a rel='noreferrer' href={product.external_link} target="_blank"
                                                            tabIndex={product.id}>
                                                             <span aria-hidden="true"
-                                                                  className="absolute"></span>
+                                                                  className="absolute inset-0"></span>
                                                             {product.name}
                                                         </a>
                                                     </h3>
                                                 </div>
-                                                <button onClick={toggleLiked(product.id)} className="appearance-none">
+                                                <button onClick={toggleLiked(product.id)} className="appearance-none absolute top-0 right-0">
                                                     {!productIsLiked(product.id) ? (
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
@@ -148,27 +149,25 @@ export function Layout() {
                     )}
                     {tab === 1 && (
                         <div>
-                            {favProductsData.results.map((product) => (
-                                <>
-                                    <div key={Math.max(Math.random())} className="group relative">
-                                        <div
-                                            className="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none cursor-pointer">
-                                            <LazyLoadImage src={product.image_url} alt={product.name}
-                                                           height={'100%'}
-                                                           width={'100%'} placeholdersrc={PlaceholderImage}
-                                                           className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-                                                           effect="blur"/>
-                                        </div>
+                            {favProductsData.results.map((product, idx) => (
+                                <div key={idx} className="group relative">
+                                    <div
+                                        className="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none cursor-pointer">
+                                        <LazyLoadImage src={product.image_url} alt={product.name}
+                                                       height={'100%'}
+                                                       width={'100%'} placeholdersrc={PlaceholderImage}
+                                                       className="w-full h-full object-center object-cover lg:w-full lg:h-full"
+                                                       effect="blur"/>
                                     </div>
-                                </>
+                                </div>
                             ))}
                         </div>
                     )}
                     {tab === 2 && (
                         <div>
                             <ul>
-                            {weatherData.map((w) => (
-                                <li key={Math.max(Math.random())}>
+                            {weatherData.map((w, index) => (
+                                <li key={index}>
                                     <h3>{w.city}</h3>
                                     <p>Temperature: {w.temperature}°C</p>
                                     <p>Humidity: {w.humidity}%</p>
@@ -186,7 +185,7 @@ export function Layout() {
                     )}
 
                     <div
-                        className="btm-nav btm-nav-lg footer fixed flex align-middle justify-center bottom-0 left-0 right-0 ">
+                        className="btm-nav btm-nav-lg">
                         <button className="text-primary" onClick={() => handleTabChange(0)}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                                  stroke="currentColor" className="size-6 h-8 w-8">
@@ -195,7 +194,7 @@ export function Layout() {
                             </svg>
 
                         </button>
-                        {isProductsIsFavorited && (<button className="text-primary active " onClick={() => handleTabChange(1)}>
+                        {isProductsIsFavorited && (<button className="text-primary " onClick={() => handleTabChange(1)}>
 
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                                  stroke="currentColor" className="size-6 h-8 w-8">
@@ -214,6 +213,7 @@ export function Layout() {
 
                     </div>
                     <ModalNewsletter/>
+                    <CookieBanner />
                 </div>
-            )
-            }
+    )
+}
