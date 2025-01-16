@@ -148,7 +148,7 @@ export function Layout() {
                         </div>
                     )}
                     {tab === 1 && (
-                        <div>
+                        <div style={{ paddingBottom: '90px'}}>
                             {favProductsData.results.map((product, idx) => (
                                 <div key={idx} className="group relative">
                                     <div
@@ -164,7 +164,7 @@ export function Layout() {
                         </div>
                     )}
                     {tab === 2 && (
-                        <div>
+                        <div style={{ paddingBottom: '90px'}}>
                             <ul>
                             {weatherData.map((w, index) => (
                                 <li key={index}>
