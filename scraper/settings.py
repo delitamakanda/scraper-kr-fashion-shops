@@ -49,8 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'corsheaders',
     'django_filters',
-    'fcm_django',
-    
+
     'core',
 ]
 
@@ -159,43 +158,6 @@ SESSION_COOKIE_SECURE = False
 SEARCH_PARAM = 'q'
 ORDERING_PARAM = 'ordering'
 
-FCM_DJANGO_SETTINGS = {
-    "ONE_DEVICE_PER_USER": True,
-    "DELETE_INACTIVE_DEVICES": False,
-    "UPDATE_ON_DUPLICATE_REG_ID": True,
-    "FCM_SERVER_KEY": os.getenv("FCM_SERVER_KEY", default="dummy"),
-}
-
-import firebase_admin
-import json
-import base64
-from firebase_admin import initialize_app, credentials
-
-try:
-    service_account_key2 = {
-        "type": "service_account",
-        "project_id": os.environ.get('FIREBASE_PROJECT_ID'),
-        "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
-        "private_key": os.environ.get('FIREBASE_PRIVATE_KEY').replace('\n', ''),
-        #"private_key": base64.b64decode(base64.b64encode(os.environ.get('FIREBASE_PRIVATE_KEY'))),
-        "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
-        "client_id": os.environ.get('CLIENT_ID'),
-        "auth_uri": os.environ.get('AUTH_URI'),
-        "token_uri": os.environ.get('TOKEN_URI'),
-        "auth_provider_x509_cert_url": os.environ.get('AUTH_PROVIDER_X509_CERT_URL'),
-        "client_x509_cert_url": os.environ.get('CLIENT_X509_CERT_URL'),
-    }
-    
-    decoded_base64 = base64.b64decode(os.environ.get('GOOGLE_CREDENTIALS_BASE64'))
-    json_str = decoded_base64.decode('utf-8')
-    
-    service_account_key = json.loads(json_str)
-    cred = credentials.Certificate(service_account_key)
-    
-    FIREBASE_APP = firebase_admin.initialize_app(credential=cred)
-except Exception as e:
-    print(f"Failed to initialize Firebase: {e}")
-
 # celery
 CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
@@ -227,7 +189,6 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://localhost:5173',
     'https://kf.applikuapp.com',
-    'https://fcm.googleapis.com',
 ]
 
 LOGGING = {

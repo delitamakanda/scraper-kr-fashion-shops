@@ -28,24 +28,17 @@ WeatherAPIView,
     unsubscribe,
 )
 
-from fcm_django.api.rest_framework import FCMDeviceViewSet
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('firebase-messaging-sw.js', (TemplateView.as_view(template_name="firebase-messaging-sw.js", content_type='application/javascript', )), name='firebase-messaging-sw.js'),
-    path('cookie.js', (TemplateView.as_view(template_name='cookie.js', content_type='application/javascript'))),
+    path('service-worker.js', (TemplateView.as_view(template_name="service-worker.js", content_type='application/javascript', )), name='service-worker.js'),
     path('offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
-    path('cookies-policy', (TemplateView.as_view(template_name="cookies-policy.html")), name='cookies-policy'),
     re_path(r'^static/(?P<path>.*)$', serve, { 'document_root': settings.STATIC_ROOT }),
     path(r'', TemplateView.as_view(template_name='base.html')),
-    
     path('api/', APIRoot.as_view(), name='api_root'),
     path('api/signup/', subscribe, name='create_signup_mail'),
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
     path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
-
-    path('devices/', FCMDeviceViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
     path('api/weather/', WeatherAPIView.as_view(), name='weather_api'),
 ]
 

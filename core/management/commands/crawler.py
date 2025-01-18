@@ -7,14 +7,6 @@ from django.core.management.base import BaseCommand, CommandError
 
 from core.models import Product
 
-from firebase_admin.messaging import Message, Notification
-from fcm_django.models import FCMDevice
-
-"""
-get all registered devices
-"""
-devices = FCMDevice.objects.all()
-
 
 class Command(BaseCommand):
     help = (
@@ -30,15 +22,6 @@ class Command(BaseCommand):
         print(data)
         try:
             if not self.model_name.objects.filter(image_url=data["img"]).exists():
-                devices.send_message(
-                    Message(
-                        notification=Notification(
-                            title=f"{data['title']}",
-                            body=f"{data['url']}",
-                            image=f"{data['img']}",
-                        ),
-                    )
-                )
                 self.model_name.objects.create(
                     name=data["title"],
                     image_url=data["img"],
