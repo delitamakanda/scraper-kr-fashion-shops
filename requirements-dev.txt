@@ -6,7 +6,7 @@ selenium==4.28.1
 beautifulsoup4==4.12.3
 django-cors-headers==4.6.0
 django-filter==24.3
-whitenoise==6.8.2
+whitenoise==6.9.0
 pytest==8.3.4
 chromedriver-autoinstaller==0.6.4
 webdriver-manager==4.0.2
