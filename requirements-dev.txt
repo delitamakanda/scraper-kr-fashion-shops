@@ -4,7 +4,7 @@ Pillow==11.1.0
 sqlparse==0.5.3
 selenium==4.29.0
 beautifulsoup4==4.13.3
-django-cors-headers==4.6.0
+django-cors-headers==4.7.0
 django-filter==25.1
 whitenoise==6.9.0
 pytest==8.3.4
