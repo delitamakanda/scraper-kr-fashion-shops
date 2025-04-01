@@ -12,6 +12,6 @@ chromedriver-autoinstaller==0.6.4
 webdriver-manager==4.0.2
 celery==5.4.0
 redis==5.2.1
-drf-yasg==1.21.8
+drf-yasg==1.21.10
 django-environ==0.12.0
 requests==2.32.3
