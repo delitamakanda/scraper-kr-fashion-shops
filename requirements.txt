@@ -7,7 +7,7 @@ beautifulsoup4==4.13.3
 django-cors-headers==4.7.0
 django-filter==25.1
 whitenoise==6.9.0
-pytest==8.3.4
+pytest==8.3.5
 chromedriver-autoinstaller==0.6.4
 webdriver-manager==4.0.2
 shot-scraper>=0.7
