@@ -1,5 +1,5 @@
 asgiref==3.8.1
-Django==4.2.21
+Django==4.2.22
 Pillow==11.2.1
 sqlparse==0.5.3
 selenium==4.32.0
