@@ -19,4 +19,4 @@ gunicorn==23.0.0
 psycopg2-binary==2.9.10
 boto3==1.38.6
 django-environ==0.12.0
-requests==2.32.3
+requests==2.32.4
