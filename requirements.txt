@@ -12,7 +12,7 @@ chromedriver-autoinstaller==0.6.4
 webdriver-manager==4.0.2
 shot-scraper>=0.7
 celery==5.5.2
-redis==5.2.1
+redis==6.2.0
 drf-yasg==1.21.10
 dj-database-url==2.3.0
 gunicorn==23.0.0
