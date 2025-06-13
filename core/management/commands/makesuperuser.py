@@ -7,7 +7,7 @@ from django.utils.crypto import get_random_string
 class Command(BaseCommand):
     help = 'Creates a new user'
     def handle(self, *args, **options):
-        email = 'admin1@example.com'
+        email = 'admin2@example.com'
         password = get_random_string(length=10)
         try:
             u = None
