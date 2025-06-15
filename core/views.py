@@ -1,5 +1,10 @@
 import json
 import re
+import sys
+import time
+
+import psutil
+import docker
 
 import requests
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -32,9 +37,56 @@ class APIRoot(View):
             },
             'weather': {
                 'url': reverse('weather_api')
+            },
+            'status': {
+                'url': reverse('system_status')
+            },
+            'health': {
+                'url': reverse('health')
             }
         }
         return JsonResponse(data, safe=False)
+    
+def get_load_time():
+    start_time = time.time()
+    time.sleep(1)  # simulate heavy load
+    return time.time() - start_time
+    
+    
+def health(request):
+    return JsonResponse({'status': 'OK', 'timestamp': int(time.time()), 'load_time': get_load_time()})
+    
+    
+def system_status(request):
+    disk = psutil.disk_usage('/')
+    disk_info = {
+        'total': disk.total // (1024 ** 3),  # convert bytes to gigabytes
+        'used': disk.used // (1024 ** 3),
+        'free': disk.free // (1024 ** 3),
+        'percent': disk.percent,
+    }
+    
+    try:
+        docker_client = docker.from_env()
+        containers = docker_client.containers.list(all=True)
+        images = docker_client.images.list()
+        volumes = docker_client.volumes.list()
+        
+        docker_info = {
+            'containers': len(containers),
+            'images': len(images),
+            'volumes': len(volumes),
+            'running_containers': len([c for c in containers if c.status == 'running']),
+        }
+    except Exception as e:
+        docker_info = {
+            'error': str(e)
+        }
+    return JsonResponse({
+        'disk': disk_info,
+        'docker': docker_info,
+        'python_version': sys.version.split(' ')[0]
+    })
 
 
 class WeatherAPIView(View):

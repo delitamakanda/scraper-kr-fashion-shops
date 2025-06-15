@@ -26,6 +26,8 @@ from core.views import (
 WeatherAPIView,
     subscribe,
     unsubscribe,
+system_status,
+health,
 )
 
 urlpatterns = [
@@ -40,6 +42,8 @@ urlpatterns = [
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
     path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
     path('api/weather/', WeatherAPIView.as_view(), name='weather_api'),
+    path('api/status/', system_status, name='system_status'),
+    path('api/health/', health, name='health'),
 ]
 
 if settings.DEBUG:
