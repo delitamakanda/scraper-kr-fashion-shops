@@ -189,6 +189,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://localhost:5173',
     'https://kf.applikuapp.com',
+    'http://localhost:3333',
+    'http://localhost:5173'
 ]
 
 LOGGING = {
