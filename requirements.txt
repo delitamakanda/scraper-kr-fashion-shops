@@ -17,7 +17,7 @@ drf-yasg==1.21.11
 dj-database-url==3.0.1
 gunicorn==23.0.0
 psycopg2-binary==2.9.10
-boto3==1.40.42
+boto3==1.40.67
 django-environ==0.12.0
 requests==2.32.5
 docker==7.1.0
