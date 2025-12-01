@@ -11,7 +11,7 @@ pytest==8.4.2
 chromedriver-autoinstaller==0.6.4
 webdriver-manager==4.0.2
 celery==5.5.3
-redis==6.2.0
+redis==7.0.1
 drf-yasg==1.21.11
 django-environ==0.12.0
 requests==2.32.5
