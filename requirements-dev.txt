@@ -1,7 +1,7 @@
 asgiref==3.11.0
 Django==4.2.27
 Pillow==11.3.0
-sqlparse==0.5.4
+sqlparse==0.5.5
 selenium==4.36.0
 beautifulsoup4==4.14.3
 django-cors-headers==4.9.0
