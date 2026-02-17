@@ -190,7 +190,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
     'https://kf.applikuapp.com',
     'http://localhost:3333',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://scraper-kr-946790860424.europe-west9.run.app',
 ]
 
 LOGGING = {
