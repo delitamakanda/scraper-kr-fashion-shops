@@ -94,7 +94,7 @@ class WeatherAPIView(View):
     def get(request):
         url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + settings.OPENWEATHERMAP_API_KEY
         
-        cities = ['Paris', 'London', 'Berlin', 'Seoul', 'Tokyo', 'Taipei']
+        cities = ['Paris', 'London', 'Berlin', 'Seoul', 'Tokyo', 'Taipei', 'Kaohsiung', 'Shanghai', 'La Nouvelle-Orléans']
         weather_data = []
         for city in cities:
             response = requests.get(url.format(city)).json()
