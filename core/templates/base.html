@@ -1,4 +1,3 @@
-{% load render_vite_bundle %}
 {% load custom_tags %}
 {% load static %}
 {% load i18n %}
@@ -22,24 +21,6 @@
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
   -->
-  <link rel="icon" href="{% static 'favicon.ico' %}" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
-  {% if settings.DEBUG %}
-  <script type="module" src="http://localhost:5173/@vite/client"></script>
-  
-  <!-- If you're using vite with React, this next script will be needed for HMR -->
-  <script type="module">
-    import RefreshRuntime from 'http://localhost:5173/@react-refresh'
-    if (RefreshRuntime) {
-      RefreshRuntime.injectIntoGlobalHook(window)
-      window.$RefreshReg$ = () => { }
-      window.$RefreshSig$ = () => (type) => type
-      window.__vite_plugin_react_preamble_installed__ = true
-    }
-  </script>
-  {% endif %}
 </head>
 
 <body>
@@ -47,40 +28,8 @@
   <noscript>You need to enable JavaScript to run this app.</noscript>
 
   <div id="root"></div>
-  
-  {% if settings.DEBUG %}
-  <!-- This url will be different for each type of app. Point it to your main js file. -->
-  <script type="module" src="http://localhost:5173/main.jsx"></script>
-  {% else %}
-  {% render_vite_bundle %}
-  {% endif %}
 
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-           .then((registration) => {
-              console.log('Service worker has been registered for scope:', registration.scope);
-            })
-           .catch((err) => {
-              console.log('Service worker registration failed:', err);
-            });
-      });
-    }
-
-    window.addEventListener('beforeinstallprompt', function (e) {
-        console.log('beforeinstallprompt fired');
-
-        e.userChoice.then(function (choiceResult) {
-            console.log(choiceResult.outcome);
-
-            if (choiceResult.outcome == 'dismissed') {
-                console.log('User cancelled installation');
-            } else {
-                console.log('User added to homescreen');
-            }
-        });
-    });
 </script>
 
 <!-- Google tag (gtag.js) -->
