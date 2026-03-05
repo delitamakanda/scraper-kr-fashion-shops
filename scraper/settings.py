@@ -132,11 +132,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-VITE_APP_DIR = os.path.join(BASE_DIR, 'src')
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(VITE_APP_DIR, 'dist'),
 ]
 
 MEDIA_URL = '/media/'
