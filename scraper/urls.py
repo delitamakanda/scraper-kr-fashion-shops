@@ -32,9 +32,6 @@ health,
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    path('service-worker.js', (TemplateView.as_view(template_name="service-worker.js", content_type='application/javascript', )), name='service-worker.js'),
-    path('offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
     re_path(r'^static/(?P<path>.*)$', serve, { 'document_root': settings.STATIC_ROOT }),
     path(r'', TemplateView.as_view(template_name='base.html')),
     path('api/', APIRoot.as_view(), name='api_root'),
