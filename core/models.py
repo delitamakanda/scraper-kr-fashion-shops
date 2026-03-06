@@ -19,7 +19,9 @@ class Product(models.Model):
 
     class Meta:
         ordering = ('name',)
-        index_together = (('id', 'slug'),)
+        indexes = [
+            models.Index(fields=['id','slug']),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.slug:
