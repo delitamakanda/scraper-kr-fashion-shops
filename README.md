@@ -43,7 +43,6 @@ django-admin startapp core
 or 
 
 python3 manage.py runserver
-celery -A scraper worker -l info
 ```
 
 Optionnel : si des cookies ou des clés API sont nécessaires, créer un fichier .env à la racine :
@@ -95,15 +94,6 @@ python3 -m pytest test/test_crawler.py
 python3 -m pytest test/test_crawler_mock.py
 ```
 
-### Celery
-```bash
-celery -A scraper worker -l info
-```
-
-### Celery with beat
-```bash
-celery -A scraper worker -l info --beat
-```
 ### cron jobs
 100	0 0 * * *	python3 manage.py crawler output4.csv --baseurl=https://wonlog.co.kr	
 99	0 0 * * *	python3 manage.py crawler output3.csv --baseurl=https://en.frombeginning.kr	
