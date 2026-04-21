@@ -155,27 +155,6 @@ SESSION_COOKIE_SECURE = False
 SEARCH_PARAM = 'q'
 ORDERING_PARAM = 'ordering'
 
-# celery
-CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
-
-from celery.schedules import crontab
-
-CELERY_BEAT_SCHEDULE = {
-    "sample_task": {
-        "task": "core.tasks.sample_task",
-        "schedule": crontab(minute="*/1"),
-    },
-    "populate_maybe_baby_products": {
-        "task": "core.tasks.populate_maybe_baby_products",
-        "schedule": crontab(minute="*/1"),
-    },
-    "populate_stylenanda_products": {
-        "task": "core.tasks.populate_stylenanda_products",
-        "schedule": crontab(minute="*/1"),
-    },
-}
-
 # email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
