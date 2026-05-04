@@ -12,7 +12,7 @@ chromedriver-autoinstaller==0.6.4
 webdriver-manager==4.0.2
 shot-scraper>=0.7
 drf-yasg==1.21.15
-dj-database-url==3.0.1
+dj-database-url==3.1.2
 gunicorn==23.0.0
 psycopg2-binary==2.9.11
 boto3==1.43.1
