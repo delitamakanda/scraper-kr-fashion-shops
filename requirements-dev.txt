@@ -12,6 +12,6 @@ chromedriver-autoinstaller==0.6.4
 webdriver-manager==4.0.2
 drf-yasg==1.21.15
 django-environ==0.13.0
-requests==2.33.1
+requests==2.34.2
 docker==7.1.0
 psutil==7.2.2
