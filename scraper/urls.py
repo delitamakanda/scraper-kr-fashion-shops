@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path, reverse_lazy
+from django.urls import path, re_path, reverse_lazy, include
 from django.conf import settings
 from django.contrib.staticfiles.views import serve
 from django.conf.urls.static import static
@@ -26,8 +26,6 @@ from core.views import (
 WeatherAPIView,
     subscribe,
     unsubscribe,
-system_status,
-health,
 )
 
 urlpatterns = [
@@ -39,8 +37,7 @@ urlpatterns = [
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
     path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
     path('api/weather/', WeatherAPIView.as_view(), name='weather_api'),
-    path('api/status/', system_status, name='system_status'),
-    path('api/health/', health, name='health'),
+    path('api/healthcheck/', include('apps.healthcheck.urls', namespace='healthcheck')),
 ]
 
 if settings.DEBUG:
