@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_filters',
 
     'core',
+    'apps.healthcheck',
 ]
 
 SITE_ID = 1
