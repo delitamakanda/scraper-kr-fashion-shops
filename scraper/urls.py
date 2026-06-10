@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
     path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
     path('api/weather/', WeatherAPIView.as_view(), name='weather_api'),
-    path('api/healthcheck/', include('apps.healthcheck.urls', namespace='healthcheck')),
+    path('api/', include('apps.healthcheck.urls', namespace='healthcheck')),
 ]
 
 if settings.DEBUG:

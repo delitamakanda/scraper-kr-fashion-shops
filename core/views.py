@@ -39,6 +39,15 @@ class APIRoot(View):
             'ping': {
                 'url': reverse('healthcheck:ping_status', args=['localhost'])
             },
+            'check_alerts': {
+                'url': reverse('healthcheck:check_alerts')
+            },
+            'alerts': {
+                'url': reverse('healthcheck:get_all_alerts')
+            },
+            'metrics': {
+                'url': reverse('healthcheck:get_metrics_by_host', args=[1])
+            }
         }
         return JsonResponse(data, safe=False)
 
