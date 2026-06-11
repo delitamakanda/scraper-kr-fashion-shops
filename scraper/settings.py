@@ -180,3 +180,6 @@ LOGGING = {
 
 # openweathermap api
 OPENWEATHERMAP_API_KEY = os.getenv('OPENWEATHERMAP_APIKEY')
+
+
+MONITORING_USE_TCP_ONLY = os.getenv('MONITORING_USE_TCP_ONLY', False)

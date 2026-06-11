@@ -8,6 +8,7 @@ from apps.healthcheck.models import Host
 from apps.healthcheck.selectors.host_selectors import HostSelectors
 from apps.healthcheck.selectors.alert_selectors import AlertSelectors
 from apps.healthcheck.services.alert_service import AlertService
+from apps.healthcheck.services.network_service import NetworkService
 
 def check_alerts(request):
     AlertService().check_alerts_for_host()
@@ -38,7 +39,9 @@ def system_status(request):
     return JsonResponse(data)
 
 def network_status(request, host):
-    reachable_hosts = ping_host(host)
+    network_service = NetworkService()
+    host, port = host.split(':')
+    reachable_hosts = network_service.is_host_reachable(host, int(port))
     start_time = time.time()
     time.sleep(1)  # simulate heavy load
-    return JsonResponse({'reachable': reachable_hosts, 'host': host, 'load_time': time.time() - start_time})
+    return JsonResponse({'reachable': reachable_hosts, 'host': host, 'port': port, 'load_time': time.time() - start_time})

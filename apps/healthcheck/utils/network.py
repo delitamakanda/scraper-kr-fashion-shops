@@ -1,12 +1,22 @@
 import subprocess
+import platform
+
+import socket
+
+
+def tcp_check(host: str, port: int, timeout: int = 2) -> bool:
+    try:
+        with socket.create_connection((host, port), timeout):
+            return True
+    except OSError:
+        return False
+
 
 def ping_host(host: str) -> bool:
-    try:
-        output = subprocess.run(
-            ['ping', '-c', '1', '-W', '1', host],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
-        return output.returncode == 0
-    except subprocess.CalledProcessError:
-        return False
+    param = "-n" if platform.system().lower() == "windows" else "-c"
+    output = subprocess.run(
+        ['ping', param, '1', host],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+    return output.returncode == 0

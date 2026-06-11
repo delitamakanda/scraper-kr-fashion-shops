@@ -54,3 +54,5 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 
 DEFAULT_FILE_STORAGE = 'scraper.storage_backends.MediaStorage'
+
+MONITORING_USE_TCP_ONLY = os.getenv('MONITORING_USE_TCP_ONLY', True)
