@@ -104,3 +104,18 @@ python3 -m pytest test/test_crawler_mock.py
 ## 🛠️ Roadmap
 - Support d'autres shops coréens
 
+## monitoring
+on each vm
+```python
+import psutil, shutil, requests
+
+def collect_and_send(host_id):
+    payload = {
+        "host_id": host_id,
+        "cpu_percentage": psutil.cpu_percent(),
+        "ram_percentage": psutil.virtual_memory().percent,
+        "disk_percentage": shutil.disk_usage("/").used / shutil.disk_usage("/").total * 100,
+    }
+    requests.post("https://kf.applikuapp.com/api/metrics/", json=payload)
+```
+
