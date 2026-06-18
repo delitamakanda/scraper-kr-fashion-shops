@@ -6,8 +6,6 @@ from logging import getLogger
 from time import sleep, time
 
 from scrapers.scrapers import get_driver, connect_to_base, parse_html, write_to_file
-from core.services import SyncJobService
-from core.models import SyncJobStatus
 
 logger = getLogger(__name__)
 
@@ -20,10 +18,6 @@ def run_process(filename, browser):
         output_list = parse_html(html)
         write_to_file(output_list, filename)
     else:
-        SyncJobService.record(
-            source='Maybe Baby',
-            status=SyncJobStatus.FAILED
-        )
         logger.error("Error connecting to Maybe Baby")
 
 
@@ -44,19 +38,11 @@ if __name__ == "__main__":
     output_filename = "output.csv"
 
     # init browser
-    SyncJobService.record(
-        source=f'Maybe Baby #{current_attempt} time(s)',
-        status=SyncJobStatus.NEW
-    )
     browser = get_driver(headless=headless)
 
     # scrape and crawl
     while current_attempt <= 3:
         logger.info(f"Scraping Maybe Baby #{current_attempt} time(s)...")
-        SyncJobService.record(
-            source=f'Maybe Baby #{current_attempt} time(s)',
-            status=SyncJobStatus.IN_PROGRESS
-        )
         run_process(output_filename, browser)
         current_attempt = current_attempt + 1
 
@@ -64,8 +50,4 @@ if __name__ == "__main__":
     browser.quit()
     end_time = time()
     elapsed_time = end_time - start_time
-    SyncJobService.record(
-        source=f'Maybe Baby #{current_attempt} time(s)',
-        status=SyncJobStatus.COMPLETED
-    )
     logger.info(f"Elapsed run time: {elapsed_time} seconds")

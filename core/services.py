@@ -1,11 +1,11 @@
-from core.models import SyncJob, SyncJobStatus
+from .models import SyncJob
 from django.utils import timezone
 
 class SyncJobService:
     @staticmethod
     def record(
             *,
-            status: SyncJobStatus,
+            status: str,
             source: str,
     ):
         return SyncJob.objects.create(
