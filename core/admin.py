@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Product, UserMailing
+from core.models import Product, UserMailing, SyncJob
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -11,7 +11,12 @@ class UserMailingAdmin(admin.ModelAdmin):
     list_display = ['email', 'date_added']
     search_fields = ['email']
     list_filter = ['is_subscribed']
+    
+
+class SyncJobAdmin(admin.ModelAdmin):
+    list_display = ['status', 'source', 'imported_at']
 
 
+admin.site.register(SyncJob, SyncJobAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(UserMailing, UserMailingAdmin)

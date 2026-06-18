@@ -1,11 +1,11 @@
 import sys
+from pathlib import Path
 import os
 import datetime
+from logging import getLogger
 from time import sleep, time
-from pathlib import Path
 
 from scrapers.scrapers import get_driver, connect_to_base, parse_html, write_to_file
-from logging import getLogger
 from core.services import SyncJobService
 from core.models import SyncJobStatus
 
