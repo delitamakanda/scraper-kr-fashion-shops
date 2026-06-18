@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 from django.template.defaultfilters import slugify
 
 class Product(models.Model):
@@ -57,3 +58,24 @@ class UserMailing(models.Model):
 
     def __str__(self):
         return self.email
+    
+
+
+class SyncJobStatus(models.TextChoices):
+    NEW = 'NEW',
+    IN_PROGRESS = 'IN_PROGRESS'
+    COMPLETED = 'COMPLETED'
+    FAILED = 'FAILED'
+
+
+class SyncJob(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
+    status = models.CharField(choices=SyncJobStatus.choices, default=SyncJobStatus.NEW, max_length=11)
+    source = models.CharField(max_length=200, default='')
+    imported_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ('-imported_at',)
+        
+    def __str__(self):
+        return f'{self.imported_at} {self.status}'

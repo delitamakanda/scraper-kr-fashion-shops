@@ -5,6 +5,11 @@ from time import sleep, time
 from pathlib import Path
 
 from scrapers.scrapers import get_driver, connect_to_base, parse_html, write_to_file
+from logging import getLogger
+from core.services import SyncJobService
+from core.models import SyncJobStatus
+
+logger = getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -15,7 +20,11 @@ def run_process(filename, browser):
         output_list = parse_html(html)
         write_to_file(output_list, filename)
     else:
-        print("Error connecting to Maybe Baby")
+        SyncJobService.record(
+            source='Maybe Baby',
+            status=SyncJobStatus.FAILED
+        )
+        logger.error("Error connecting to Maybe Baby")
 
 
 if __name__ == "__main__":
@@ -23,7 +32,7 @@ if __name__ == "__main__":
     # headless mode?
     headless = False
     if len(sys.argv) > 1 and sys.argv[1] == "headless":
-        print("Running in headless mode")
+        logger.info("Running in headless mode")
         headless = True
 
     # set variables
@@ -35,11 +44,19 @@ if __name__ == "__main__":
     output_filename = "output.csv"
 
     # init browser
+    SyncJobService.record(
+        source=f'Maybe Baby #{current_attempt} time(s)',
+        status=SyncJobStatus.NEW
+    )
     browser = get_driver(headless=headless)
 
     # scrape and crawl
     while current_attempt <= 3:
-        print(f"Scraping Maybe Baby #{current_attempt} time(s)...")
+        logger.info(f"Scraping Maybe Baby #{current_attempt} time(s)...")
+        SyncJobService.record(
+            source=f'Maybe Baby #{current_attempt} time(s)',
+            status=SyncJobStatus.IN_PROGRESS
+        )
         run_process(output_filename, browser)
         current_attempt = current_attempt + 1
 
@@ -47,4 +64,8 @@ if __name__ == "__main__":
     browser.quit()
     end_time = time()
     elapsed_time = end_time - start_time
-    print(f"Elapsed run time: {elapsed_time} seconds")
+    SyncJobService.record(
+        source=f'Maybe Baby #{current_attempt} time(s)',
+        status=SyncJobStatus.COMPLETED
+    )
+    logger.info(f"Elapsed run time: {elapsed_time} seconds")

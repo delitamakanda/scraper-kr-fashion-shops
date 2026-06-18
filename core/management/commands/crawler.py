@@ -6,6 +6,8 @@ from django.apps import apps
 from django.core.management.base import BaseCommand, CommandError
 
 from core.models import Product
+from logging import getLogger
+logger = getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -19,7 +21,7 @@ class Command(BaseCommand):
         self.model_name = Product
 
     def import_from_mb_as_csv(self, data):
-        print(data)
+        logger.info(data)
         try:
             if not self.model_name.objects.filter(image_url=data["img"]).exists():
                 self.model_name.objects.create(
@@ -33,12 +35,13 @@ class Command(BaseCommand):
 
 
             else:
-                print("products already exits !")
+                logger.info('no product found')
         except Exception as e:
             raise CommandError(
                 "Error in inserting {}: {}".format(self.model_name, str(e))
             )
 
+    @staticmethod
     def get_current_app_path(self):
         return apps.get_app_config("core").path
 

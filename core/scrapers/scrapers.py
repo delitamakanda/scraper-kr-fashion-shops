@@ -3,6 +3,7 @@ import sys
 import os
 import chromedriver_autoinstaller
 from pathlib import Path
+from logging import getLogger
 
 import requests
 from bs4 import BeautifulSoup
@@ -15,14 +16,15 @@ if os.environ.get('DEBUG') == False:
     chromedriver_autoinstaller.install()
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+logger = getLogger(__name__)
 
 
 def get_driver(headless):
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
-    if (headless):
-        print(headless)
+    if headless:
+        logger.warning(headless)
 
     # init driver
     # only for debug
@@ -47,10 +49,10 @@ def connect_to_base(browser):
             )
             return True
         except Exception as e:
-            print(e)
+            logger.error(e)
             connection_attempts += 1
-            print(f'Error connecting to {base_url}')
-            print(f'Attempt #{connection_attempts}')
+            logger.error(f'Error connecting to {base_url}')
+            logger.error(f'Attempt #{connection_attempts}')
     return False
 
 
@@ -66,7 +68,7 @@ def parse_html(html):
             article['url'] = row.find('div', class_='name').a['href']
             article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text
             output_list.append(article)
-            print(article)
+            logger.info(article)
     return output_list
 
 
@@ -83,7 +85,7 @@ def get_load_time(article_url):
         # get page load time
         load_time = response.elapsed.total_seconds()
     except Exception as e:
-        print(e)
+        logger.error(e)
         load_time = 'Loading Error'
     return load_time
 
