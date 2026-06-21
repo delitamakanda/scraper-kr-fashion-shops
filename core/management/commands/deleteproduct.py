@@ -1,7 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.utils import timezone
-from django.core.management.base import BaseCommand, CommandError
-from core.models import Product
+from django.core.management.base import BaseCommand
+from core.models import Product, SyncJob
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 class Command(BaseCommand):
 	help = 'Clears products older than 365 days from today'
@@ -22,9 +25,10 @@ class Command(BaseCommand):
 			number_of_days = 30
 
 		self.stdout.write(self.style.SUCCESS('Number of days to delete "%s"' % number_of_days))
+		logger.info('Number of days to delete "%s"' % number_of_days)
 
 		today = timezone.now()
-		past_date = today - timedelta(days=number_of_days);
+		past_date = today - timedelta(days=number_of_days)
 
 		# this ensures we don't bother running through already marked true
 		# objects as deleted.
@@ -32,5 +36,13 @@ class Command(BaseCommand):
 
 		for item in to_delete:
 			item.delete()
-
+			
+		# delete sync jobs
+		sync_job_to_delete = SyncJob.objects.filter(imported_at__lte=past_date)
+		
+		for item in sync_job_to_delete:
+			item.delete()
+		
+		logger.info('Removed "%s"' % to_delete)
+		logger.info('Sync job removed "%s"' % sync_job_to_delete)
 		self.stdout.write(self.style.SUCCESS('Removed "%s"' % to_delete))
