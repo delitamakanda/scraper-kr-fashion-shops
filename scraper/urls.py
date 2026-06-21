@@ -26,6 +26,8 @@ from core.views import (
 WeatherAPIView,
     subscribe,
     unsubscribe,
+SyncJobAPIView,
+SyncJobLastFiveAPIView,
 )
 
 urlpatterns = [
@@ -35,6 +37,8 @@ urlpatterns = [
     path('api/', APIRoot.as_view(), name='api_root'),
     path('api/signup/', subscribe, name='create_signup_mail'),
     path('api/products/', ProductListApiView.as_view(), name='products_api'),
+    path('api/latest-sync-job', SyncJobAPIView.as_view(), name='latest_sync_job_api'),
+    path('api/last-five-sync-job', SyncJobLastFiveAPIView.as_view(), name='latest_sync_job_five_api'),
     path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
     path('api/weather/', WeatherAPIView.as_view(), name='weather_api'),
     path('api/', include('apps.healthcheck.urls', namespace='healthcheck')),

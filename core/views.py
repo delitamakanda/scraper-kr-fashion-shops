@@ -1,20 +1,17 @@
 import json
 import re
-import requests
-
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
 
-from core.serializers import ProductSerializer
+from core.serializers import ProductSerializer, SyncJobSerializer
 from django.urls import reverse
 from core.models import Product, UserMailing
+from core.selectors.sync_job_selectors import SyncJobSelector
+from core.selectors.weather_selectors import WeatherSelectors
+from core.selectors.product_selectors import ProductSelectors
 
 from django.shortcuts import render, get_object_or_404, redirect
-from core.filters import ProductFilter
 from django.http import JsonResponse
 from django.views import View
-from django.db.models import Q
-from django.conf import settings
 
 
 class APIRoot(View):
@@ -32,6 +29,12 @@ class APIRoot(View):
             },
             'weather': {
                 'url': reverse('weather_api')
+            },
+            'latest_sync_job': {
+                'url': reverse('latest_sync_job_api')
+            },
+            'latest_sync_job_five_api': {
+                'url': reverse('latest_sync_job_five_api')
             },
             'status': {
                 'url': reverse('healthcheck:system_status')
@@ -52,67 +55,47 @@ class APIRoot(View):
         return JsonResponse(data, safe=False)
 
 
+class SyncJobAPIView(View):
+    @staticmethod
+    def get(request):
+        last_job_sync = SyncJobSelector.get_last_sync_job()
+        serializer = SyncJobSerializer.serialize(last_job_sync)
+        return JsonResponse(serializer)
+    
+    
+class SyncJobLastFiveAPIView(View):
+    @staticmethod
+    def get(request):
+        last_five_jobs_sync = SyncJobSelector.get_last_five_sync_jobs()
+        data = [SyncJobSerializer.serialize(data) for data in last_five_jobs_sync]
+        return JsonResponse(data, safe=False)
+
 class WeatherAPIView(View):
     @staticmethod
     def get(request):
-        url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + settings.OPENWEATHERMAP_API_KEY
-        
-        cities = ['Paris', 'London', 'Berlin', 'Seoul', 'Tokyo', 'Taipei', 'Kaohsiung', 'Shanghai', 'La Nouvelle-Orléans']
-        weather_data = []
-        for city in cities:
-            response = requests.get(url.format(city)).json()
-            weather_data.append({
-                'city': city,
-                'temperature': response['main']['temp'],
-                'humidity': response['main']['humidity'],
-                'description': response['weather'][0]['description'],
-                'icon': response['weather'][0]['icon']
-            })
+        weather_data = WeatherSelectors.get_weather()
         return JsonResponse(weather_data, safe=False)
 
 class ProductListApiView(View):
     @staticmethod
     def get(request):
-        queryset = Product.objects.all().order_by('-created')
-        
-        # searching functionality
-        search_query = request.GET.get(settings.SEARCH_PARAM, '')
-        if search_query:
-            queryset = queryset.filter(Q(description__icontains=search_query) | Q(name__icontains=search_query) | Q(source__icontains=search_query))
-            
-        # ordering functionality
-        ordering_field = request.GET.get(settings.ORDERING_PARAM, '-created')
-        if ordering_field:
-            queryset = queryset.order_by(ordering_field)
-        # filtering functionality
-        filtering = ProductFilter(request.GET, queryset=queryset)
-        queryset = filtering.qs
-        
-        # pagination functionality
-        page_size = request.GET.get('page_size', 10)
-        page = request.GET.get('page', 1)
-        paginator = Paginator(queryset, page_size)
-        try:
-            products_page = paginator.page(page)
-        except PageNotAnInteger:
-            products_page = paginator.page(1)
-        except EmptyPage:
-            products_page = paginator.page(paginator.num_pages)
+        # returns all keys of dict
+        ps = ProductSelectors.get_all_products(request=request)
         
         # serializer data
-        serialized_data = [ProductSerializer.serialize(product) for product in products_page]
-        request_uri = request.build_absolute_uri().replace('?page=' + str(page), '').replace('&q=', '')
+        serialized_data = [ProductSerializer.serialize(product) for product in ps["products_page"]]
+        request_uri = request.build_absolute_uri().replace('?page=' + str(ps["page"]), '').replace('&q=', '')
         return JsonResponse({
-            'count': products_page.paginator.count,
-            'next': request_uri + '?page=' + str(products_page.next_page_number()) + '&q=' + search_query if products_page.has_next() else None,
-            'previous': request_uri + '?page=' + str(products_page.previous_page_number()) + '&q=' + search_query if products_page.has_previous() else None,
+            'count': ps['products_page'].paginator.count,
+            'next': request_uri + '?page=' + str(ps["products_page"].next_page_number()) + '&q=' + ps["search_query"] if ps["products_page"].has_next() else None,
+            'previous': request_uri + '?page=' + str(ps["products_page"].previous_page_number()) + '&q=' + ps["search_query"] if ps["products_page"].has_previous() else None,
             # the current page number
-            'page_number': products_page.number,
+            'page_number': ps["products_page"].number,
             # the number of products on the current page
-            'page_size': products_page.paginator.per_page,
+            'page_size': ps["products_page"].paginator.per_page,
             'results': serialized_data,
             # the number of total pages
-            'total_pages': paginator.num_pages,
+            'total_pages': ps["paginator"].num_pages,
         }, safe=False)
 
 
@@ -136,7 +119,7 @@ def subscribe(request):
             return JsonResponse({ 'Error': 'Email already exists in the mailing list.' }, status=400)
         except Exception as e:
             return JsonResponse({ 'Error': "Error subscribing to %s: %s" % (email, e) }, status=400)
-
+    return None
 
 
 def unsubscribe(request, email=None):

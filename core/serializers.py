@@ -34,3 +34,18 @@ class ProductSerializer:
             data['previous_item'] = None
         
         return data
+
+
+class SyncJobSerializer:
+    @staticmethod
+    def serialize(instance):
+        data = model_to_dict(instance, fields=[
+            'id',
+            'uuid',
+            'status',
+            'source',
+        ])
+        data['imported_at'] = instance.imported_at
+        data['uuid'] = str(instance.uuid)
+        print(data)
+        return data
