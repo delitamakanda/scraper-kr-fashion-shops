@@ -5,7 +5,8 @@ import os
 from django.apps import apps
 from django.core.management.base import BaseCommand, CommandError
 
-from core.models import Product
+from core.models import Product, SyncJobStatus
+from core.services.sync_job_services import SyncJobService
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -19,6 +20,7 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model_name = Product
+        self.source = ""
 
     def import_from_mb_as_csv(self, data):
         logger.info(data)
@@ -42,7 +44,7 @@ class Command(BaseCommand):
             )
 
     @staticmethod
-    def get_current_app_path(self):
+    def get_current_app_path():
         return apps.get_app_config("core").path
 
     def get_csv_file(self, filename):
@@ -60,6 +62,16 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        if options['baseurl'][0] == "https://en.maybe-baby.co.kr":
+            self.source = "Maybe Baby"
+        elif options['baseurl'][0] == "https://en.stylenanda.com":
+            self.source = "Stylenanda"
+        elif options['baseurl'][0] == "https://en.frombeginning.kr":
+            self.source = "Frombeginning"
+        elif options['baseurl'][0] == "https://wonlog.co.kr":
+            self.source = "Wonlog"
+        SyncJobService.record(status=SyncJobStatus.NEW,
+                              source=self.source)
         for filename in options["filenames"]:
             self.stdout.write(self.style.SUCCESS(
                 "Reading:{}".format(filename)))
@@ -67,27 +79,18 @@ class Command(BaseCommand):
             try:
                 with open(file_path) as csv_file:
                     csv_reader = csv.reader(csv_file, delimiter=",")
+                    SyncJobService.record(status=SyncJobStatus.IN_PROGRESS, source=self.source)
                     for row in csv_reader:
                         if row != "":
-                            # print(row)
                             words = [word.strip() for word in row]
                             title = words[1]
                             url = f"{options['baseurl'][0]}{words[3]}"
                             price = words[2]
                             if price == "일시품절":
                                 price = "0.00"
-                            source = ""
-                            if options['baseurl'][0] == "https://en.maybe-baby.co.kr":
-                                source = "Maybe Baby"
-                            elif options['baseurl'][0] == "https://en.stylenanda.com":
-                                source = "Stylenanda"
-                            elif options['baseurl'][0] == "https://en.frombeginning.kr":
-                                source = "Frombeginning"
-                            elif options['baseurl'][0] == "https://wonlog.co.kr":
-                                source = "Wonlog"
                             img = words[0]
                             data = {}
-                            data["source"] = source
+                            data["source"] = self.source
                             data["url"] = url
                             data["title"] = title
                             data["img"] = img
@@ -96,6 +99,13 @@ class Command(BaseCommand):
                             self.import_from_mb_as_csv(data)
                             self.stdout.write(
                                 self.style.SUCCESS("{}".format(title)))
-
+                SyncJobService.record(
+                    status=SyncJobStatus.COMPLETED,
+                    source=self.source
+                )
             except FileNotFoundError:
+                SyncJobService.record(
+                    status=SyncJobStatus.FAILED,
+                    source=self.source
+                )
                 raise CommandError("File {} does not exist".format(file_path))

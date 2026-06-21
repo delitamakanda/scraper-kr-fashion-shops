@@ -15,6 +15,8 @@ class UserMailingAdmin(admin.ModelAdmin):
 
 class SyncJobAdmin(admin.ModelAdmin):
     list_display = ['status', 'source', 'imported_at']
+    search_fields = ['status', 'source']
+    list_filter = ['status', 'source']
 
 
 admin.site.register(SyncJob, SyncJobAdmin)

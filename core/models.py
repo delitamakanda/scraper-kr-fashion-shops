@@ -69,7 +69,7 @@ class SyncJobStatus(models.TextChoices):
 
 
 class SyncJob(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4(), editable=False, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     status = models.CharField(choices=SyncJobStatus.choices, default=SyncJobStatus.NEW, max_length=11)
     source = models.CharField(max_length=200, default='')
     imported_at = models.DateTimeField(auto_now_add=True)
