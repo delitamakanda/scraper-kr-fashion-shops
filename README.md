@@ -1,6 +1,6 @@
 # 🛍️ Korean Fashion Shops Scraper
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/Python-3.14%2B-blue)](https://www.python.org/downloads/)
 [![Licence](https://img.shields.io/badge/Licence-MIT-green)](LICENSE)
 [![Fashion App CI](https://github.com/delitamakanda/koreanfashion/actions/workflows/django.yml/badge.svg?branch=main&event=push)](https://github.com/delitamakanda/koreanfashion/actions/workflows/django.yml)
 
