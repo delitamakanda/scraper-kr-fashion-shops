@@ -85,7 +85,6 @@ def get_driver(headless):
 
 def connect_to_base(browser, max_attempts=5):
     base_url = 'https://wonlog.co.kr/product/list.html?cate_no=58'
-    connection_attempts = 0
     for attempt in range(max_attempts):
         try:
             logger.info(f'Attempt #{attempt+1} to connect to {base_url}')

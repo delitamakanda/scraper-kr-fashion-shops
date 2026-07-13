@@ -11,16 +11,16 @@ class Command(BaseCommand):
         try:
             u = None
             if not User.objects.filter(email=email).exists():
-                self.stdout.write(self.style.SUCCESS('Creating user %s' % email))
+                self.stdout.write(self.style.SUCCESS(f'Creating user {email}'))
                 u = User.objects.create_superuser(username='admin1', email=email, password=password)
                 self.stdout.write('=============')
                 self.stdout.write('A user has been created:')
-                self.stdout.write('Username: %s' % u.username)
-                self.stdout.write('Email: %s' % u.email)
-                self.stdout.write('Password: %s' % password)
+                self.stdout.write(f'Username: {u.username}')
+                self.stdout.write(f'Email: {u.email}')
+                self.stdout.write(f'Password: {password}')
                 self.stdout.write('=============')
                 self.stdout.write('Please remember to change the password after logging in.')
             else:
                 self.stdout.write(self.style.ERROR('User already exists'))
         except Exception as e:
-            self.stdout.write(self.style.ERROR('Error creating user: %s' % e))
+            self.stdout.write(self.style.ERROR(f'Error creating user: {e}'))

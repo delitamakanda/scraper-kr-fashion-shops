@@ -19,6 +19,9 @@ class Product(models.Model):
     source = models.CharField(max_length=200, default='')
     is_featured = models.BooleanField(default=False)
     is_liked = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"{self.name} - {self.price}"
 
     class Meta:
         ordering = ('name',)
@@ -30,9 +33,6 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
 
     @property
     def count_products_by_brand(self):

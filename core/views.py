@@ -1,5 +1,6 @@
 import json
 import re
+from logging import getLogger
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -12,6 +13,8 @@ from core.selectors.product_selectors import ProductSelectors
 from core.selectors.sync_job_selectors import SyncJobSelector
 from core.selectors.weather_selectors import WeatherSelectors
 from core.serializers import ProductSerializer, SyncJobSerializer
+
+logger = getLogger(__name__)
 
 
 class APIRoot(View):
@@ -115,10 +118,14 @@ def subscribe(request):
             # check if email not already exists in the mailing list
             if email and not UserMailing.objects.filter(email=email).exists():
                 UserMailing.objects.create(email=email)
-                return JsonResponse({ 'Success': 'Subscribed successfully!' }, status=201)
-            return JsonResponse({ 'Error': 'Email already exists in the mailing list.' }, status=400)
+                return JsonResponse({
+                    'Success': 'Subscribed successfully!'
+                }, status=201)
+            return JsonResponse({
+                'Error': 'Email already exists in the mailing list.'
+            }, status=400)
         except Exception as e:
-            return JsonResponse({ 'Error': "Error subscribing to %s: %s" % (email, e) }, status=400)
+            return JsonResponse({ 'Error': f"Error subscribing to {email}: {e}"}, status=400)
     return None
 
 
@@ -130,5 +137,5 @@ def unsubscribe(request, email=None):
             subscriber.save()
             return redirect('/')
     except Exception as e:
-        print("Error unsubscribing from %s: %s" % (email, e))
+        logger.error(f"Error unsubscribing from {email}: {e}")
     return render(request, 'unsubscribe.html', { 'email': email })

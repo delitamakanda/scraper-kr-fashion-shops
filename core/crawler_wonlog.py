@@ -5,9 +5,6 @@ import sys
 from pathlib import Path
 from time import sleep, time
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 from scrapers.scrapers_wonlog import (
     connect_to_base,
     get_driver,
@@ -15,6 +12,9 @@ from scrapers.scrapers_wonlog import (
     parse_html,
     write_to_file,
 )
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 

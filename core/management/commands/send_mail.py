@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand
@@ -5,10 +7,11 @@ from django.template.loader import render_to_string
 
 from core.models import Product, UserMailing
 
+logger = getLogger(__name__)
+
 
 def fashion_trends_newsletter(products):
     subcribers = UserMailing.objects.filter(is_subscribed=True)
-    emails= []
     for subcriber in subcribers:
         # last 10 products
         products = products
@@ -28,17 +31,16 @@ def fashion_trends_newsletter(products):
         message.send(fail_silently=False)
         queryset = products
         bulk = []
-        for product in products:
+        for product in queryset:
             product.is_featured = False
             bulk.append(product)
         Product.objects.bulk_update(bulk,['is_featured'])
-        # print(subcriber)
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         products = Product.objects.filter(is_featured=True).order_by('-created')[:10]
         if products.count() > 0:
             fashion_trends_newsletter(products)
-            print('Fashion trends newsletter sent')
+            logger.info('Fashion trends newsletter sent')
         else:
-            print("No products found")
+            logger.info("No products found")

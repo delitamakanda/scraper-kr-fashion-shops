@@ -26,8 +26,8 @@ class Command(BaseCommand):
 		else:
 			number_of_days = 30
 
-		self.stdout.write(self.style.SUCCESS('Number of days to delete "%s"' % number_of_days))
-		logger.info('Number of days to delete "%s"' % number_of_days)
+		self.stdout.write(self.style.SUCCESS(f'Number of days to delete "{number_of_days}"'))
+		logger.info(f'Number of days to delete "{number_of_days}"')
 
 		today = timezone.now()
 		past_date = today - timedelta(days=number_of_days)
@@ -45,6 +45,6 @@ class Command(BaseCommand):
 		for item in sync_job_to_delete:
 			item.delete()
 		
-		logger.info('Removed "%s"' % to_delete)
-		logger.info('Sync job removed "%s"' % sync_job_to_delete)
-		self.stdout.write(self.style.SUCCESS('Removed "%s"' % to_delete))
+		logger.info(f'Removed "{to_delete}"')
+		logger.info(f'Sync job removed "{sync_job_to_delete}"')
+		self.stdout.write(self.style.SUCCESS(f'Removed "{to_delete}"'))
