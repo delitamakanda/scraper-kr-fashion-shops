@@ -1,7 +1,7 @@
 from logging import getLogger
 
 from django.conf import settings
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 
 from core.filters import ProductFilter
@@ -14,7 +14,7 @@ class ProductSelectors:
     @staticmethod
     def get_all_products(request=None) -> dict:
         queryset = Product.objects.all().order_by("-created")
-        
+
         # searching functionality
         search_query = request.GET.get(settings.SEARCH_PARAM, "")
         if search_query:
@@ -23,16 +23,16 @@ class ProductSelectors:
                 | Q(name__icontains=search_query)
                 | Q(source__icontains=search_query)
             )
-        
+
         # ordering functionality
         ordering_field = request.GET.get(settings.ORDERING_PARAM, "-created")
         if ordering_field:
             queryset = queryset.order_by(ordering_field)
-        
+
         # filtering functionality
         filtering = ProductFilter(request.GET, queryset=queryset)
         queryset = filtering.qs
-        
+
         # pagination functionality
         page_size = request.GET.get("page_size", 10)
         page = request.GET.get("page", 1)
@@ -50,7 +50,7 @@ class ProductSelectors:
             "search_query": search_query,
             "paginator": paginator,
         }
-    
+
     @staticmethod
     def count_products_by_source(source: str) -> int:
         return Product.objects.filter(source=source).count()
