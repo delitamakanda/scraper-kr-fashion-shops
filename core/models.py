@@ -6,17 +6,16 @@ from django.template.defaultfilters import slugify
 
 class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True)
-    slug = models.SlugField(max_length=200, db_index=True)
-    image = models.ImageField(upload_to="products/%Y/%m/%d", blank=True)
-    image_url = models.CharField(default="", max_length=280)
-    external_link = models.CharField(default="", max_length=280)
+    slug = models.SlugField(max_length=220, db_index=True, blank=True)
+    image_url = models.URLField(default="", max_length=280)
+    external_link = models.URLField(default="", max_length=280)
     description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     stock = models.PositiveIntegerField(default=1)
-    source = models.CharField(max_length=200, default="")
+    source = models.CharField(max_length=80, db_index=True)
     is_featured = models.BooleanField(default=False)
     is_liked = models.BooleanField(default=False)
 
@@ -33,12 +32,6 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    @property
-    def count_products_by_brand(self):
-        if self.source != "":
-            return Product.objects.filter(source=self.source).count()
-        return 0
 
     @property
     def next_item(self):

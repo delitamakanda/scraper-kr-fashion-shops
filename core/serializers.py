@@ -18,14 +18,9 @@ class ProductSerializer:
                 "image_url",
                 "external_link",
                 "source",
-                "count_products_by_brand",
                 "is_liked",
             ],
         )
-        if instance.image:
-            data["image"] = instance.image.url
-        else:
-            data["image"] = ""
         if instance.next_item:
             data["next_item"] = {"id": instance.next_item.id, "name": instance.next_item.name}
         else:
