@@ -2,14 +2,12 @@ import csv
 import logging
 import os
 import random
-import re
 import sys
 import time
 from pathlib import Path
 
 import chromedriver_autoinstaller
 import requests
-from bs4 import BeautifulSoup
 from requests import RequestException
 from selenium import webdriver
 from selenium.common import TimeoutException, WebDriverException
@@ -67,11 +65,7 @@ def is_site_accessible(url, max_retries=3, delay=5):
 
 def get_driver(headless):
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--lang=ko_KR")
-    options.add_argument("--window-size=1920,1080")
+    
     options.add_argument(f"user-agent={get_random_user_agent()}")
     if headless:
         print(headless)
@@ -106,39 +100,6 @@ def connect_to_base(browser, max_attempts=5):
             time.sleep(delay)
     logger.error(f"Failed to connect to {base_url} after {max_attempts} attempts ")
     return False
-
-
-def parse_html(html):
-    # create soup object
-    soup = BeautifulSoup(html, "html.parser")
-    output_list = []
-    for row in soup.find_all("li", {"class": "xans-record-"}):
-        if row.find("div", attrs={"class": "thumbnail"}) is not None:
-            article = {}
-            article["img"] = row.find("div", attrs={"class": "prdImg"}).img["src"]
-            article["title"] = row.find("div", class_="name").text.replace("\n", "")
-            article["url"] = row.find("div", class_="thumbnail").a["href"]
-            ul_price = row.find(
-                "ul", class_="xans-element- xans-product xans-product-listitem spec"
-            )
-            if ul_price:
-                li_price = ul_price.find_all("li") if len(ul_price.find_all("li")) > 1 else None
-                for li in li_price:
-                    price_span = li.find_all(
-                        "span", style=re.compile(r"font-size:11px;color:#000000;")
-                    ) or li.find_all("span", style=re.compile(r"font-size:12px;color:#555555;"))
-                    for span in price_span:
-                        second_span = re.compile(r"\d+\,\d+").findall(span.text)
-                        for p in second_span:
-                            formatted_price = p.replace(",", ".")
-                            try:
-                                article["price"] = float(formatted_price)
-                            except ValueError:
-                                logger.error(f"Failed to parse price: {formatted_price}")
-                                article["price"] = "0.00"
-            output_list.append(article)
-            logger.info(f"Parsed article: {article['title']}")
-    return output_list
 
 
 def get_load_time(article_url):
