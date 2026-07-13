@@ -5,7 +5,6 @@ from pathlib import Path
 
 import chromedriver_autoinstaller
 import requests
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -51,24 +50,6 @@ def connect_to_base(browser):
             print(f"Error connecting to {base_url}")
             print(f"Attempt #{connection_attempts}")
     return False
-
-
-def parse_html(html):
-    # create soup object
-    soup = BeautifulSoup(html, "html.parser")
-    output_list = []
-    for row in soup.find_all("li", {"class": "xans-record-"}):
-        if row.find("div", attrs={"class": "thumbnail"}) is not None:
-            article = {}
-            article["img"] = row.find("div", attrs={"class": "thumbnail"}).img["src"]
-            article["title"] = (
-                row.find("strong", class_="name").text.replace("Product Name : ", "").strip()
-            )
-            article["url"] = row.find("div", class_="thumbnail").a["href"]
-            article["price"] = row.find("li", class_="xans-record-").find_all("span")[1].text
-            output_list.append(article)
-            print(article)
-    return output_list
 
 
 def get_load_time(article_url):
