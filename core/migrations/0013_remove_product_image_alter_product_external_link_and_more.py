@@ -4,39 +4,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0012_alter_syncjob_uuid'),
+        ("core", "0012_alter_syncjob_uuid"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='product',
-            name='image',
+            model_name="product",
+            name="image",
         ),
         migrations.AlterField(
-            model_name='product',
-            name='external_link',
-            field=models.URLField(blank=True, default=''),
+            model_name="product",
+            name="external_link",
+            field=models.URLField(blank=True, default=""),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='image_url',
-            field=models.URLField(blank=True, default=''),
+            model_name="product",
+            name="image_url",
+            field=models.URLField(blank=True, default=""),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='price',
+            model_name="product",
+            name="price",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=10),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='slug',
+            model_name="product",
+            name="slug",
             field=models.SlugField(blank=True, max_length=220),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='source',
+            model_name="product",
+            name="source",
             field=models.CharField(db_index=True, max_length=80),
         ),
     ]
