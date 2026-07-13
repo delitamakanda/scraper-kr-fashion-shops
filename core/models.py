@@ -7,8 +7,8 @@ from django.template.defaultfilters import slugify
 class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=220, db_index=True, blank=True)
-    image_url = models.URLField(default="", max_length=280)
-    external_link = models.URLField(default="", max_length=280)
+    image_url = models.URLField(default="", blank=True)
+    external_link = models.URLField(default="", blank=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     available = models.BooleanField(default=True)
