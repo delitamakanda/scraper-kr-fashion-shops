@@ -36,13 +36,10 @@ class Command(BaseCommand):
                     is_featured=True,
                 )
 
-
             else:
-                logger.info('no product found')
+                logger.info("no product found")
         except Exception as e:
-            raise CommandError(
-                f"Error in inserting {self.model_name}: {str(e)}"
-            )
+            raise CommandError(f"Error in inserting {self.model_name}: {str(e)}")
 
     @staticmethod
     def get_current_app_path():
@@ -54,28 +51,22 @@ class Command(BaseCommand):
         return file_path
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            "filenames", nargs="*", type=str, help="Inserts Products from CSV file"
-        )
+        parser.add_argument("filenames", nargs="*", type=str, help="Inserts Products from CSV file")
 
-        parser.add_argument(
-            "--baseurl", nargs="*", type=str, help="choose a website to scrape"
-        )
+        parser.add_argument("--baseurl", nargs="*", type=str, help="choose a website to scrape")
 
     def handle(self, *args, **options):
-        if options['baseurl'][0] == "https://en.maybe-baby.co.kr":
+        if options["baseurl"][0] == "https://en.maybe-baby.co.kr":
             self.source = "Maybe Baby"
-        elif options['baseurl'][0] == "https://en.stylenanda.com":
+        elif options["baseurl"][0] == "https://en.stylenanda.com":
             self.source = "Stylenanda"
-        elif options['baseurl'][0] == "https://en.frombeginning.kr":
+        elif options["baseurl"][0] == "https://en.frombeginning.kr":
             self.source = "Frombeginning"
-        elif options['baseurl'][0] == "https://wonlog.co.kr":
+        elif options["baseurl"][0] == "https://wonlog.co.kr":
             self.source = "Wonlog"
-        SyncJobService.record(status=SyncJobStatus.NEW,
-                              source=self.source)
+        SyncJobService.record(status=SyncJobStatus.NEW, source=self.source)
         for filename in options["filenames"]:
-            self.stdout.write(self.style.SUCCESS(
-                f"Reading:{filename}"))
+            self.stdout.write(self.style.SUCCESS(f"Reading:{filename}"))
             file_path = self.get_csv_file(filename)
             try:
                 with open(file_path) as csv_file:
@@ -98,15 +89,8 @@ class Command(BaseCommand):
                             data["price"] = price.replace("$", "")
                             data["url"] = url
                             self.import_from_mb_as_csv(data)
-                            self.stdout.write(
-                                self.style.SUCCESS(f"{title}"))
-                SyncJobService.record(
-                    status=SyncJobStatus.COMPLETED,
-                    source=self.source
-                )
+                            self.stdout.write(self.style.SUCCESS(f"{title}"))
+                SyncJobService.record(status=SyncJobStatus.COMPLETED, source=self.source)
             except FileNotFoundError:
-                SyncJobService.record(
-                    status=SyncJobStatus.FAILED,
-                    source=self.source
-                )
+                SyncJobService.record(status=SyncJobStatus.FAILED, source=self.source)
                 raise CommandError(f"File {file_path} does not exist")

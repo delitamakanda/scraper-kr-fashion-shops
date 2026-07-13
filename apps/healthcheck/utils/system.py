@@ -11,12 +11,12 @@ def get_system_status():
         "memory": {
             "total": psutil.virtual_memory().total,
             "available": psutil.virtual_memory().available,
-            "percent": psutil.virtual_memory().percent
+            "percent": psutil.virtual_memory().percent,
         },
         "disk": {
-            "total": shutil.disk_usage('/').total,
-            "used": shutil.disk_usage('/').used,
-            "free": shutil.disk_usage('/').free,
+            "total": shutil.disk_usage("/").total,
+            "used": shutil.disk_usage("/").used,
+            "free": shutil.disk_usage("/").free,
         },
         "uptime_seconds": int(psutil.boot_time()),
     }

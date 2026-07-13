@@ -6,4 +6,3 @@ class AlertSelectors:
     def get_active_alerts():
         alert_service = AlertService()
         return alert_service.list_alerts()
-    

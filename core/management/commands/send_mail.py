@@ -16,31 +16,32 @@ def fashion_trends_newsletter(products):
         # last 10 products
         products = products
         data = {
-            'products': products,
-            'subcriber': subcriber,
-            'domain': Site.objects.get_current().domain,
+            "products": products,
+            "subcriber": subcriber,
+            "domain": Site.objects.get_current().domain,
         }
-        html_body = render_to_string('mailing.html', data)
+        html_body = render_to_string("mailing.html", data)
         message = EmailMultiAlternatives(
-            subject='Latest Korean fashion trends - Koreanfashion',
-            body='',
-            from_email='no-reply@koreanfashion.com',
+            subject="Latest Korean fashion trends - Koreanfashion",
+            body="",
+            from_email="no-reply@koreanfashion.com",
             to=[subcriber],
         )
-        message.attach_alternative(html_body, 'text/html')
+        message.attach_alternative(html_body, "text/html")
         message.send(fail_silently=False)
         queryset = products
         bulk = []
         for product in queryset:
             product.is_featured = False
             bulk.append(product)
-        Product.objects.bulk_update(bulk,['is_featured'])
+        Product.objects.bulk_update(bulk, ["is_featured"])
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        products = Product.objects.filter(is_featured=True).order_by('-created')[:10]
+        products = Product.objects.filter(is_featured=True).order_by("-created")[:10]
         if products.count() > 0:
             fashion_trends_newsletter(products)
-            logger.info('Fashion trends newsletter sent')
+            logger.info("Fashion trends newsletter sent")
         else:
             logger.info("No products found")

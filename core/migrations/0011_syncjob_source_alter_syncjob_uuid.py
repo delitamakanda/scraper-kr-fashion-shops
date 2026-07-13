@@ -6,20 +6,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0010_syncjob'),
+        ("core", "0010_syncjob"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='syncjob',
-            name='source',
-            field=models.CharField(default='', max_length=200),
+            model_name="syncjob",
+            name="source",
+            field=models.CharField(default="", max_length=200),
         ),
         migrations.AlterField(
-            model_name='syncjob',
-            name='uuid',
-            field=models.UUIDField(default=uuid.UUID('21d6573f-135e-4ccb-b1af-79348d50485f'), editable=False, primary_key=True, serialize=False),
+            model_name="syncjob",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.UUID("21d6573f-135e-4ccb-b1af-79348d50485f"),
+                editable=False,
+                primary_key=True,
+                serialize=False,
+            ),
         ),
     ]

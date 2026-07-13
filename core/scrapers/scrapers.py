@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-if os.environ.get('DEBUG') == False:
+if os.environ.get("DEBUG") == False:
     chromedriver_autoinstaller.install()
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -22,8 +22,8 @@ logger = getLogger(__name__)
 
 def get_driver(headless):
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
     if headless:
         logger.warning(headless)
 
@@ -38,7 +38,7 @@ def get_driver(headless):
 
 
 def connect_to_base(browser):
-    base_url = 'https://en.maybe-baby.co.kr/category/new-in/173/'
+    base_url = "https://en.maybe-baby.co.kr/category/new-in/173/"
     connection_attempts = 0
     while connection_attempts < 3:
         try:
@@ -46,28 +46,28 @@ def connect_to_base(browser):
             # wait for item element with id 'contents' to load
             # before returning True
             WebDriverWait(browser, 5).until(
-                EC.presence_of_element_located((By.ID, 'contents_product'))
+                EC.presence_of_element_located((By.ID, "contents_product"))
             )
             return True
         except Exception as e:
             logger.error(e)
             connection_attempts += 1
-            logger.error(f'Error connecting to {base_url}')
-            logger.error(f'Attempt #{connection_attempts}')
+            logger.error(f"Error connecting to {base_url}")
+            logger.error(f"Attempt #{connection_attempts}")
     return False
 
 
 def parse_html(html):
     # create soup object
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, "html.parser")
     output_list = []
-    for row in soup.find_all('li', {"class": "xans-record-"}):
-        if row.find('div', attrs= {'class': 'thumbnail'}) is not None:
+    for row in soup.find_all("li", {"class": "xans-record-"}):
+        if row.find("div", attrs={"class": "thumbnail"}) is not None:
             article = {}
-            article['img'] = row.find('div', attrs= {'class': 'prdImg'}).img['src']
-            article['title'] = row.find('div', class_='name').find_all('span')[2].text
-            article['url'] = row.find('div', class_='name').a['href']
-            article['price'] = row.find('li', class_='xans-record-').find_all('span')[1].text
+            article["img"] = row.find("div", attrs={"class": "prdImg"}).img["src"]
+            article["title"] = row.find("div", class_="name").find_all("span")[2].text
+            article["url"] = row.find("div", class_="name").a["href"]
+            article["price"] = row.find("li", class_="xans-record-").find_all("span")[1].text
             output_list.append(article)
             logger.info(article)
     return output_list
@@ -77,23 +77,21 @@ def get_load_time(article_url):
     try:
         # set headers
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Mobile Safari/537.36'
+            "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Mobile Safari/537.36"
         }
         # make get request to article_url
-        response = requests.get(
-            article_url, headers=headers, stream=True, timeout=3.000
-        )
+        response = requests.get(article_url, headers=headers, stream=True, timeout=3.000)
         # get page load time
         load_time = response.elapsed.total_seconds()
     except Exception as e:
         logger.error(e)
-        load_time = 'Loading Error'
+        load_time = "Loading Error"
     return load_time
 
 
 def write_to_file(output_list, filename):
-    with open(Path(BASE_DIR).joinpath(filename), 'w', newline='') as csvfile:
+    with open(Path(BASE_DIR).joinpath(filename), "w", newline="") as csvfile:
         for row in output_list:
-            fieldnames = ['img', 'title', 'price', 'url']
+            fieldnames = ["img", "title", "price", "url"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writerow(row)

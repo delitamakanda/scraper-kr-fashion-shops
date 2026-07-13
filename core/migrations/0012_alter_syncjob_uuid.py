@@ -6,15 +6,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0011_syncjob_source_alter_syncjob_uuid'),
+        ("core", "0011_syncjob_source_alter_syncjob_uuid"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='syncjob',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False),
+            model_name="syncjob",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4, editable=False, primary_key=True, serialize=False
+            ),
         ),
     ]

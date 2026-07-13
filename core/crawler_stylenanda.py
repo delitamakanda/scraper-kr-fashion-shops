@@ -8,6 +8,7 @@ from scrapers.scrapers_stylenanda import connect_to_base, get_driver, parse_html
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
+
 def run_process(filename, browser, baseurl):
     if connect_to_base(browser, baseurl):
         sleep(2)
@@ -19,7 +20,6 @@ def run_process(filename, browser, baseurl):
 
 
 if __name__ == "__main__":
-
     # headless mode?
     headless = False
     if len(sys.argv) > 1 and sys.argv[1] == "headless":
@@ -27,17 +27,22 @@ if __name__ == "__main__":
         headless = True
 
     # scrape beauty products from stylenanda #3ce
-    baseurl = 'https://stylenanda.com/category/fashion/1902/'
-    if len(sys.argv) > 2 and sys.argv[2] == "baseurl" or len(sys.argv) > 1 and sys.argv[1] == "baseurl":
+    baseurl = "https://stylenanda.com/category/fashion/1902/"
+    if (
+        len(sys.argv) > 2
+        and sys.argv[2] == "baseurl"
+        or len(sys.argv) > 1
+        and sys.argv[1] == "baseurl"
+    ):
         print("Running from 3ce")
-        baseurl = 'https://stylenanda.com/category/beauty/1784/'
+        baseurl = "https://stylenanda.com/category/beauty/1784/"
 
     # set variables
     start_time = time()
     current_attempt = 1
     output_timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    if os.path.isfile(Path(BASE_DIR).joinpath('core/output2.csv')):
-        os.remove(Path(BASE_DIR).joinpath('core/output2.csv'))
+    if os.path.isfile(Path(BASE_DIR).joinpath("core/output2.csv")):
+        os.remove(Path(BASE_DIR).joinpath("core/output2.csv"))
     output_filename = "output2.csv"
 
     # init browser

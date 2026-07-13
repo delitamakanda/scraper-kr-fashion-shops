@@ -6,21 +6,40 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0009_rename_product_id_slug_core_produc_id_799af9_idx'),
+        ("core", "0009_rename_product_id_slug_core_produc_id_799af9_idx"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SyncJob',
+            name="SyncJob",
             fields=[
-                ('uuid', models.UUIDField(default=uuid.UUID('7e3057f7-79bc-4a58-bf28-00b1a77cacaf'), editable=False, primary_key=True, serialize=False)),
-                ('status', models.CharField(choices=[('NEW', 'New'), ('IN_PROGRESS', 'In Progress'), ('COMPLETED', 'Completed'), ('FAILED', 'Failed')], default='NEW', max_length=11)),
-                ('imported_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "uuid",
+                    models.UUIDField(
+                        default=uuid.UUID("7e3057f7-79bc-4a58-bf28-00b1a77cacaf"),
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("NEW", "New"),
+                            ("IN_PROGRESS", "In Progress"),
+                            ("COMPLETED", "Completed"),
+                            ("FAILED", "Failed"),
+                        ],
+                        default="NEW",
+                        max_length=11,
+                    ),
+                ),
+                ("imported_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'ordering': ('-imported_at',),
+                "ordering": ("-imported_at",),
             },
         ),
     ]

@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-if os.environ.get('DEBUG') == False:
+if os.environ.get("DEBUG") == False:
     chromedriver_autoinstaller.install()
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -20,9 +20,9 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 def get_driver(headless):
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    if (headless):
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    if headless:
         print(headless)
 
     # init driver
@@ -41,32 +41,36 @@ def connect_to_base(browser, baseurl):
             browser.get(baseurl)
             # wait for item element with id 'contents' to load
             # before returning True
-            WebDriverWait(browser, 5).until(
-                EC.presence_of_element_located((By.ID, 'content'))
-            )
+            WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.ID, "content")))
             return True
         except Exception as e:
             print(e)
             connection_attempts += 1
-            print(f'Error connecting to {baseurl}')
-            print(f'Attempt #{connection_attempts}')
+            print(f"Error connecting to {baseurl}")
+            print(f"Attempt #{connection_attempts}")
     return False
 
 
 def parse_html(html):
     # create soup object
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, "html.parser")
     output_list = []
-    for row in soup.find_all('li', {"class": "xans-record-"}):
-        if row.find('div', attrs= {'class': 'box'}) is not None:
+    for row in soup.find_all("li", {"class": "xans-record-"}):
+        if row.find("div", attrs={"class": "box"}) is not None:
             article = {}
-            article['img'] = row.find('a', attrs= {'class': 'thumb_slide _evt_tracker0'}).img['src'].replace(',', '')
-            external_span = row.find('div', class_='name')
-            unwanted = external_span.find('span')
+            article["img"] = (
+                row.find("a", attrs={"class": "thumb_slide _evt_tracker0"})
+                .img["src"]
+                .replace(",", "")
+            )
+            external_span = row.find("div", class_="name")
+            unwanted = external_span.find("span")
             unwanted.extract()
-            article['title'] = external_span.text.replace(':', '').strip()
-            article['url'] = row.find('div', class_='name').a['href']
-            article['price'] = row.find('span', class_='price').text.replace('원', '').strip().replace(',', '.')
+            article["title"] = external_span.text.replace(":", "").strip()
+            article["url"] = row.find("div", class_="name").a["href"]
+            article["price"] = (
+                row.find("span", class_="price").text.replace("원", "").strip().replace(",", ".")
+            )
             output_list.append(article)
             print(article)
     return output_list
@@ -76,23 +80,21 @@ def get_load_time(article_url):
     try:
         # set headers
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Mobile Safari/537.36'
+            "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Mobile Safari/537.36"
         }
         # make get request to article_url
-        response = requests.get(
-            article_url, headers=headers, stream=True, timeout=3.000
-        )
+        response = requests.get(article_url, headers=headers, stream=True, timeout=3.000)
         # get page load time
         load_time = response.elapsed.total_seconds()
     except Exception as e:
         print(e)
-        load_time = 'Loading Error'
+        load_time = "Loading Error"
     return load_time
 
 
 def write_to_file(output_list, filename):
-    with open(Path(BASE_DIR).joinpath(filename), 'w', newline='') as csvfile:
+    with open(Path(BASE_DIR).joinpath(filename), "w", newline="") as csvfile:
         for row in output_list:
-            fieldnames = ['img', 'title', 'price', 'url']
+            fieldnames = ["img", "title", "price", "url"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writerow(row)

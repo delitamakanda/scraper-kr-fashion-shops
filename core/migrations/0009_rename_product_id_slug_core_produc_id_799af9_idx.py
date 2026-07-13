@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0008_product_is_liked'),
+        ("core", "0008_product_is_liked"),
     ]
 
     operations = [
         migrations.RenameIndex(
-            model_name='product',
-            new_name='core_produc_id_799af9_idx',
-            old_fields=('id', 'slug'),
+            model_name="product",
+            new_name="core_produc_id_799af9_idx",
+            old_fields=("id", "slug"),
         ),
     ]

@@ -14,8 +14,6 @@ def tcp_check(host: str, port: int, timeout: int = 2) -> bool:
 def ping_host(host: str) -> bool:
     param = "-n" if platform.system().lower() == "windows" else "-c"
     output = subprocess.run(
-        ['ping', param, '1', host],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
+        ["ping", param, "1", host], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
     return output.returncode == 0

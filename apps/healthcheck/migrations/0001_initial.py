@@ -5,44 +5,77 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Host',
+            name="Host",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('ip_address', models.GenericIPAddressField()),
-                ('is_active', models.BooleanField(default=True)),
-                ('last_checked_in', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("ip_address", models.GenericIPAddressField()),
+                ("is_active", models.BooleanField(default=True)),
+                ("last_checked_in", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Alert',
+            name="Alert",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('metric_type', models.CharField(choices=[('CPU', 'CPU'), ('RAM', 'RAM'), ('DISK', 'DISK')], max_length=4)),
-                ('threshold', models.FloatField()),
-                ('operator', models.CharField(choices=[('>', 'Greater Than'), ('<', 'Less Than')], max_length=4)),
-                ('is_active', models.BooleanField(default=True)),
-                ('host', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='healthcheck.host')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "metric_type",
+                    models.CharField(
+                        choices=[("CPU", "CPU"), ("RAM", "RAM"), ("DISK", "DISK")], max_length=4
+                    ),
+                ),
+                ("threshold", models.FloatField()),
+                (
+                    "operator",
+                    models.CharField(
+                        choices=[(">", "Greater Than"), ("<", "Less Than")], max_length=4
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "host",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="healthcheck.host"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Metrics',
+            name="Metrics",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('cpu_percentage', models.FloatField()),
-                ('ram_percentage', models.FloatField()),
-                ('disk_percentage', models.FloatField()),
-                ('is_healthy', models.BooleanField(default=True)),
-                ('host', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='healthcheck.host')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                ("cpu_percentage", models.FloatField()),
+                ("ram_percentage", models.FloatField()),
+                ("disk_percentage", models.FloatField()),
+                ("is_healthy", models.BooleanField(default=True)),
+                (
+                    "host",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="healthcheck.host"
+                    ),
+                ),
             ],
         ),
     ]

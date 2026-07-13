@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -31,22 +32,21 @@ from core.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    re_path(r'^static/(?P<path>.*)$', serve, { 'document_root': settings.STATIC_ROOT }),
-    path('', RedirectView.as_view(url=reverse_lazy('api_root'), permanent=True)),
-    path('api/', APIRoot.as_view(), name='api_root'),
-    path('api/signup/', subscribe, name='create_signup_mail'),
-    path('api/products/', ProductListApiView.as_view(), name='products_api'),
-    path('api/latest-sync-job', SyncJobAPIView.as_view(), name='latest_sync_job_api'),
-    path('api/last-five-sync-job', SyncJobLastFiveAPIView.as_view(),
-         name='latest_sync_job_five_api'),
-    path('unsubscribe/<str:email>/', unsubscribe, name='unsubscribe'),
-    path('api/weather/', WeatherAPIView.as_view(), name='weather_api'),
-    path('api/', include('apps.healthcheck.urls', namespace='healthcheck')),
+    path("admin/", admin.site.urls),
+    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
+    path("", RedirectView.as_view(url=reverse_lazy("api_root"), permanent=True)),
+    path("api/", APIRoot.as_view(), name="api_root"),
+    path("api/signup/", subscribe, name="create_signup_mail"),
+    path("api/products/", ProductListApiView.as_view(), name="products_api"),
+    path("api/latest-sync-job", SyncJobAPIView.as_view(), name="latest_sync_job_api"),
+    path(
+        "api/last-five-sync-job", SyncJobLastFiveAPIView.as_view(), name="latest_sync_job_five_api"
+    ),
+    path("unsubscribe/<str:email>/", unsubscribe, name="unsubscribe"),
+    path("api/weather/", WeatherAPIView.as_view(), name="weather_api"),
+    path("api/", include("apps.healthcheck.urls", namespace="healthcheck")),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL,
-                          document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

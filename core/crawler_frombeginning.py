@@ -8,6 +8,7 @@ from scrapers.scrapers_frombeginning import connect_to_base, get_driver, parse_h
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
+
 def run_process(filename, browser):
     if connect_to_base(browser):
         sleep(2)
@@ -19,7 +20,6 @@ def run_process(filename, browser):
 
 
 if __name__ == "__main__":
-
     # headless mode?
     headless = False
     if len(sys.argv) > 1 and sys.argv[1] == "headless":
@@ -30,8 +30,8 @@ if __name__ == "__main__":
     start_time = time()
     current_attempt = 1
     output_timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    if os.path.isfile(Path(BASE_DIR).joinpath('core/output3.csv')):
-        os.remove(Path(BASE_DIR).joinpath('core/output3.csv'))
+    if os.path.isfile(Path(BASE_DIR).joinpath("core/output3.csv")):
+        os.remove(Path(BASE_DIR).joinpath("core/output3.csv"))
     output_filename = "output3.csv"
 
     # init browser

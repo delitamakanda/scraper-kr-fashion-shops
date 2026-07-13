@@ -4,32 +4,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(db_index=True, max_length=200)),
-                ('slug', models.SlugField(max_length=200)),
-                ('image', models.ImageField(blank=True, upload_to='products/%Y/%m/%d')),
-                ('image_url', models.CharField(default='', max_length=280)),
-                ('external_link', models.CharField(default='', max_length=280)),
-                ('description', models.TextField(blank=True)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('available', models.BooleanField(default=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('stock', models.PositiveIntegerField(default=1)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(db_index=True, max_length=200)),
+                ("slug", models.SlugField(max_length=200)),
+                ("image", models.ImageField(blank=True, upload_to="products/%Y/%m/%d")),
+                ("image_url", models.CharField(default="", max_length=280)),
+                ("external_link", models.CharField(default="", max_length=280)),
+                ("description", models.TextField(blank=True)),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("available", models.BooleanField(default=True)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("stock", models.PositiveIntegerField(default=1)),
             ],
             options={
-                'ordering': ('name',),
-                'index_together': {('id', 'slug')},
+                "ordering": ("name",),
+                "index_together": {("id", "slug")},
             },
         ),
     ]

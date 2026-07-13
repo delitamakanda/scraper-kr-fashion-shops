@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0006_product_is_featured'),
+        ("core", "0006_product_is_featured"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='is_featured',
+            model_name="product",
+            name="is_featured",
             field=models.BooleanField(default=False),
         ),
     ]

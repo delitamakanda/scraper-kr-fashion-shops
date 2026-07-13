@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0003_usermailing_is_subscribed'),
+        ("core", "0003_usermailing_is_subscribed"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='usermailing',
-            name='email',
+            model_name="usermailing",
+            name="email",
             field=models.EmailField(max_length=255, unique=True),
         ),
     ]

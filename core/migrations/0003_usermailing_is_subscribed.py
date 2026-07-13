@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0002_usermailing'),
+        ("core", "0002_usermailing"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='usermailing',
-            name='is_subscribed',
+            model_name="usermailing",
+            name="is_subscribed",
             field=models.BooleanField(default=True),
         ),
     ]
