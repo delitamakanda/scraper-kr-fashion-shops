@@ -1,5 +1,6 @@
 from apps.healthcheck.models import Metrics
 
+
 class MetricService:
     @staticmethod
     def create_metric(host, timestamp, cpu_usage, memory_usage, disk_usage):

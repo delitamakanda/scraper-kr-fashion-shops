@@ -1,6 +1,8 @@
-import psutil
-import shutil
 import platform
+import shutil
+
+import psutil
+
 
 def get_system_status():
     return {

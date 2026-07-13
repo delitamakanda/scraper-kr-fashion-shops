@@ -1,4 +1,5 @@
 import dj_database_url
+
 from scraper.settings import *
 
 DATABASES['default'] = dj_database_url.config()

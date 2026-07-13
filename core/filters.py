@@ -1,5 +1,6 @@
+from django_filters import BaseInFilter, FilterSet
+
 from .models import Product
-from django_filters import FilterSet, BaseInFilter
 
 
 class NumberInFilter(BaseInFilter):

@@ -1,6 +1,8 @@
-from core.models import SyncJob
-from django.utils import timezone
 from logging import getLogger
+
+from django.utils import timezone
+
+from core.models import SyncJob
 
 logger = getLogger(__name__)
 

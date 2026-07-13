@@ -1,5 +1,6 @@
 from apps.healthcheck.services.alert_service import AlertService
 
+
 class AlertSelectors:
     @staticmethod
     def get_active_alerts():

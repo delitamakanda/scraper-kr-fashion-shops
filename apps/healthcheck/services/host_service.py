@@ -1,5 +1,5 @@
-from apps.healthcheck.models import Host
-from apps.healthcheck.models import Metrics
+from apps.healthcheck.models import Host, Metrics
+
 
 class HostService:
     @staticmethod

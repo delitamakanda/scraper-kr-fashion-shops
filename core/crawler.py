@@ -1,11 +1,11 @@
-import sys
-from pathlib import Path
-import os
 import datetime
+import os
+import sys
 from logging import getLogger
+from pathlib import Path
 from time import sleep, time
 
-from scrapers.scrapers import get_driver, connect_to_base, parse_html, write_to_file
+from scrapers.scrapers import connect_to_base, get_driver, parse_html, write_to_file
 
 logger = getLogger(__name__)
 

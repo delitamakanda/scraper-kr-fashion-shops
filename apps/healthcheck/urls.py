@@ -1,5 +1,13 @@
 from django.urls import path
-from apps.healthcheck.views import system_status, network_status, get_all_metrics_by_host, create_metrics, check_alerts, get_all_alerts
+
+from apps.healthcheck.views import (
+    check_alerts,
+    create_metrics,
+    get_all_alerts,
+    get_all_metrics_by_host,
+    network_status,
+    system_status,
+)
 
 app_name = 'healthcheck'
 

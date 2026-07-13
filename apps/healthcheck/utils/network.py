@@ -1,7 +1,6 @@
-import subprocess
 import platform
-
 import socket
+import subprocess
 
 
 def tcp_check(host: str, port: int, timeout: int = 2) -> bool:

@@ -1,8 +1,10 @@
 from datetime import timedelta
-from django.utils import timezone
-from django.core.management.base import BaseCommand
-from core.models import Product, SyncJob
 from logging import getLogger
+
+from django.core.management.base import BaseCommand
+from django.utils import timezone
+
+from core.models import Product, SyncJob
 
 logger = getLogger(__name__)
 

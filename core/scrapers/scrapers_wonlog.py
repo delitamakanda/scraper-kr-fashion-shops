@@ -1,23 +1,23 @@
 import csv
-import sys
-import os
 import logging
-import time
+import os
 import random
 import re
-
-import chromedriver_autoinstaller
+import sys
+import time
 from pathlib import Path
 
+import chromedriver_autoinstaller
 import requests
 from bs4 import BeautifulSoup
 from requests import RequestException
 from selenium import webdriver
 from selenium.common import TimeoutException, WebDriverException
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+
 if os.environ.get('DEBUG') == False:
     chromedriver_autoinstaller.install()
 

@@ -1,9 +1,11 @@
+from logging import getLogger
+
+from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
+
 from core.filters import ProductFilter
 from core.models import Product
-from logging import getLogger
-from django.conf import settings
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
 
 logger = getLogger(__name__)
 

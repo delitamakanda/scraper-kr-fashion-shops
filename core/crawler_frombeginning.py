@@ -1,10 +1,10 @@
-import sys
-import os
 import datetime
-from time import sleep, time
+import os
+import sys
 from pathlib import Path
+from time import sleep, time
 
-from scrapers.scrapers_frombeginning import get_driver, connect_to_base, parse_html, write_to_file
+from scrapers.scrapers_frombeginning import connect_to_base, get_driver, parse_html, write_to_file
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 

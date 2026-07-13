@@ -1,20 +1,26 @@
-import sys
-import os
 import datetime
 import logging
-from time import sleep, time
+import os
+import sys
 from pathlib import Path
+from time import sleep, time
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-from scrapers.scrapers_wonlog import get_driver, connect_to_base, parse_html, write_to_file, is_site_accessible
+from scrapers.scrapers_wonlog import (
+    connect_to_base,
+    get_driver,
+    is_site_accessible,
+    parse_html,
+    write_to_file,
+)
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 def run_process(filename, browser):
     if not is_site_accessible('https://wonlog.co.kr/product/list.html?cate_no=58'):
-        logger.error(f'the site is currently unavailable. Please try again later.')
+        logger.error('the site is currently unavailable. Please try again later.')
     if connect_to_base(browser):
         sleep(2)
         html = browser.page_source

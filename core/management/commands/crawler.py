@@ -1,13 +1,14 @@
 import csv
-from decimal import Decimal
 import os
+from decimal import Decimal
+from logging import getLogger
 
 from django.apps import apps
 from django.core.management.base import BaseCommand, CommandError
 
 from core.models import Product, SyncJobStatus
 from core.services.sync_job_services import SyncJobService
-from logging import getLogger
+
 logger = getLogger(__name__)
 
 
@@ -40,7 +41,7 @@ class Command(BaseCommand):
                 logger.info('no product found')
         except Exception as e:
             raise CommandError(
-                "Error in inserting {}: {}".format(self.model_name, str(e))
+                f"Error in inserting {self.model_name}: {str(e)}"
             )
 
     @staticmethod
@@ -74,7 +75,7 @@ class Command(BaseCommand):
                               source=self.source)
         for filename in options["filenames"]:
             self.stdout.write(self.style.SUCCESS(
-                "Reading:{}".format(filename)))
+                f"Reading:{filename}"))
             file_path = self.get_csv_file(filename)
             try:
                 with open(file_path) as csv_file:
@@ -98,7 +99,7 @@ class Command(BaseCommand):
                             data["url"] = url
                             self.import_from_mb_as_csv(data)
                             self.stdout.write(
-                                self.style.SUCCESS("{}".format(title)))
+                                self.style.SUCCESS(f"{title}"))
                 SyncJobService.record(
                     status=SyncJobStatus.COMPLETED,
                     source=self.source
@@ -108,4 +109,4 @@ class Command(BaseCommand):
                     status=SyncJobStatus.FAILED,
                     source=self.source
                 )
-                raise CommandError("File {} does not exist".format(file_path))
+                raise CommandError(f"File {file_path} does not exist")

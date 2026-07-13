@@ -1,8 +1,10 @@
+from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand
-from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
-from core.models import UserMailing, Product
+
+from core.models import Product, UserMailing
+
 
 def fashion_trends_newsletter(products):
     subcribers = UserMailing.objects.filter(is_subscribed=True)

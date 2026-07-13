@@ -1,5 +1,6 @@
-from apps.healthcheck.models import Alert, Metrics, Host
 from logging import getLogger
+
+from apps.healthcheck.models import Alert, Host, Metrics
 
 logger = getLogger(__name__)
 

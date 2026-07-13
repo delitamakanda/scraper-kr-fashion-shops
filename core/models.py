@@ -1,6 +1,8 @@
-from django.db import models
 import uuid
+
+from django.db import models
 from django.template.defaultfilters import slugify
+
 
 class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True)
@@ -27,7 +29,7 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
-        super(Product, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

@@ -1,17 +1,17 @@
 import csv
-import sys
 import os
-import re
-import chromedriver_autoinstaller
+import sys
 from pathlib import Path
 
+import chromedriver_autoinstaller
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+
 if os.environ.get('DEBUG') == False:
     chromedriver_autoinstaller.install()
 

@@ -1,5 +1,7 @@
 from logging import getLogger
+
 from core.services.product_services import ProductServices
+
 logger = getLogger(__name__)
 
 class ProductSelectors:

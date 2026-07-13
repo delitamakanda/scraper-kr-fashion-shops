@@ -1,5 +1,6 @@
 from core.services.sync_job_services import SyncJobService
 
+
 class SyncJobSelector:
     @staticmethod
     def get_last_sync_job():

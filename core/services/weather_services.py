@@ -1,6 +1,7 @@
 import requests
 from django.conf import settings
 
+
 class WeatherServices:
     @staticmethod
     def get_weather():

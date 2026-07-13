@@ -1,5 +1,6 @@
 from django.contrib import admin
-from core.models import Product, UserMailing, SyncJob
+
+from core.models import Product, SyncJob, UserMailing
 
 
 class ProductAdmin(admin.ModelAdmin):

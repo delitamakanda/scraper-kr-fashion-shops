@@ -1,5 +1,6 @@
 from django.forms.models import model_to_dict
 
+
 class HostSerializer:
     @staticmethod
     def serialize(instance):

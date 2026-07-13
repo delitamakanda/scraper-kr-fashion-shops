@@ -1,14 +1,16 @@
 import time
+
 from django.http import JsonResponse
-from apps.healthcheck.utils.system import get_system_status
-from apps.healthcheck.utils.network import ping_host
-from apps.healthcheck.serializers import MetricsSerializer, AlertSerializer
-from apps.healthcheck.services.metric_service import MetricService
+
 from apps.healthcheck.models import Host
-from apps.healthcheck.selectors.host_selectors import HostSelectors
 from apps.healthcheck.selectors.alert_selectors import AlertSelectors
+from apps.healthcheck.selectors.host_selectors import HostSelectors
+from apps.healthcheck.serializers import AlertSerializer, MetricsSerializer
 from apps.healthcheck.services.alert_service import AlertService
+from apps.healthcheck.services.metric_service import MetricService
 from apps.healthcheck.services.network_service import NetworkService
+from apps.healthcheck.utils.system import get_system_status
+
 
 def check_alerts(request):
     AlertService().check_alerts_for_host()

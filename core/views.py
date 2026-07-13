@@ -1,17 +1,17 @@
 import json
 import re
+
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from core.serializers import ProductSerializer, SyncJobSerializer
-from django.urls import reverse
 from core.models import Product, UserMailing
+from core.selectors.product_selectors import ProductSelectors
 from core.selectors.sync_job_selectors import SyncJobSelector
 from core.selectors.weather_selectors import WeatherSelectors
-from core.selectors.product_selectors import ProductSelectors
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
-from django.views import View
+from core.serializers import ProductSerializer, SyncJobSerializer
 
 
 class APIRoot(View):
