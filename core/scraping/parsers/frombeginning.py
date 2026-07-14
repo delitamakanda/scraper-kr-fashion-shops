@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 
-def parse_html(html):
+def parse_html(html: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
     output_list = []
     for row in soup.find_all("li", {"class": "xans-record-"}):
