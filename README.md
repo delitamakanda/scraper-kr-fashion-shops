@@ -57,35 +57,24 @@ Exemple de lancement pour scraper un site précis :
 
 ### Crawler maybe-baby.co.kr
 ```bash
-python3 core/crawler.py headless
-```
-
-### Crawler en.stylenanda.com
-```bash
-python3 core/crawler_stylenanda.py headless
-```
-
-### 3ce beauty products
-```bash
-python3 core/crawler_stylenanda.py headless baseurl
+python manage.py scrape maybe_baby --no-headless
 ```
 
 ### Crawler en.frombeginning.com
 ```bash
-python3 core/crawler_frombeginning.py headless
+python manage.py scrape from_beginning --no-headless
 ```
 
 ## Crawler en.wonlog.co.kr
 ```bash
-python3 core/crawler_wonlog.py headless
+python manage.py scrape wonlog --no-headless
 ```
 
 ### Populate products in db
 ```bash
-python3 manage.py crawler output.csv --baseurl=https://en.maybe-baby.co.kr
-python3 manage.py crawler output2.csv --baseurl=https://stylenanda.com
-python3 manage.py crawler output3.csv --baseurl=https://en.frombeginning.kr
-python3 manage.py crawler output4.csv --baseurl=https://wonlog.co.kr
+python3 manage.py import_csv output.csv --baseurl=https://en.maybe-baby.co.kr
+python3 manage.py import_csv output2.csv --baseurl=https://en.frombeginning.kr
+python3 manage.py import_csv output3.csv --baseurl=https://wonlog.co.kr
 ```
 
 ### Tests
