@@ -11,5 +11,5 @@ def build_chrome_driver(*, headless: bool = True) -> webdriver.Chrome:
     options.add_argument("--disable-gpu")
     options.add_argument("--lang=ko_KR")
     options.add_argument("--window-size=1920,1080")
-    
+
     return webdriver.Chrome(options=options)

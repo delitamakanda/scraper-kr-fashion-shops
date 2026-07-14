@@ -65,7 +65,7 @@ def is_site_accessible(url, max_retries=3, delay=5):
 
 def get_driver(headless):
     options = webdriver.ChromeOptions()
-    
+
     options.add_argument(f"user-agent={get_random_user_agent()}")
     if headless:
         print(headless)

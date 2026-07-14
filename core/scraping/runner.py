@@ -16,10 +16,10 @@ SELECTOR_TYPES = {
 
 def run_scraper(config, parser, driver):
     start = perf_counter()
-    
+
     try:
         driver.get(config.base_url)
-        
+
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located(
                 (
@@ -28,11 +28,11 @@ def run_scraper(config, parser, driver):
                 )
             )
         )
-        
+
         products = parser(driver.page_source)
         logger.info(f"Scraped {len(products)} products from {config.name}")
         return products
-    
+
     finally:
         elapsed = perf_counter() - start
         logger.info(f"Elapsed time for {config.name} : {elapsed:.2f} seconds")
