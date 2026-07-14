@@ -99,7 +99,9 @@ class Command(BaseCommand):
             raise CommandError(f"Invalid title on line {line_number}")
 
         try:
-            price = Decimal(raw_price.replace(",", "").replace("$", "").strip())
+            price = Decimal(
+                raw_price.replace(",", "").replace("$", "").replace("일시품절", "").strip()
+            )
         except InvalidOperation as e:
             raise CommandError(f"Invalid price on line {line_number}: {e}") from e
 
