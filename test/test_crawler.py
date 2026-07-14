@@ -2,16 +2,16 @@ from pathlib import Path
 
 import pytest
 
-from core.scrapers import scrapers
-
 BASE_DIR = Path(__file__).resolve(strict=True).parent
+
+from core.scraping.parsers.frombeginning import parse_html as parse_frombeginning  # noqa: E402
 
 
 @pytest.fixture(scope="module")
 def html_output():
     with open(Path(BASE_DIR).joinpath("test.html"), encoding="utf-8") as f:
         html = f.read()
-        yield scrapers.parse_html(html)
+        yield parse_frombeginning(html)
 
 
 def test_output_is_not_none(html_output):
