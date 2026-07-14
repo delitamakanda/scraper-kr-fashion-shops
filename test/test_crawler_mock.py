@@ -2,20 +2,20 @@ from pathlib import Path
 
 import pytest
 
-from core.scrapers import scrapers
+from core.scraping.parsers.maybe_baby import parse_html as parse_maybe_baby
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent
 
 
 @pytest.fixture(scope="function")
 def html_output(monkeypatch):
-    def mock_get_load_time(url):
+    def mock_get_load_time():
         return "mocked!"
 
-    monkeypatch.setattr(scrapers, "get_load_time", mock_get_load_time)
+    monkeypatch.setattr({}, "get_load_time", mock_get_load_time)
     with open(Path(BASE_DIR).joinpath("test.html"), encoding="utf-8") as f:
         html = f.read()
-        yield scrapers.parse_html(html)
+        yield parse_maybe_baby(html)
 
 
 def test_output_is_not_none(html_output):
