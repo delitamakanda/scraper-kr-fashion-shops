@@ -19,7 +19,7 @@ jobs:
       - name: Install all necessary packages
         run: pip install -r requirements.txt
       - name: Run the scraping script
-        run: python manage.py crawler from_beginning
+        run: python manage.py scrape from_beginning
       - name: Commit and push if content changed
         run: |-
           git config user.name "Automated"
