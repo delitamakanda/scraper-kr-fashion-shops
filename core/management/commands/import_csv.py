@@ -1,5 +1,4 @@
 import csv
-import os
 from decimal import Decimal, InvalidOperation
 from logging import getLogger
 from pathlib import Path
