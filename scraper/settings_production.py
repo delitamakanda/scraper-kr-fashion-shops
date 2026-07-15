@@ -1,16 +1,16 @@
-from scraper.settings import * # NOQA
+from scraper.settings import *  # NOQA
 import dj_database_url
 import os
 
-DATABASES["default"] = dj_database_url.config() # NOQA
-DATABASES["default"]["CONN_MAX_AGE"] = 60 # NOQA
-DATABASES["default"]["ATOMIC_REQUESTS"] = True # NOQA
+DATABASES["default"] = dj_database_url.config()  # NOQA
+DATABASES["default"]["CONN_MAX_AGE"] = 60  # NOQA
+DATABASES["default"]["ATOMIC_REQUESTS"] = True  # NOQA
 
 DEBUG = os.getenv("DEBUG") == "True"
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
