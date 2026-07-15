@@ -1,2 +1,2 @@
-web: gunicorn scraper.wsgi --log-file -
+web: sh run.sh
 release: bash release.sh
