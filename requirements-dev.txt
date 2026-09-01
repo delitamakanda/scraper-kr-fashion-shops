@@ -5,7 +5,7 @@ sqlparse==0.6.0
 selenium==4.46.0
 beautifulsoup4==4.15.0
 django-cors-headers==4.9.0
-django-filter==25.2
+django-filter==26.1
 whitenoise==6.12.0
 pytest==9.1.1
 chromedriver-autoinstaller==0.6.4
