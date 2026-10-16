@@ -108,3 +108,24 @@ def collect_and_send(host_id):
     requests.post("https://kf.applikuapp.com/api/metrics/", json=payload)
 ```
 
+## 📝 License
+MIT
+
+## Launch Docker
+
+```bash
+docker compose up --build
+```
+
+## Stop Docker
+
+```bash
+docker compose down
+```
+
+## Scrape with Docker
+
+```bash
+docker compose --profile scrape run --rm scraper
+```
+

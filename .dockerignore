@@ -1,0 +1,14 @@
+.git
+.github
+.idea
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv
+venv
+koreanfashion
+staticfiles
+.env
+
+# env files are injected at runtime via compose env_file
+.env.*

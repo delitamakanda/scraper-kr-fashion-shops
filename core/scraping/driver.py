@@ -1,4 +1,5 @@
 import logging
+import os
 
 from selenium import webdriver
 
@@ -24,5 +25,11 @@ def build_chrome_driver(*, headless: bool = True) -> webdriver.Chrome:
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/138.0 Safari/537.36"
     )
+
+    # In Docker, Chrome runs in the selenium container (see docker-compose.yml)
+    remote_url = os.getenv("SELENIUM_REMOTE_URL")
+    if remote_url:
+        logger.info(f"Using remote Selenium at {remote_url}")
+        return webdriver.Remote(command_executor=remote_url, options=options)
 
     return webdriver.Chrome(options=options)
