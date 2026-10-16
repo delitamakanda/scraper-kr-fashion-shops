@@ -35,7 +35,7 @@ if os.path.isfile(env_file):
 SECRET_KEY = os.getenv("SECRET_KEY", "<DANGO_SECRET_KEY>")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", True)
+DEBUG = env.bool("DEBUG", default=True)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
@@ -183,4 +183,4 @@ LOGGING = {
 OPENWEATHERMAP_API_KEY = os.getenv("OPENWEATHERMAP_APIKEY")
 
 
-MONITORING_USE_TCP_ONLY = os.getenv("MONITORING_USE_TCP_ONLY", False)
+MONITORING_USE_TCP_ONLY = env.bool("MONITORING_USE_TCP_ONLY", default=False)

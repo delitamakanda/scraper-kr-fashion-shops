@@ -133,3 +133,9 @@ dist-ssr
 celerybeat-schedule.db
 _src/
 scraper/credentials.json
+
+# env files (real values are local; templates are tracked)
+.env.*
+!.env.example
+!.env.docker
+!.env.production.example

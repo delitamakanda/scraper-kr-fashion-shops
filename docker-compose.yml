@@ -1,0 +1,46 @@
+services:
+  web:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py import_csv output.csv --baseurl=https://en.maybe-baby.co.kr && python manage.py import_csv output2.csv --baseurl=https://en.frombeginning.kr && python manage.py import_csv output3.csv --baseurl=https://wonlog.co.kr && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env.docker
+    depends_on:
+      redis:
+        condition: service_started
+      selenium:
+        condition: service_healthy
+
+  redis:
+    image: redis:5-alpine
+    ports:
+      - "6379:6379"
+
+  selenium:
+    # multi-arch image (works on Apple Silicon, unlike selenium/standalone-chrome)
+    image: selenium/standalone-chromium:latest
+    shm_size: 2gb
+    ports:
+      - "4444:4444"  # WebDriver + Grid UI
+      - "7900:7900"  # noVNC, to watch --no-headless runs (password: secret)
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:4444/wd/hub/status"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  scraper:
+    build: .
+    profiles:
+      - scrape
+    command: sh -c "python manage.py scrape maybe_baby && python manage.py import_csv output.csv --baseurl=https://en.maybe-baby.co.kr && python manage.py scrape from_beginning && python manage.py import_csv output2.csv --baseurl=https://en.frombeginning.kr && python manage.py scrape wonlog && python manage.py import_csv output3.csv --baseurl=https://wonlog.co.kr"
+    volumes:
+      - .:/app
+    env_file:
+      - .env.docker
+    depends_on:
+      selenium:
+        condition: service_healthy
