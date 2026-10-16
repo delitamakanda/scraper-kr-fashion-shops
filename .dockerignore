@@ -12,3 +12,6 @@ staticfiles
 
 # env files are injected at runtime via compose env_file
 .env.*
+
+db.sqlite3
+scraper/credentials.json
